@@ -1,0 +1,63 @@
+
+
+
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Repairresult</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    </Model>
+  <View>
+  
+<DataSet id="dsRepairresult">
+	  <Property name="dataType">[Repairresult]</Property>
+	  <Property name="dataProvider">repairresultPR#queryRepairresult</Property>
+	  <Property name="pageSize">20</Property>
+	  </DataSet><UpdateAction id="uaRepairresult">
+  <Property name="dataResolver">repairresultPR#saveRepairresult</Property>
+  <UpdateItem>
+     <Property name="dataSet">dsRepairresult</Property>
+  </UpdateItem>
+</UpdateAction>
+<ToolBar>
+<DataPilot>
+
+	<Property name="itemCodes">pages,+,-,x</Property>
+	<Property name="dataSet">dsRepairresult</Property>
+	<Property name="dataPath"></Property>
+</DataPilot>
+
+
+<ToolBarButton>
+  <Property name="caption">数据保存</Property>
+  <Property name="action">uaRepairresult</Property>
+  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+</ToolBarButton> 
+</ToolBar>
+<DataGrid id="dgRepairresult">
+	<RowNumColumn/>
+	<DataColumn name="oid">
+	<Property name="property">oid</Property>
+               	</DataColumn>
+	<DataColumn name="method">
+	<Property name="property">method</Property>
+               	</DataColumn>
+	<DataColumn name="tool">
+	<Property name="property">tool</Property>
+               	</DataColumn>
+	<DataColumn name="event">
+	<Property name="property">event</Property>
+               	</DataColumn>
+	<DataColumn name="location">
+	<Property name="property">location</Property>
+               	</DataColumn>
+	<Property name="dataSet">dsRepairresult</Property>
+	<Property name="dataPath"></Property>
+	  	<Property name="filterMode">serverSide</Property>
+	<Property name="showFilterBar">true</Property>
+  	<Property name="rowHeight">22</Property>
+	</DataGrid>   
+     </View>
+</ViewConfig>

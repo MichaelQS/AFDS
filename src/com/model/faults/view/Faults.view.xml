@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="dataTypeRoad">
+      <PropertyDef name="result"/>
+      <PropertyDef name="roadid"/>
+    </DataType>
+  </Model>
+  <View>
+    <DataSet id="dsFault">
+      <Property name="dataType">[dataTypeRoad]</Property>
+      <Property name="dataProvider">faultsPR#queryResults</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="system"></Property>
+          <Property name="feature"></Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsSystems">
+      <Property name="dataProvider">systemsPR#querySystems</Property>
+      <Property name="dataType">[Systems]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <AjaxAction id="showSystem">
+      <Property name="service">systemsPR#showSystem</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ws"></Property>
+        </Entity>
+      </Property>
+    </AjaxAction>
+    <SplitPanel>
+      <Property name="position">150</Property>
+      <MainControl>
+        <Container>
+          <ToolBar>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur = view.id(&quot;dsParam&quot;).getData(&quot;#&quot;);&#xD;
+var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+	var oid = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;oid&quot;);&#xD;
+	var name = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;system&quot;);&#xD;
+}&#xD;
+else if(NodeType == &quot;feature&quot;){&#xD;
+	var oid = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;oid&quot;);&#xD;
+	var name = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;feature&quot;);&#xD;
+}&#xD;
+view.id(&quot;ajaRecolor&quot;).set(&quot;parameter&quot;,{&#xD;
+	name:name&#xD;
+});&#xD;
+view.id(&quot;ajaRecolor&quot;).execute();&#xD;
+if(cur.get(&quot;roadid&quot;)== &quot;a&quot;){&#xD;
+	var guid = &quot;&quot;;&#xD;
+	for(var i=1;i&lt;=32;i++){&#xD;
+		var n = Math.floor(Math.random()*16.0).toString(16);&#xD;
+		guid += n;&#xD;
+		if((i==8)||(i==12)||(i==16)||(i==20))&#xD;
+			guid += &quot;-&quot;;&#xD;
+	}&#xD;
+	cur.remove();&#xD;
+	view.id(&quot;dsParam&quot;).insert({&#xD;
+		roadid:guid,&#xD;
+		no:1,&#xD;
+		oid:&quot;&quot;,&#xD;
+		origin:oid&#xD;
+	});&#xD;
+	view.id(&quot;uaParam&quot;).execute();&#xD;
+}else{&#xD;
+	view.id(&quot;ajaConnect&quot;).execute();&#xD;
+	window.location.href = &quot;com.model.faults.view.Faults1.d&quot;;&#xD;
+}</ClientEvent>
+              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+              <Property name="caption">新建故障路径</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dsFault').getData('#');&#xD;
+var ua=view.id('ajaxDeleteFault');&#xD;
+if(cur){&#xD;
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+		cur.remove();&#xD;
+		ua.set(&quot;parameter&quot;, {roadid:cur.get(&quot;roadid&quot;)}).execute();&#xD;
+		}); &#xD;
+}</ClientEvent>
+              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+              <Property name="caption">删除故障路径</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur = view.id(&quot;dsFault&quot;).getData(&quot;#&quot;).get(&quot;result&quot;);&#xD;
+var arr = cur.split(&quot;————&quot;);&#xD;
+var event = arr[0].substring(0,arr[0].indexOf(&quot;(&quot;));&#xD;
+var location = arr[0].substring(arr[0].indexOf(&quot;(&quot;)+1,arr[0].indexOf(&quot;)&quot;));&#xD;
+var repair = view.id(&quot;dsRepair&quot;).getData(&quot;[@.get('event') =='&quot; + event + &quot;' &amp;&amp; @.get('location') == '&quot; + location + &quot;']&quot;);&#xD;
+if(repair){&#xD;
+	alert(&quot;存在维修方法！&quot;);&#xD;
+}else{&#xD;
+	view.id(&quot;dsRepair&quot;).getData().insert({&#xD;
+		event:event,&#xD;
+		location:location&#xD;
+	});&#xD;
+	view.id(&quot;diarepair&quot;).show();&#xD;
+}</ClientEvent>
+              <Property name="caption">新建维修方法</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">window.location.href = &quot;view.home.d&quot;;</ClientEvent>
+              <Property name="caption">返回主页</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataGrid id="dgFault">
+            <ClientEvent name="onDoubleClick">var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+var system = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;system&quot;);&#xD;
+var name = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;system&quot;);&#xD;
+var feature = null;}&#xD;
+else if(NodeType == &quot;feature&quot;){&#xD;
+var system = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;system.system&quot;);&#xD;
+var feature = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;feature&quot;);&#xD;
+var name = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;feature&quot;);&#xD;
+}&#xD;
+view.id(&quot;ajaRecolor&quot;).set(&quot;parameter&quot;,{&#xD;
+	name:name&#xD;
+});&#xD;
+view.id(&quot;ajaRecolor&quot;).execute();&#xD;
+var cur = view.id(&quot;dsFault&quot;).getData(&quot;#&quot;).get(&quot;result&quot;);&#xD;
+view.id(&quot;ajaColor&quot;).set(&quot;parameter&quot;,{&#xD;
+	system:system,&#xD;
+	feature:feature,&#xD;
+	result:cur&#xD;
+});&#xD;
+view.id(&quot;ajaColor&quot;).execute();</ClientEvent>
+            <Property name="dataSet">dsFault</Property>
+            <Property name="dataPath"></Property>
+            <Property name="filterMode">serverSide</Property>
+            <Property name="showFilterBar">true</Property>
+            <Property name="rowHeight">22</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="width">1300</Property>
+            <RowNumColumn/>
+            <DataColumn>
+              <Property name="property">result</Property>
+              <Property name="caption">故障路径</Property>
+              <Property name="name">result</Property>
+              <Property name="headerAlign">left</Property>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <DataTree id="dtSystems">
+          <ClientEvent name="onReady">var system = view.get(&quot;@Systems&quot;);&#xD;
+var feature = view.get(&quot;@Feature&quot;);&#xD;
+var LRU = view.get(&quot;@Physics&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_SYSTEM&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == system) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return system;&#xD;
+	});&#xD;
+	dorado.DataPath.registerInterceptor(&quot;CURRENT_FEATURE&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == feature) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return feature;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_LRU&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == LRU) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return LRU;&#xD;
+	});</ClientEvent>
+          <ClientEvent name="onCurrentChange">var cur = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_NODE&quot;);&#xD;
+var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+var cur = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;oid&quot;);&#xD;
+var name = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;system&quot;);&#xD;
+}&#xD;
+else if(NodeType == &quot;feature&quot;){&#xD;
+var name = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;feature&quot;);&#xD;
+var cur = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;oid&quot;);&#xD;
+}&#xD;
+if(view.id(&quot;dtSystems&quot;).get(&quot;userData&quot;) != &quot;1&quot;){&#xD;
+view.id('showSystem').set(&quot;parameter&quot;,{&#xD;
+	ws:cur&#xD;
+});&#xD;
+view.id('showSystem').execute();&#xD;
+view.id(&quot;dsFault&quot;).set(&quot;parameter&quot;,{&#xD;
+	origin:cur&#xD;
+});&#xD;
+view.id(&quot;dsFault&quot;).flushAsync();&#xD;
+}&#xD;
+view.id(&quot;ajaRecolor&quot;).set(&quot;parameter&quot;,{&#xD;
+	name:name&#xD;
+});&#xD;
+view.id(&quot;ajaRecolor&quot;).execute();</ClientEvent>
+          <Property name="dataSet">dsSystems</Property>
+          <Property name="currentNodeDataPath">CURRENT_NODE</Property>
+          <BindingConfigs>
+            <BindingConfig>
+              <Property name="labelProperty">system</Property>
+              <Property name="name">system</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -260px -100px</Property>
+              <Property name="expandLevel">1</Property>
+              <BindingConfig>
+                <Property name="childrenProperty">ft</Property>
+                <Property name="labelProperty">feature</Property>
+                <Property name="name">feature</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
+              </BindingConfig>
+            </BindingConfig>
+          </BindingConfigs>
+        </DataTree>
+      </SideControl>
+    </SplitPanel>
+    <DataSet id="dsParam">
+      <Property name="dataType">[Parameter]</Property>
+      <Property name="dataProvider">parameterPR#queryParameter</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaParam">
+      <ClientEvent name="onSuccess">view.id(&quot;ajaConnect&quot;).execute();&#xD;
+window.location.href = &quot;com.model.faults.view.Faults1.d&quot;;</ClientEvent>
+      <Property name="dataResolver">parameterPR#saveParameter</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsParam</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AjaxAction id="ajaConnect">
+      <Property name="service">faultsManager#connect</Property>
+    </AjaxAction>
+    <AjaxAction id="ajaColor">
+      <Property name="service">faultsManager#changeColor</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="system"></Property>
+          <Property name="feature"></Property>
+          <Property name="result"></Property>
+        </Entity>
+      </Property>
+    </AjaxAction>
+    <AjaxAction id="ajaRecolor">
+      <Property name="service">faultsManager#reColor</Property>
+    </AjaxAction>
+    <Dialog id="diarepair">
+      <Property name="height">400</Property>
+      <Property name="width">600</Property>
+      <Property name="caption">维修方法</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;uaRepair&quot;).execute();&#xD;
+view.id(&quot;diarepair&quot;).hide();</ClientEvent>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur = view.id(&quot;dsRepair&quot;).getData(&quot;#&quot;);&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+}&#xD;
+view.id(&quot;diarepair&quot;).hide();</ClientEvent>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <SplitPanel>
+          <Property name="position">150</Property>
+          <MainControl>
+            <Container>
+              <DataSet id="dsRepair">
+                <Property name="dataType">[Repair]</Property>
+                <Property name="dataProvider">repairPR#queryRepair</Property>
+                <Property name="pageSize">20</Property>
+                <Property name="parameter">
+                  <Entity>
+                    <Property name="event"></Property>
+                    <Property name="location"></Property>
+                  </Entity>
+                </Property>
+              </DataSet>
+              <UpdateAction id="uaRepair">
+                <Property name="dataResolver">repairPR#saveRepair</Property>
+                <UpdateItem>
+                  <Property name="dataSet">dsRepair</Property>
+                </UpdateItem>
+              </UpdateAction>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsRepair</Property>
+                  <Property name="dataPath"></Property>
+                </DataPilot>
+              </ToolBar>
+              <DataGrid id="dgRepair">
+                <Property name="dataSet">dsRepair</Property>
+                <Property name="dataPath"></Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="showFilterBar">true</Property>
+                <Property name="rowHeight">22</Property>
+                <Property name="readOnly">true</Property>
+                <RowNumColumn/>
+                <DataColumn name="event">
+                  <Property name="property">event</Property>
+                </DataColumn>
+                <DataColumn name="method">
+                  <Property name="property">method</Property>
+                </DataColumn>
+                <DataColumn name="tool">
+                  <Property name="property">tool</Property>
+                </DataColumn>
+                <DataColumn name="location">
+                  <Property name="property">location</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </MainControl>
+          <SideControl>
+            <AutoForm>
+              <Property name="dataSet">dsRepair</Property>
+              <Property name="dataPath">#</Property>
+              <Property name="cols">*</Property>
+              <AutoFormElement>
+                <Property name="property">event</Property>
+                <Property name="name">event</Property>
+                <Property name="labelPosition">top</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="property">location</Property>
+                <Property name="name">location</Property>
+                <Property name="labelPosition">top</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">tool</Property>
+                <Property name="property">tool</Property>
+                <Property name="labelPosition">top</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">method</Property>
+                <Property name="property">method</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+                <Property name="height">100</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </SideControl>
+        </SplitPanel>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <AjaxAction id="ajaxDeleteFault">
+      <Property name="service">faultsManager#deleteroad</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

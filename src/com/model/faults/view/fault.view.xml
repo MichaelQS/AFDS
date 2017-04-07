@@ -1,0 +1,1085 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <Property name="packages">gojs,gocss</Property>
+    <SplitPanel>
+      <Property name="direction">top</Property>
+      <Property name="position">750</Property>
+      <MainControl>
+        <SplitPanel>
+          <Property name="position">700</Property>
+          <MainControl>
+            <Container>
+              <HtmlContainer>
+                <ClientEvent name="onReady">var $ = go.GraphObject.make;  // for conciseness in defining templates&#xD;
+&#xD;
+myDiagram1 =&#xD;
+    $(go.Diagram, &quot;myDiagramDiv1&quot;,  // must name or refer to the DIV HTML element&#xD;
+     {&#xD;
+          initialContentAlignment: go.Spot.Center,&#xD;
+          allowDrop: true,  // must be true to accept drops from the Palette&#xD;
+          &quot;LinkDrawn&quot;: showLinkLabel,  // this DiagramEvent listener is defined below&#xD;
+          &quot;LinkRelinked&quot;: showLinkLabel,&#xD;
+          &quot;animationManager.duration&quot;: 800, // slightly longer than default (600ms) animation&#xD;
+          &quot;undoManager.isEnabled&quot;: true,  // enable undo &amp; redo&#xD;
+		  //&quot;linkingTool.isEnabled&quot;: false,  // invoked explicitly by drawLink function, below&#xD;
+          //&quot;linkingTool.direction&quot;: go.LinkingTool.ForwardsOnly  // only draw &quot;from&quot; towards &quot;to&quot;&#xD;
+     });&#xD;
+&#xD;
+&#xD;
+    // helper definitions for node templates&#xD;
+&#xD;
+    function nodeStyle() {&#xD;
+      return [&#xD;
+        // The Node.location comes from the &quot;loc&quot; property of the node data,&#xD;
+        // converted by the Point.parse static method.&#xD;
+        // If the Node.location is changed, it updates the &quot;loc&quot; property of the node data,&#xD;
+        // converting back using the Point.stringify static method.&#xD;
+        new go.Binding(&quot;location&quot;, &quot;loc&quot;, go.Point.parse).makeTwoWay(go.Point.stringify),&#xD;
+        {&#xD;
+          // the Node.location is at the center of each node&#xD;
+          locationSpot: go.Spot.Center//,&#xD;
+          //isShadowed: true,&#xD;
+          //shadowColor: &quot;#888&quot;,&#xD;
+          // handle mouse enter/leave events to show/hide the ports&#xD;
+          //mouseEnter: function (e, obj) { showPorts(obj.part, true); },&#xD;
+          //mouseLeave: function (e, obj) { showPorts(obj.part, false); }&#xD;
+        }&#xD;
+      ];&#xD;
+    }&#xD;
+&#xD;
+    // Define a function for creating a &quot;port&quot; that is normally transparent.&#xD;
+    // The &quot;name&quot; is used as the GraphObject.portId, the &quot;spot&quot; is used to control how links connect&#xD;
+    // and where the port is positioned on the node, and the boolean &quot;output&quot; and &quot;input&quot; arguments&#xD;
+    // control whether the user can draw links from or to the port.&#xD;
+    /*function makePort(name, spot, output, input) {&#xD;
+      // the port is basically just a small circle that has a white stroke when it is made visible&#xD;
+      return $(go.Shape, &quot;Circle&quot;,&#xD;
+               {&#xD;
+                  fill: &quot;transparent&quot;,&#xD;
+                  stroke: null,  // this is changed to &quot;white&quot; in the showPorts function&#xD;
+                  desiredSize: new go.Size(8, 8),&#xD;
+                  alignment: spot, alignmentFocus: spot,  // align the port on the main Shape&#xD;
+                  portId: name,  // declare this object to be a &quot;port&quot;&#xD;
+                  fromSpot: spot, toSpot: spot,  // declare where links may connect at this port&#xD;
+                  fromLinkable: output, toLinkable: input,  // declare whether the user may draw links to/from here&#xD;
+                  cursor: &quot;pointer&quot;  // show a different cursor to indicate potential link point&#xD;
+               });&#xD;
+    }*/&#xD;
+    // define the Node templates for regular nodes&#xD;
+&#xD;
+    var lightText = 'whitesmoke';&#xD;
+&#xD;
+    myDiagram1.nodeTemplateMap.add(&quot;LRU&quot;,  // the default category   &#xD;
+      $(go.Node, &quot;Spot&quot;, nodeStyle(), // the Shape will go around the TextBlock&#xD;
+         {&#xD;
+	  	movable:false,&#xD;
+	  	selectable:false&#xD;
+	  	},&#xD;
+		$(go.Shape, &quot;RoundedRectangle&quot;, { &#xD;
+		strokeWidth: 0,&#xD;
+		fill: &quot;#66ffff&quot;,&#xD;
+		width:150&#xD;
+		}),&#xD;
+		$(go.Panel, &quot;Vertical&quot;,&#xD;
+			$(go.Panel, &quot;Auto&quot;,&#xD;
+				$(go.Shape, &quot;RoundedRectangle&quot;, { &#xD;
+					strokeWidth: 0,&#xD;
+					fill: &quot;#006699&quot;,&#xD;
+					height:30,&#xD;
+					width:100,&#xD;
+					margin:5&#xD;
+				}),&#xD;
+				$(go.TextBlock,&#xD;
+          			{ margin: 8,&#xD;
+					stroke: &quot;white&quot; },  // some room around the text&#xD;
+          // TextBlock.text is bound to Node.data.key&#xD;
+          			new go.Binding(&quot;text&quot;, &quot;name&quot;))),&#xD;
+			$(go.Panel, &quot;Auto&quot;,&#xD;
+				$(go.Shape, &quot;RoundedRectangle&quot;, { &#xD;
+					strokeWidth: 0,&#xD;
+					fill: &quot;#006699&quot;,&#xD;
+					height:30,&#xD;
+					width:100,&#xD;
+					margin:5&#xD;
+				}),&#xD;
+				$(go.TextBlock,&#xD;
+          			{ margin: 8,&#xD;
+					stroke: &quot;white&quot; },  // some room around the text&#xD;
+          // TextBlock.text is bound to Node.data.key&#xD;
+          			new go.Binding(&quot;text&quot;, &quot;fault&quot;)))&#xD;
+		))&#xD;
+	  );&#xD;
+	  	  &#xD;
+	  myDiagram1.linkTemplateMap.add(&quot;&quot;,&#xD;
+	  $(go.Link,  // the whole link panel&#xD;
+        {&#xD;
+          routing: go.Link.AvoidsNodes, curve: go.Link.JumpGap, corner: 10, reshapable: true, toShortLength: 7,&#xD;
+          relinkableFrom: true,&#xD;
+          relinkableTo: true,&#xD;
+          reshapable: true,&#xD;
+          resegmentable: true,&#xD;
+          // mouse-overs subtly highlight links:&#xD;
+          //mouseEnter: function(e, link) { link.findObject(&quot;HIGHLIGHT&quot;).stroke = &quot;rgba(30,144,255,0.2)&quot;; },&#xD;
+          //mouseLeave: function(e, link) { link.findObject(&quot;HIGHLIGHT&quot;).stroke = &quot;transparent&quot;; }&#xD;
+        },&#xD;
+        new go.Binding(&quot;points&quot;).makeTwoWay(),&#xD;
+        $(go.Shape,  // the highlight shape, normally transparent&#xD;
+         { isPanelMain: true, strokeWidth: 8, stroke: &quot;transparent&quot;, name: &quot;HIGHLIGHT&quot; }),&#xD;
+        $(go.Shape,  // the link path shape&#xD;
+          { isPanelMain: true, stroke: &quot;gray&quot;, strokeWidth: 2 }),&#xD;
+        $(go.Shape,  // the arrowhead&#xD;
+          { toArrow: &quot;standard&quot;, stroke: null, fill: &quot;gray&quot;})&#xD;
+      )&#xD;
+	  );&#xD;
+&#xD;
+&#xD;
+    // Make link labels visible if coming out of a &quot;conditional&quot; node.&#xD;
+    // This listener is called by the &quot;LinkDrawn&quot; and &quot;LinkRelinked&quot; DiagramEvents.&#xD;
+    function showLinkLabel(e) {&#xD;
+      var label = e.subject.findObject(&quot;LABEL&quot;);&#xD;
+      if (label !== null) label.visible = (e.subject.fromNode.data.figure === &quot;Diamond&quot;);&#xD;
+    }&#xD;
+&#xD;
+    // temporary links used by LinkingTool and RelinkingTool are also orthogonal:&#xD;
+    myDiagram1.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;&#xD;
+    myDiagram1.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;</ClientEvent>
+                <Property name="content">  &lt;div style=&quot;width:100%; white-space:nowrap;&quot;>&#xD;
+    &lt;span style=&quot;display: inline-block; vertical-align: top; padding: 5px; width:100%&quot;>&#xD;
+      &lt;div id=&quot;myDiagramDiv1&quot; style=&quot;border: solid 1px gray; height: 225px&quot;>&lt;/div>&#xD;
+    &lt;/span>&#xD;
+  &lt;/div></Property>
+              </HtmlContainer>
+            </Container>
+          </MainControl>
+          <SideControl>
+            <Container>
+              <DataSet id="dsRoad">
+                <Property name="dataType">[Road]</Property>
+                <Property name="dataProvider">roadPR#queryRoad</Property>
+                <Property name="pageSize">5</Property>
+                <Property name="parameter">
+                  <Entity>
+                    <Property name="id">0</Property>
+                  </Entity>
+                </Property>
+              </DataSet>
+              <UpdateAction id="uaRoad">
+                <Property name="dataResolver">roadPR#saveRoad</Property>
+                <UpdateItem>
+                  <Property name="dataSet">dsRoad</Property>
+                </UpdateItem>
+              </UpdateAction>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsRoad</Property>
+                  <Property name="dataPath"></Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+var system = &quot;&quot;;&#xD;
+var feature = &quot;&quot;;&#xD;
+var id = &quot;&quot;;&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+	system = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;system&quot;);&#xD;
+	feature = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;system&quot;);&#xD;
+	id = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;oid&quot;);&#xD;
+	&#xD;
+}&#xD;
+else if(NodeType == &quot;feature&quot;){&#xD;
+	system = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;system.system&quot;);&#xD;
+	feature = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;feature&quot;);&#xD;
+	id = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;oid&quot;);&#xD;
+}&#xD;
+view.id(&quot;dsRoad&quot;).insert({&#xD;
+	system:system,&#xD;
+	feature:feature,&#xD;
+	id:id&#xD;
+});&#xD;
+view.id(&quot;diaRoad&quot;).show();&#xD;
+</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id(&quot;dsRoad&quot;).getData(&quot;#&quot;);&#xD;
+if(cur){&#xD;
+	view.id(&quot;diaRoad&quot;).show();&#xD;
+}&#xD;
+</ClientEvent>
+                  <Property name="caption">修改</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -200px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsRoad').getData('#');&#xD;
+var ua = view.id('uaRoad');&#xD;
+if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此故障传播路径?', function(){	&#xD;
+		cur.remove();&#xD;
+		ua.execute();	&#xD;
+		}); &#xD;
+}</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id(&quot;dsRoad&quot;).getData(&quot;#&quot;);&#xD;
+if(cur){&#xD;
+var j = cur.get(&quot;fault&quot;).toJSON();&#xD;
+if(j.length > 0){&#xD;
+var event = &quot;&quot;;&#xD;
+var classes = &quot;&quot;;&#xD;
+for(var i=0; i&lt;j.length; i++){&#xD;
+	if(j[i].parentnode == null){&#xD;
+		event = j[i].event;&#xD;
+		classes = j[i].classes;&#xD;
+	}&#xD;
+}&#xD;
+view.id(&quot;dsRepairresult&quot;).set(&quot;parameter&quot;,{&#xD;
+	event:event,&#xD;
+	location:classes&#xD;
+});&#xD;
+view.id(&quot;dsRepairresult&quot;).flush();&#xD;
+var result = view.id(&quot;dsRepairresult&quot;).getData(&quot;#&quot;);&#xD;
+if(result){&#xD;
+	result.set(&quot;id&quot;,cur.get(&quot;roadid&quot;));&#xD;
+	view.id(&quot;diarepair&quot;).show();&#xD;
+}else{&#xD;
+	view.id(&quot;dsRepairresult&quot;).insert({&#xD;
+		id:cur.get(&quot;roadid&quot;),&#xD;
+		event:event,&#xD;
+		location:classes&#xD;
+	});&#xD;
+	view.id(&quot;diarepair&quot;).show();&#xD;
+}&#xD;
+}&#xD;
+}</ClientEvent>
+                  <Property name="caption">关联诊断意见</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -260px -120px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgRoad">
+                <ClientEvent name="onDataRowClick">var farr = view.id(&quot;dsRoad&quot;).getData(&quot;#.fault&quot;).toArray();&#xD;
+var arr = [];&#xD;
+for(var i= 0; i &lt; farr.length; i++){&#xD;
+	arr.push({&#xD;
+		category: &quot;LRU&quot;,&#xD;
+		fault:farr[i].get(&quot;event&quot;),&#xD;
+		name:farr[i].get(&quot;classes&quot;),&#xD;
+		loc:farr[i].get(&quot;origin&quot;),&#xD;
+		key:farr[i].get(&quot;road&quot;)&#xD;
+	});&#xD;
+}&#xD;
+var line = [];&#xD;
+for(var i= 1; i &lt; farr.length; i++){&#xD;
+	line.push({&#xD;
+		from: i-1,&#xD;
+		to: i&#xD;
+	});&#xD;
+}&#xD;
+var json = { &quot;class&quot;: &quot;go.GraphLinksModel&quot;,&#xD;
+  			 &quot;nodeDataArray&quot;: arr,&#xD;
+  			 &quot;linkDataArray&quot;: line&#xD;
+			}&#xD;
+myDiagram1.model = go.Model.fromJson(json);</ClientEvent>
+                <Property name="dataSet">dsRoad</Property>
+                <Property name="dataPath"></Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="showFilterBar">true</Property>
+                <Property name="rowHeight">22</Property>
+                <Property name="readOnly">true</Property>
+                <RowNumColumn/>
+                <DataColumn name="fuser">
+                  <Property name="property">fuser</Property>
+                  <Property name="width">100</Property>
+                </DataColumn>
+                <DataColumn name="number">
+                  <Property name="property">number</Property>
+                </DataColumn>
+                <DataColumn name="time">
+                  <Property name="property">time</Property>
+                </DataColumn>
+                <DataColumn name="address">
+                  <Property name="property">address</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="frequency">
+                  <Property name="property">frequency</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </SideControl>
+        </SplitPanel>
+      </MainControl>
+      <SideControl>
+        <SplitPanel>
+          <Property name="position">300</Property>
+          <MainControl>
+            <Container>
+              <ToolBar>
+                <Button>
+                  <ClientEvent name="onClick">var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+var bg = &quot;&quot;;&#xD;
+var id = &quot;&quot;;&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+	bg = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;background&quot;);&#xD;
+	id = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;oid&quot;);&#xD;
+	&#xD;
+}&#xD;
+else if(NodeType == &quot;feature&quot;){&#xD;
+	bg = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;background&quot;);&#xD;
+	id = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;oid&quot;);&#xD;
+}&#xD;
+&#xD;
+var arr = new Array();&#xD;
+var cur = view.id(&quot;dsLru&quot;).get(&quot;data:[@.get('id')=='&quot; + id + &quot;']&quot;);&#xD;
+arr.push(&#xD;
+	{&quot;key&quot;:-2, &quot;category&quot;:&quot;BG&quot;, &quot;loc&quot;:&quot;0 0&quot;, &quot;source&quot;:bg}&#xD;
+);&#xD;
+if(cur.length != 0){&#xD;
+	for (var i = 0; i &lt; cur.length; i++) {&#xD;
+		arr.push({&#xD;
+			category: &quot;LRU&quot;,&#xD;
+			text: cur[i].get(&quot;text&quot;),&#xD;
+			source: cur[i].get(&quot;source&quot;),&#xD;
+			loc: cur[i].get(&quot;loc&quot;),&#xD;
+			key: cur[i].get(&quot;ke&quot;)&#xD;
+		});&#xD;
+	}&#xD;
+}&#xD;
+var linearr = new Array();&#xD;
+var line = view.id(&quot;dsLine&quot;).get(&quot;data:[@.get('id')=='&quot; + id + &quot;']&quot;);&#xD;
+if(line.length != 0){&#xD;
+	for (var i = 0; i &lt; line.length; i++) {&#xD;
+		var points = line[i].get(&quot;points&quot;).split(&quot;,&quot;);&#xD;
+		var parr =  [];&#xD;
+		for(var j = 0; j &lt; points.length; j ++){&#xD;
+			var point = parseFloat(points[j]);&#xD;
+			parr.push(point);&#xD;
+		}&#xD;
+		linearr.push({&#xD;
+			category: line[i].get(&quot;line&quot;),&#xD;
+			to: line[i].get(&quot;tol&quot;),&#xD;
+			from: line[i].get(&quot;froml&quot;),&#xD;
+			toPort: line[i].get(&quot;toport&quot;),&#xD;
+			fromPort: line[i].get(&quot;fromport&quot;),&#xD;
+			points:parr&#xD;
+		});&#xD;
+		&#xD;
+	}&#xD;
+}&#xD;
+var json = { &quot;class&quot;: &quot;go.GraphLinksModel&quot;,&#xD;
+  			 &quot;linkFromPortIdProperty&quot;: &quot;fromPort&quot;,&#xD;
+  			 &quot;linkToPortIdProperty&quot;: &quot;toPort&quot;,&#xD;
+  			 &quot;nodeDataArray&quot;: arr,&#xD;
+  			 &quot;linkDataArray&quot;: linearr&#xD;
+			};&#xD;
+myDiagram.model = go.Model.fromJson(json);&#xD;
+</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                </Button>
+                <Button>
+                  <ClientEvent name="onClick">view.id(&quot;diaFault&quot;).show();</ClientEvent>
+                  <Property name="caption">建立下一路径节点</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </Button>
+                <Button>
+                  <ClientEvent name="onClick">myDiagram1.model = go.Model.fromJson({});</ClientEvent>
+                  <Property name="caption">清除所有节点</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -20px -200px</Property>
+                </Button>
+                <Button>
+                  <ClientEvent name="onClick">var arr = myDiagram1.model.nodeDataArray;&#xD;
+var cur = view.id(&quot;dsRoad&quot;).getData(&quot;#&quot;);&#xD;
+var fault = view.id(&quot;dsRoad&quot;).getData(&quot;#.fault&quot;);&#xD;
+var farr = fault.toArray();&#xD;
+for(var i = 0; i &lt; farr.length; i++){&#xD;
+	farr[i].remove();&#xD;
+}&#xD;
+for (var i = 0; i &lt; arr.length; i++){&#xD;
+	fault.insert({&#xD;
+		roadid:{roadid:cur.get(&quot;roadid&quot;)},&#xD;
+		event:arr[i].fault,&#xD;
+		classes:arr[i].name,&#xD;
+		road:arr[i].key,&#xD;
+		origin:arr[i].loc&#xD;
+	});&#xD;
+}&#xD;
+view.id(&quot;uaRoad&quot;).execute();&#xD;
+</ClientEvent>
+                  <Property name="caption">保存故障路径</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
+                </Button>
+              </ToolBar>
+              <HtmlContainer>
+                <ClientEvent name="onReady">// Make all ports on a node visible when the mouse is over the node&#xD;
+  function showPorts(node, show) {&#xD;
+    var diagram = node.diagram;&#xD;
+    if (!diagram || diagram.isReadOnly || !diagram.allowLink) return;&#xD;
+    node.ports.each(function(port) {&#xD;
+        port.stroke = (show ? &quot;white&quot; : null);&#xD;
+      });&#xD;
+  }&#xD;
+  function loop() {&#xD;
+    var diagram = myDiagram;&#xD;
+    setTimeout(function() {&#xD;
+      var oldskips = diagram.skipsUndoManager;&#xD;
+      diagram.skipsUndoManager = true;&#xD;
+      diagram.links.each(function(link) {&#xD;
+          var shape = link.findObject(&quot;PIPE&quot;);&#xD;
+          var off = shape.strokeDashOffset - 2;&#xD;
+          shape.strokeDashOffset = (off &lt;= 0) ? 20 : off;&#xD;
+        });&#xD;
+      diagram.skipsUndoManager = oldskips;&#xD;
+      loop();&#xD;
+    }, 100);&#xD;
+  }&#xD;
+    var $ = go.GraphObject.make;  // for conciseness in defining templates&#xD;
+&#xD;
+    myDiagram =&#xD;
+      $(go.Diagram, &quot;myDiagramDiv&quot;,  // must name or refer to the DIV HTML element&#xD;
+        {&#xD;
+          initialContentAlignment: go.Spot.Center,&#xD;
+          allowDrop: true,  // must be true to accept drops from the Palette&#xD;
+          &quot;LinkDrawn&quot;: showLinkLabel,  // this DiagramEvent listener is defined below&#xD;
+          &quot;LinkRelinked&quot;: showLinkLabel,&#xD;
+          &quot;animationManager.duration&quot;: 800, // slightly longer than default (600ms) animation&#xD;
+          &quot;undoManager.isEnabled&quot;: true,  // enable undo &amp; redo&#xD;
+		  //&quot;linkingTool.isEnabled&quot;: false,  // invoked explicitly by drawLink function, below&#xD;
+          //&quot;linkingTool.direction&quot;: go.LinkingTool.ForwardsOnly  // only draw &quot;from&quot; towards &quot;to&quot;&#xD;
+&#xD;
+        });&#xD;
+    // when the document is modified, add a &quot;*&quot; to the title and enable the &quot;Save&quot; button&#xD;
+    myDiagram.addDiagramListener(&quot;Modified&quot;, function(e) {&#xD;
+      var button = document.getElementById(&quot;SaveButton&quot;);&#xD;
+      if (button) button.disabled = !myDiagram.isModified;&#xD;
+      var idx = document.title.indexOf(&quot;*&quot;);&#xD;
+      if (myDiagram.isModified) {&#xD;
+        if (idx &lt; 0) document.title += &quot;*&quot;;&#xD;
+      } else {&#xD;
+        if (idx >= 0) document.title = document.title.substr(0, idx);&#xD;
+      }&#xD;
+    });&#xD;
+&#xD;
+    // helper definitions for node templates&#xD;
+&#xD;
+    function nodeStyle() {&#xD;
+      return [&#xD;
+        // The Node.location comes from the &quot;loc&quot; property of the node data,&#xD;
+        // converted by the Point.parse static method.&#xD;
+        // If the Node.location is changed, it updates the &quot;loc&quot; property of the node data,&#xD;
+        // converting back using the Point.stringify static method.&#xD;
+        new go.Binding(&quot;location&quot;, &quot;loc&quot;, go.Point.parse).makeTwoWay(go.Point.stringify),&#xD;
+        {&#xD;
+          // the Node.location is at the center of each node&#xD;
+          locationSpot: go.Spot.Center,&#xD;
+          //isShadowed: true,&#xD;
+          //shadowColor: &quot;#888&quot;,&#xD;
+          // handle mouse enter/leave events to show/hide the ports&#xD;
+          mouseEnter: function (e, obj) { showPorts(obj.part, true); },&#xD;
+          mouseLeave: function (e, obj) { showPorts(obj.part, false); }&#xD;
+        }&#xD;
+      ];&#xD;
+    }&#xD;
+&#xD;
+    // Define a function for creating a &quot;port&quot; that is normally transparent.&#xD;
+    // The &quot;name&quot; is used as the GraphObject.portId, the &quot;spot&quot; is used to control how links connect&#xD;
+    // and where the port is positioned on the node, and the boolean &quot;output&quot; and &quot;input&quot; arguments&#xD;
+    // control whether the user can draw links from or to the port.&#xD;
+    function makePort(name, spot, output, input) {&#xD;
+      // the port is basically just a small circle that has a white stroke when it is made visible&#xD;
+      return $(go.Shape, &quot;Circle&quot;,&#xD;
+               {&#xD;
+                  fill: &quot;transparent&quot;,&#xD;
+                  stroke: null,  // this is changed to &quot;white&quot; in the showPorts function&#xD;
+                  desiredSize: new go.Size(8, 8),&#xD;
+                  alignment: spot, alignmentFocus: spot,  // align the port on the main Shape&#xD;
+                  portId: name,  // declare this object to be a &quot;port&quot;&#xD;
+                  fromSpot: spot, toSpot: spot,  // declare where links may connect at this port&#xD;
+                  fromLinkable: output, toLinkable: input,  // declare whether the user may draw links to/from here&#xD;
+                  cursor: &quot;pointer&quot;  // show a different cursor to indicate potential link point&#xD;
+               });&#xD;
+    }&#xD;
+&#xD;
+    // define the Node templates for regular nodes&#xD;
+&#xD;
+    var lightText = 'whitesmoke';&#xD;
+&#xD;
+    myDiagram.nodeTemplateMap.add(&quot;LRU&quot;,  // the default category&#xD;
+      $(go.Node, &quot;Spot&quot;, nodeStyle(),&#xD;
+        $(go.Panel, &quot;Horizontal&quot;,&#xD;
+			{ &#xD;
+			name: &quot;PANEL&quot;,&#xD;
+			background: &quot;blue&quot; },&#xD;
+			new go.Binding(&quot;background&quot;,&quot;color&quot;),&#xD;
+			$(go.Picture,&#xD;
+			{&#xD;
+              name: 'Picture',&#xD;
+              desiredSize: new go.Size(40, 50),&#xD;
+              margin: new go.Margin(6, 8, 6, 10)&#xD;
+			},&#xD;
+			new go.Binding(&quot;source&quot;)),&#xD;
+		  $(go.Panel, &quot;Table&quot;,&#xD;
+            {&#xD;
+			  name: &quot;TABLE&quot;,&#xD;
+              maxSize: new go.Size(100, 999),&#xD;
+			  minSize: new go.Size(100, 0),&#xD;
+              margin: new go.Margin(6, 10, 0, 3),&#xD;
+              defaultAlignment: go.Spot.Left&#xD;
+            },&#xD;
+			$(go.RowColumnDefinition, { column: 2, width: 4 }),&#xD;
+		    $(go.TextBlock, &#xD;
+		      { &#xD;
+			    name: &quot;TEXT&quot;,&#xD;
+				row: 0, column: 0, columnSpan: 5,&#xD;
+                font: &quot;12pt Segoe UI,sans-serif&quot;,&#xD;
+                editable: true, isMultiline: false,&#xD;
+                minSize: new go.Size(10, 16)&#xD;
+			  },&#xD;
+              { font: &quot;bold 11pt Helvetica, Arial, sans-serif&quot;, stroke: lightText },&#xD;
+              new go.Binding(&quot;text&quot;))&#xD;
+			),&#xD;
+			{&#xD;
+              maxSize: new go.Size(170, 999),&#xD;
+              defaultAlignment: go.Spot.Left&#xD;
+            }&#xD;
+		),&#xD;
+        // three named ports, one on each side except the top, all output only:&#xD;
+		makePort(&quot;T&quot;, go.Spot.Top, true, true),&#xD;
+        makePort(&quot;L&quot;, go.Spot.Left, true, true),&#xD;
+        makePort(&quot;R&quot;, go.Spot.Right, true, true),&#xD;
+        makePort(&quot;B&quot;, go.Spot.Bottom, true, true)&#xD;
+      ));&#xD;
+    myDiagram.nodeTemplateMap.add(&quot;BG&quot;,&#xD;
+      $(go.Node, &quot;Spot&quot;, &#xD;
+        $(go.Panel, &quot;Auto&quot;,&#xD;
+          { name: &quot;PANEL&quot; },&#xD;
+		$(go.Picture,{name: 'Picture'},new go.Binding(&quot;source&quot;))&#xD;
+      ),&#xD;
+	  {&#xD;
+	  movable:false,&#xD;
+	  selectable:false&#xD;
+	  }&#xD;
+	  ));&#xD;
+	  &#xD;
+	  myDiagram.linkTemplateMap.add(&quot;电流管&quot;,&#xD;
+	  $(go.Link,  // the whole link panel&#xD;
+        {&#xD;
+          routing: go.Link.AvoidsNodes, curve: go.Link.JumpGap, corner: 10, reshapable: true, toShortLength: 7,&#xD;
+          relinkableFrom: true,&#xD;
+          relinkableTo: true,&#xD;
+          reshapable: true,&#xD;
+          resegmentable: true,&#xD;
+          // mouse-overs subtly highlight links:&#xD;
+          mouseEnter: function(e, link) { link.findObject(&quot;HIGHLIGHT&quot;).stroke = &quot;rgba(30,144,255,0.2)&quot;; },&#xD;
+          mouseLeave: function(e, link) { link.findObject(&quot;HIGHLIGHT&quot;).stroke = &quot;transparent&quot;; }&#xD;
+        },&#xD;
+        new go.Binding(&quot;points&quot;).makeTwoWay(),&#xD;
+        //$(go.Shape,  // the highlight shape, normally transparent&#xD;
+        // { isPanelMain: true, strokeWidth: 8, stroke: &quot;transparent&quot;, name: &quot;HIGHLIGHT&quot; }),&#xD;
+        //$(go.Shape,  // the link path shape&#xD;
+         // { isPanelMain: true, stroke: &quot;gray&quot;, strokeWidth: 2 }),&#xD;
+        //$(go.Shape,  // the arrowhead&#xD;
+        //  { toArrow: &quot;standard&quot;, stroke: null, fill: &quot;gray&quot;}),&#xD;
+		$(go.Shape, { isPanelMain: true, stroke: &quot;red&quot;, strokeWidth: 5 }, new go.Binding(&quot;stroke&quot;, &quot;color&quot;)),&#xD;
+        $(go.Shape, { isPanelMain: true, stroke: &quot;pink&quot;, strokeWidth: 3 }, new go.Binding(&quot;stroke&quot;, &quot;color&quot;)),&#xD;
+        $(go.Shape, { isPanelMain: true, stroke: &quot;blue&quot;, strokeWidth: 1, name: &quot;PIPE&quot;, strokeDashArray: [10, 10] }),&#xD;
+        $(go.Shape, { toArrow: &quot;Triangle&quot;, fill: &quot;red&quot;, stroke: null }, new go.Binding(&quot;fill&quot;, &quot;color&quot;))&#xD;
+        /*$(go.Panel, &quot;Auto&quot;,  // the link label, normally not visible&#xD;
+          { visible: false, name: &quot;LABEL&quot;, segmentIndex: 2, segmentFraction: 0.5},&#xD;
+          new go.Binding(&quot;visible&quot;, &quot;visible&quot;).makeTwoWay(),&#xD;
+          $(go.Shape, &quot;RoundedRectangle&quot;,  // the label shape&#xD;
+            { fill: &quot;#F8F8F8&quot;, stroke: null }),&#xD;
+          $(go.TextBlock, &quot;Yes&quot;,  // the label&#xD;
+            {&#xD;
+              textAlign: &quot;center&quot;,&#xD;
+              font: &quot;10pt helvetica, arial, sans-serif&quot;,&#xD;
+              stroke: &quot;#333333&quot;,&#xD;
+              editable: true&#xD;
+            },&#xD;
+            new go.Binding(&quot;text&quot;).makeTwoWay())&#xD;
+        )*/&#xD;
+      )&#xD;
+	  );&#xD;
+	  myDiagram.linkTemplateMap.add(&quot;液压管&quot;,&#xD;
+	  $(go.Link,  // the whole link panel&#xD;
+        {&#xD;
+          routing: go.Link.AvoidsNodes, curve: go.Link.JumpGap, corner: 10, reshapable: true, toShortLength: 7,&#xD;
+          relinkableFrom: true,&#xD;
+          relinkableTo: true,&#xD;
+          reshapable: true,&#xD;
+          resegmentable: true,&#xD;
+          // mouse-overs subtly highlight links:&#xD;
+          mouseEnter: function(e, link) { link.findObject(&quot;HIGHLIGHT&quot;).stroke = &quot;rgba(30,144,255,0.2)&quot;; },&#xD;
+          mouseLeave: function(e, link) { link.findObject(&quot;HIGHLIGHT&quot;).stroke = &quot;transparent&quot;; }&#xD;
+        },&#xD;
+        new go.Binding(&quot;points&quot;).makeTwoWay(),&#xD;
+        //$(go.Shape,  // the highlight shape, normally transparent&#xD;
+        // { isPanelMain: true, strokeWidth: 8, stroke: &quot;transparent&quot;, name: &quot;HIGHLIGHT&quot; }),&#xD;
+        //$(go.Shape,  // the link path shape&#xD;
+         // { isPanelMain: true, stroke: &quot;gray&quot;, strokeWidth: 2 }),&#xD;
+        //$(go.Shape,  // the arrowhead&#xD;
+        //  { toArrow: &quot;standard&quot;, stroke: null, fill: &quot;gray&quot;}),&#xD;
+		$(go.Shape, { isPanelMain: true, stroke: &quot;black&quot;, strokeWidth: 5 }),&#xD;
+        $(go.Shape, { isPanelMain: true, stroke: &quot;grey&quot;, strokeWidth: 3 }),&#xD;
+        $(go.Shape, { isPanelMain: true, stroke: &quot;yellow&quot;, strokeWidth: 1, name: &quot;PIPE&quot;, strokeDashArray: [10, 10] }),&#xD;
+        $(go.Shape, { toArrow: &quot;Triangle&quot;, fill: &quot;black&quot;, stroke: null })&#xD;
+        /*$(go.Panel, &quot;Auto&quot;,  // the link label, normally not visible&#xD;
+          { visible: false, name: &quot;LABEL&quot;, segmentIndex: 2, segmentFraction: 0.5},&#xD;
+          new go.Binding(&quot;visible&quot;, &quot;visible&quot;).makeTwoWay(),&#xD;
+          $(go.Shape, &quot;RoundedRectangle&quot;,  // the label shape&#xD;
+            { fill: &quot;#F8F8F8&quot;, stroke: null }),&#xD;
+          $(go.TextBlock, &quot;Yes&quot;,  // the label&#xD;
+            {&#xD;
+              textAlign: &quot;center&quot;,&#xD;
+              font: &quot;10pt helvetica, arial, sans-serif&quot;,&#xD;
+              stroke: &quot;#333333&quot;,&#xD;
+              editable: true&#xD;
+            },&#xD;
+            new go.Binding(&quot;text&quot;).makeTwoWay())&#xD;
+        )*/&#xD;
+      )&#xD;
+	  );&#xD;
+	  myDiagram.linkTemplateMap.add(&quot;气压管&quot;,&#xD;
+	  $(go.Link,  // the whole link panel&#xD;
+        {&#xD;
+          routing: go.Link.AvoidsNodes, curve: go.Link.JumpGap, corner: 10, reshapable: true, toShortLength: 7,&#xD;
+          relinkableFrom: true,&#xD;
+          relinkableTo: true,&#xD;
+          reshapable: true,&#xD;
+          resegmentable: true,&#xD;
+          // mouse-overs subtly highlight links:&#xD;
+          mouseEnter: function(e, link) { link.findObject(&quot;HIGHLIGHT&quot;).stroke = &quot;rgba(30,144,255,0.2)&quot;; },&#xD;
+          mouseLeave: function(e, link) { link.findObject(&quot;HIGHLIGHT&quot;).stroke = &quot;transparent&quot;; }&#xD;
+        },&#xD;
+        new go.Binding(&quot;points&quot;).makeTwoWay(),&#xD;
+        //$(go.Shape,  // the highlight shape, normally transparent&#xD;
+        // { isPanelMain: true, strokeWidth: 8, stroke: &quot;transparent&quot;, name: &quot;HIGHLIGHT&quot; }),&#xD;
+        //$(go.Shape,  // the link path shape&#xD;
+         // { isPanelMain: true, stroke: &quot;gray&quot;, strokeWidth: 2 }),&#xD;
+        //$(go.Shape,  // the arrowhead&#xD;
+        //  { toArrow: &quot;standard&quot;, stroke: null, fill: &quot;gray&quot;}),&#xD;
+		$(go.Shape, { isPanelMain: true, stroke: &quot;yellow&quot;, strokeWidth: 5 }),&#xD;
+        $(go.Shape, { isPanelMain: true, stroke: &quot;white&quot;, strokeWidth: 3 }),&#xD;
+        $(go.Shape, { isPanelMain: true, stroke: &quot;black&quot;, strokeWidth: 1, name: &quot;PIPE&quot;, strokeDashArray: [10, 10] }),&#xD;
+        $(go.Shape, { toArrow: &quot;Triangle&quot;, fill: &quot;yellow&quot;, stroke: null })&#xD;
+        /*$(go.Panel, &quot;Auto&quot;,  // the link label, normally not visible&#xD;
+          { visible: false, name: &quot;LABEL&quot;, segmentIndex: 2, segmentFraction: 0.5},&#xD;
+          new go.Binding(&quot;visible&quot;, &quot;visible&quot;).makeTwoWay(),&#xD;
+          $(go.Shape, &quot;RoundedRectangle&quot;,  // the label shape&#xD;
+            { fill: &quot;#F8F8F8&quot;, stroke: null }),&#xD;
+          $(go.TextBlock, &quot;Yes&quot;,  // the label&#xD;
+            {&#xD;
+              textAlign: &quot;center&quot;,&#xD;
+              font: &quot;10pt helvetica, arial, sans-serif&quot;,&#xD;
+              stroke: &quot;#333333&quot;,&#xD;
+              editable: true&#xD;
+            },&#xD;
+            new go.Binding(&quot;text&quot;).makeTwoWay())&#xD;
+        )*/&#xD;
+      )&#xD;
+	  );&#xD;
+    // replace the default Link template in the linkTemplateMap&#xD;
+    myDiagram.linkTemplateMap.add(&quot;&quot;,&#xD;
+      $(go.Link,  // the whole link panel&#xD;
+        {&#xD;
+          routing: go.Link.AvoidsNodes, curve: go.Link.JumpGap, corner: 10, reshapable: true, toShortLength: 7,&#xD;
+          relinkableFrom: true,&#xD;
+          relinkableTo: true,&#xD;
+          reshapable: true,&#xD;
+          resegmentable: true,&#xD;
+          // mouse-overs subtly highlight links:&#xD;
+          mouseEnter: function(e, link) { link.findObject(&quot;HIGHLIGHT&quot;).stroke = &quot;rgba(30,144,255,0.2)&quot;; },&#xD;
+          mouseLeave: function(e, link) { link.findObject(&quot;HIGHLIGHT&quot;).stroke = &quot;transparent&quot;; }&#xD;
+        },&#xD;
+        new go.Binding(&quot;points&quot;).makeTwoWay(),&#xD;
+        //$(go.Shape,  // the highlight shape, normally transparent&#xD;
+        // { isPanelMain: true, strokeWidth: 8, stroke: &quot;transparent&quot;, name: &quot;HIGHLIGHT&quot; }),&#xD;
+        //$(go.Shape,  // the link path shape&#xD;
+         // { isPanelMain: true, stroke: &quot;gray&quot;, strokeWidth: 2 }),&#xD;
+        //$(go.Shape,  // the arrowhead&#xD;
+        //  { toArrow: &quot;standard&quot;, stroke: null, fill: &quot;gray&quot;}),&#xD;
+		$(go.Shape, { isPanelMain: true, stroke: &quot;black&quot;, strokeWidth: 5 }, new go.Binding(&quot;stroke&quot;, &quot;color&quot;)),&#xD;
+        $(go.Shape, { isPanelMain: true, stroke: &quot;grey&quot;, strokeWidth: 3 }, new go.Binding(&quot;stroke&quot;, &quot;color&quot;)),&#xD;
+        $(go.Shape, { isPanelMain: true, stroke: &quot;white&quot;, strokeWidth: 1, name: &quot;PIPE&quot;, strokeDashArray: [10, 10] }),&#xD;
+        $(go.Shape, { toArrow: &quot;Triangle&quot;, fill: &quot;black&quot;, stroke: null }, new go.Binding(&quot;fill&quot;, &quot;color&quot;))&#xD;
+        /*$(go.Panel, &quot;Auto&quot;,  // the link label, normally not visible&#xD;
+          { visible: false, name: &quot;LABEL&quot;, segmentIndex: 2, segmentFraction: 0.5},&#xD;
+          new go.Binding(&quot;visible&quot;, &quot;visible&quot;).makeTwoWay(),&#xD;
+          $(go.Shape, &quot;RoundedRectangle&quot;,  // the label shape&#xD;
+            { fill: &quot;#F8F8F8&quot;, stroke: null }),&#xD;
+          $(go.TextBlock, &quot;Yes&quot;,  // the label&#xD;
+            {&#xD;
+              textAlign: &quot;center&quot;,&#xD;
+              font: &quot;10pt helvetica, arial, sans-serif&quot;,&#xD;
+              stroke: &quot;#333333&quot;,&#xD;
+              editable: true&#xD;
+            },&#xD;
+            new go.Binding(&quot;text&quot;).makeTwoWay())&#xD;
+        )*/&#xD;
+      ));&#xD;
+&#xD;
+&#xD;
+    // Make link labels visible if coming out of a &quot;conditional&quot; node.&#xD;
+    // This listener is called by the &quot;LinkDrawn&quot; and &quot;LinkRelinked&quot; DiagramEvents.&#xD;
+    function showLinkLabel(e) {&#xD;
+      var label = e.subject.findObject(&quot;LABEL&quot;);&#xD;
+      if (label !== null) label.visible = (e.subject.fromNode.data.figure === &quot;Diamond&quot;);&#xD;
+    }&#xD;
+&#xD;
+    // temporary links used by LinkingTool and RelinkingTool are also orthogonal:&#xD;
+    myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;&#xD;
+    myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;&#xD;
+		&#xD;
+	myOverview =&#xD;
+    $(go.Overview, &quot;myOverviewDiv&quot;,  // the HTML DIV element for the Overview&#xD;
+        { observed: myDiagram, contentAlignment: go.Spot.Center });   // tell it which Diagram to show and pan&#xD;
+	loop();</ClientEvent>
+                <Property name="content">  &lt;div style=&quot;width:100%; white-space:nowrap;&quot;>&#xD;
+    &lt;span style=&quot;display: inline-block; vertical-align: top; padding: 5px; width:99%&quot;>&#xD;
+      &lt;div id=&quot;myDiagramDiv&quot; style=&quot;border: solid 1px gray; height: 660px&quot;>&lt;/div>&#xD;
+	  &lt;div id=&quot;myOverviewDiv&quot; style=&quot;left: 15px&quot;>&lt;/div> &lt;!-- Styled in a &lt;style> tag at the top of the html page -->&#xD;
+    &lt;/span>&#xD;
+  &lt;/div></Property>
+              </HtmlContainer>
+            </Container>
+          </MainControl>
+          <SideControl>
+            <Container>
+              <ToolBar>
+                <FormElement>
+                  <Property name="trigger">dataSetDropDownJixing</Property>
+                  <Property name="label">选择机型</Property>
+                  <Editor/>
+                </FormElement>
+              </ToolBar>
+              <DataTree id="dtSystems">
+                <ClientEvent name="onReady">var system = view.get(&quot;@Systems&quot;);&#xD;
+var feature = view.get(&quot;@Feature&quot;);&#xD;
+var LRU = view.get(&quot;@Physics&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_SYSTEM&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == system) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return system;&#xD;
+	});&#xD;
+	dorado.DataPath.registerInterceptor(&quot;CURRENT_FEATURE&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == feature) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return feature;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_LRU&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == LRU) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return LRU;&#xD;
+	});</ClientEvent>
+                <ClientEvent name="onCurrentChange">var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+var bg = &quot;&quot;;&#xD;
+var id = &quot;&quot;;&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+	bg = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;background&quot;);&#xD;
+	id = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;oid&quot;);&#xD;
+	var name = dataTree.get(&quot;currentNode.data&quot;).get(&quot;system&quot;);&#xD;
+	&#xD;
+}&#xD;
+else if(NodeType == &quot;feature&quot;){&#xD;
+	bg = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;background&quot;);&#xD;
+	id = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;oid&quot;);&#xD;
+	var name = dataTree.get(&quot;currentNode.data&quot;).get(&quot;feature&quot;);&#xD;
+}&#xD;
+&#xD;
+var arr = new Array();&#xD;
+var cur = view.id(&quot;dsLru&quot;).get(&quot;data:[@.get('id')=='&quot; + id + &quot;']&quot;);&#xD;
+arr.push(&#xD;
+	{&quot;key&quot;:-2, &quot;category&quot;:&quot;BG&quot;, &quot;loc&quot;:&quot;0 0&quot;, &quot;source&quot;:bg}&#xD;
+);&#xD;
+if(cur.length != 0){&#xD;
+	for (var i = 0; i &lt; cur.length; i++) {&#xD;
+		arr.push({&#xD;
+			category: &quot;LRU&quot;,&#xD;
+			text: cur[i].get(&quot;text&quot;),&#xD;
+			source: cur[i].get(&quot;source&quot;),&#xD;
+			loc: cur[i].get(&quot;loc&quot;),&#xD;
+			key: cur[i].get(&quot;ke&quot;)&#xD;
+		});&#xD;
+	}&#xD;
+}&#xD;
+var linearr = new Array();&#xD;
+var line = view.id(&quot;dsLine&quot;).get(&quot;data:[@.get('id')=='&quot; + id + &quot;']&quot;);&#xD;
+if(line.length != 0){&#xD;
+	for (var i = 0; i &lt; line.length; i++) {&#xD;
+		var points = line[i].get(&quot;points&quot;).split(&quot;,&quot;);&#xD;
+		var parr =  [];&#xD;
+		for(var j = 0; j &lt; points.length; j ++){&#xD;
+			var point = parseFloat(points[j]);&#xD;
+			parr.push(point);&#xD;
+		}&#xD;
+		linearr.push({&#xD;
+			category: line[i].get(&quot;line&quot;),&#xD;
+			to: line[i].get(&quot;tol&quot;),&#xD;
+			from: line[i].get(&quot;froml&quot;),&#xD;
+			toPort: line[i].get(&quot;toport&quot;),&#xD;
+			fromPort: line[i].get(&quot;fromport&quot;),&#xD;
+			points:parr&#xD;
+		});&#xD;
+		&#xD;
+	}&#xD;
+}&#xD;
+var json = { &quot;class&quot;: &quot;go.GraphLinksModel&quot;,&#xD;
+  			 &quot;linkFromPortIdProperty&quot;: &quot;fromPort&quot;,&#xD;
+  			 &quot;linkToPortIdProperty&quot;: &quot;toPort&quot;,&#xD;
+  			 &quot;nodeDataArray&quot;: arr,&#xD;
+  			 &quot;linkDataArray&quot;: linearr&#xD;
+			};&#xD;
+myDiagram.model = go.Model.fromJson(json);&#xD;
+view.id(&quot;dsRoad&quot;).set(&quot;parameter&quot;,{&#xD;
+	id:id&#xD;
+});&#xD;
+view.id(&quot;dsRoad&quot;).flush();</ClientEvent>
+                <Property name="dataSet">dsSystems</Property>
+                <Property name="currentNodeDataPath">CURRENT_NODE</Property>
+                <BindingConfigs>
+                  <BindingConfig>
+                    <Property name="labelProperty">system</Property>
+                    <Property name="name">system</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -260px -100px</Property>
+                    <Property name="expandLevel">1</Property>
+                    <BindingConfig>
+                      <Property name="childrenProperty">ft</Property>
+                      <Property name="labelProperty">feature</Property>
+                      <Property name="name">feature</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
+                    </BindingConfig>
+                  </BindingConfig>
+                </BindingConfigs>
+              </DataTree>
+            </Container>
+          </SideControl>
+        </SplitPanel>
+      </SideControl>
+    </SplitPanel>
+    <DataSet id="dsLru">
+      <Property name="dataType">[Lru]</Property>
+      <Property name="dataProvider">lruPR#queryLru</Property>
+      <Property name="pageSize">999</Property>
+    </DataSet>
+    <DataSet id="dsLine">
+      <Property name="dataType">[Line]</Property>
+      <Property name="dataProvider">linePR#queryLine</Property>
+      <Property name="pageSize">999</Property>
+    </DataSet>
+    <UpdateAction id="uaLru">
+      <Property name="dataResolver">lruPR#saveLru</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsLru</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UpdateAction id="uaLine">
+      <Property name="dataResolver">linePR#saveLine</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsLine</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <DataSet id="dsLei">
+      <Property name="dataType">[Lei]</Property>
+      <Property name="dataProvider">leiPR#queryLei</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsSystems">
+      <Property name="dataProvider">systemsPR#querySystems</Property>
+      <Property name="dataType">[Systems]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="oid">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <Dialog id="diaFault">
+      <ClientEvent name="beforeShow">var arr = myDiagram.selection.toArray();&#xD;
+view.id(&quot;felru&quot;).set(&quot;value&quot;,arr[0].data.text);&#xD;
+view.id(&quot;feevent&quot;).set(&quot;value&quot;,&quot;&quot;);</ClientEvent>
+      <Property name="caption">建立下一故路径节点</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var num = myDiagram1.model.nodeDataArray.length;&#xD;
+var x = num * 200;&#xD;
+var loc = x + &quot; &quot;+ &quot;50&quot;;&#xD;
+var fault = view.id(&quot;feevent&quot;).get(&quot;value&quot;);&#xD;
+var name = view.id(&quot;felru&quot;).get(&quot;value&quot;);&#xD;
+myDiagram1.model.addNodeData({ key: num , &quot;fault&quot;: fault, &quot;name&quot;: name , category: &quot;LRU&quot;, &quot;loc&quot;: loc });&#xD;
+if(num>0){&#xD;
+	myDiagram1.model.addLinkData({ from: num-1 , to: num });&#xD;
+}&#xD;
+	&#xD;
+view.id(&quot;diaFault&quot;).hide();</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px -0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;diaFault&quot;).hide();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <FormElement id="feevent">
+          <Property name="label">故障事件</Property>
+          <Editor/>
+        </FormElement>
+        <FormElement id="felru">
+          <Property name="label">LRU</Property>
+          <Property name="readOnly">true</Property>
+          <Editor/>
+        </FormElement>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaRoad">
+      <Property name="width">300</Property>
+      <Property name="caption">故障传播路径信息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;uaRoad&quot;).execute();&#xD;
+view.id(&quot;diaRoad&quot;).hide();</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px -0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur = view.id(&quot;dsRoad&quot;).getData(&quot;#&quot;);&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+}&#xD;
+view.id(&quot;diaRoad&quot;).hide();&#xD;
+</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsRoad</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="cols">*</Property>
+          <Property name="width">300</Property>
+          <Property name="readOnly">false</Property>
+          <AutoFormElement>
+            <Property name="property">fuser</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">number</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="rowSpan:2">
+            <Property name="property">time</Property>
+            <Property name="trigger">defaultDateTimeDropDown</Property>
+            <Property name="showHint">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">address</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">frequency</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DataSetDropDown id="dataSetDropDownJixing">
+      <ClientEvent name="onValueSelect">var cur = view.id(&quot;dsJixing&quot;).getData(&quot;#&quot;).get(&quot;oid&quot;);&#xD;
+view.id(&quot;dsSystems&quot;).set(&quot;parameter&quot;,{&#xD;
+	oid:cur&#xD;
+});&#xD;
+view.id(&quot;dsSystems&quot;).flushAsync();</ClientEvent>
+      <Property name="dataSet">dsJixing</Property>
+      <Property name="property">jixing</Property>
+    </DataSetDropDown>
+    <DataSet id="dsJixing">
+      <Property name="dataProvider">jixingPR#queryJixing</Property>
+      <Property name="dataType">[Jixing]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <Dialog id="diarepair">
+      <Property name="height">400</Property>
+      <Property name="width">600</Property>
+      <Property name="caption">维修诊断意见</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;uaRepairresult&quot;).execute();&#xD;
+view.id(&quot;diarepair&quot;).hide();&#xD;
+</ClientEvent>
+          <Property name="caption">保存</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur = view.id(&quot;dsRepairresult&quot;).getData(&quot;#&quot;);&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id(&quot;diarepair&quot;).hide();&#xD;
+}&#xD;
+</ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <DataSet id="dsRepairresult">
+          <Property name="dataType">[Repairresult]</Property>
+          <Property name="dataProvider">repairresultPR#queryRepairresult</Property>
+          <Property name="pageSize">20</Property>
+          <Property name="parameter">
+            <Entity>
+              <Property name="event"></Property>
+              <Property name="location"></Property>
+            </Entity>
+          </Property>
+        </DataSet>
+        <DataGrid id="dgRepairresult">
+          <Property name="dataSet">dsRepairresult</Property>
+          <Property name="dataPath"></Property>
+          <Property name="filterMode">serverSide</Property>
+          <Property name="showFilterBar">true</Property>
+          <Property name="rowHeight">22</Property>
+          <Property name="readOnly">false</Property>
+          <RowNumColumn/>
+          <DataColumn name="event">
+            <Property name="property">event</Property>
+            <Property name="readOnly">true</Property>
+          </DataColumn>
+          <DataColumn name="location">
+            <Property name="property">location</Property>
+            <Property name="readOnly">true</Property>
+          </DataColumn>
+          <DataColumn name="tool">
+            <Property name="property">tool</Property>
+          </DataColumn>
+          <DataColumn name="method">
+            <Property name="property">method</Property>
+          </DataColumn>
+        </DataGrid>
+        <UpdateAction id="uaRepairresult">
+          <Property name="dataResolver">repairresultPR#saveRepairresult</Property>
+          <UpdateItem>
+            <Property name="dataSet">dsRepairresult</Property>
+          </UpdateItem>
+        </UpdateAction>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

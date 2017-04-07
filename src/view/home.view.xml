@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <BlockView>
+      <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;
+	captionProperty: &quot;value&quot;,&#xD;
+	imageProperty: &quot;image&quot;,&#xD;
+	labelHeight: 0&#xD;
+}));</ClientEvent>
+      <ClientEvent name="onBlockClick">//window.open(self.getCurrentItem().path);&#xD;
+window.location.href= self.getCurrentItem().path;</ClientEvent>
+      <Property name="blockHeight">300</Property>
+      <Property name="blockWidth">350</Property>
+      <Property name="horiPadding">8</Property>
+      <Property name="renderOn">#div4</Property>
+      <Property name="width">400</Property>
+      <Property name="items">
+        <Collection>
+          <Entity>
+            <Property name="value">平台基础</Property>
+            <Property name="image">images/6.jpg</Property>
+            <Property name="path">bdf2.core.view.frame.main.MainFrame1.d</Property>
+          </Entity>
+        </Collection>
+      </Property>
+      <Property name="blockDecoratorSize">4</Property>
+      <Property name="allowNoCurrent">true</Property>
+      <Property name="vertPadding">8</Property>
+      <Property name="vertSpacing">8</Property>
+      <Property name="style">
+        <Property name="position">relative</Property>
+        <Property name="top">120px</Property>
+        <Property name="left">360px</Property>
+        <Property name="font">36px 'STLiti'</Property>
+        <Property name="color">#000000</Property>
+      </Property>
+    </BlockView>
+    <BlockView>
+      <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;
+	captionProperty: &quot;value&quot;,&#xD;
+	imageProperty: &quot;image&quot;,&#xD;
+	labelHeight: 0&#xD;
+}));</ClientEvent>
+      <ClientEvent name="onBlockClick">//window.open(self.getCurrentItem().path);&#xD;
+window.location.href= self.getCurrentItem().path;&#xD;
+</ClientEvent>
+      <Property name="blockHeight">300</Property>
+      <Property name="blockWidth">350</Property>
+      <Property name="horiPadding">8</Property>
+      <Property name="horiSpacing">60</Property>
+      <Property name="width">1250</Property>
+      <Property name="items">
+        <Collection>
+          <Entity>
+            <Property name="value">物理模型</Property>
+            <Property name="image">images/1.jpg</Property>
+            <Property name="path">com.model.physics.view.Physics.d</Property>
+          </Entity>
+          <Entity>
+            <Property name="value">故障模型</Property>
+            <Property name="image">images/2.jpg</Property>
+            <Property name="path">com.model.faults.view.Faults.d</Property>
+          </Entity>
+          <Entity>
+            <Property name="value">检测参数</Property>
+            <Property name="image">images/3.jpg</Property>
+            <Property name="path"></Property>
+          </Entity>
+        </Collection>
+      </Property>
+      <Property name="blockDecoratorSize">4</Property>
+      <Property name="allowNoCurrent">true</Property>
+      <Property name="vertPadding">8</Property>
+      <Property name="vertSpacing">8</Property>
+      <Property name="style">
+        <Property name="position">relative</Property>
+        <Property name="top">120px</Property>
+        <Property name="left">120px</Property>
+        <Property name="font">36px 'STLiti'</Property>
+        <Property name="color">#000000</Property>
+      </Property>
+      <Property name="renderOn">#div2</Property>
+    </BlockView>
+    <BlockView>
+      <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;
+	captionProperty: &quot;value&quot;,&#xD;
+	imageProperty: &quot;image&quot;,&#xD;
+	labelHeight: 0&#xD;
+}));</ClientEvent>
+      <ClientEvent name="onBlockClick">//window.open(self.getCurrentItem().path);&#xD;
+window.location.href= self.getCurrentItem().path;</ClientEvent>
+      <Property name="blockHeight">300</Property>
+      <Property name="blockWidth">350</Property>
+      <Property name="horiPadding">8</Property>
+      <Property name="horiSpacing">100</Property>
+      <Property name="renderOn">#div3</Property>
+      <Property name="width">1000</Property>
+      <Property name="items">
+        <Collection>
+          <Entity>
+            <Property name="value">参数检测</Property>
+            <Property name="image">images/4.jpg</Property>
+            <Property name="path"></Property>
+          </Entity>
+          <Entity>
+            <Property name="value">排故引导</Property>
+            <Property name="image">images/5.jpg</Property>
+            <Property name="path"></Property>
+          </Entity>
+        </Collection>
+      </Property>
+      <Property name="blockDecoratorSize">4</Property>
+      <Property name="allowNoCurrent">true</Property>
+      <Property name="vertPadding">8</Property>
+      <Property name="vertSpacing">8</Property>
+      <Property name="style">
+        <Property name="position">relative</Property>
+        <Property name="top">120px</Property>
+        <Property name="left">240px</Property>
+        <Property name="font">36px 'STLiti'</Property>
+        <Property name="color">#000000</Property>
+      </Property>
+    </BlockView>
+    <Label>
+      <ClientEvent name="onReady">var userId = &quot;${loginUser.getUsername()}&quot;;&#xD;
+var userName = &quot;${loginUser.getCname()}&quot;;&#xD;
+self.set(&quot;text&quot;,&quot;登录人：&quot; + userName + &quot;(&quot; + userId + &quot;)&quot;);</ClientEvent>
+      <Property name="renderOn">#div0</Property>
+      <Property name="style">
+        <Property name="position">relative</Property>
+        <Property name="top">-720px</Property>
+        <Property name="left">1400px</Property>
+        <Property name="font">500 18px 'LiSu'</Property>
+      </Property>
+      <Property name="width">300</Property>
+    </Label>
+  </View>
+</ViewConfig>

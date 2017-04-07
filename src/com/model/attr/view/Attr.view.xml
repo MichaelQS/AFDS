@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Attr</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsAttr">
+      <Property name="dataType">[Attr]</Property>
+      <Property name="dataProvider">attrPR#queryAttr</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsAttr</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var importParamAction=view.get(&quot;#importParamAction&quot;);&#xD;
+importParamAction.set(&quot;excelModelId&quot;,&quot;0002&quot;);&#xD;
+importParamAction.execute(function(arg){&#xD;
+	dorado.MessageBox.alert(&quot;成功解析导入[&quot; + arg + &quot;]数据！&quot;);&#xD;
+});</ClientEvent>
+        <Property name="caption">导入飞参数据</Property>
+        <Property name="icon">dorado/res/com/bstek/bdf2/importexcel/view/icons/page_excel.png</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgAttr">
+      <ClientEvent name="onDataRowClick">var cur = view.id(&quot;dsAttr&quot;).getData(&quot;#&quot;);&#xD;
+if(cur.get(&quot;a&quot;)!=&quot;Datapoint&quot;&amp;&amp;cur.get(&quot;a&quot;)!=&quot;Name&quot;&amp;&amp;cur.get(&quot;a&quot;)){&#xD;
+view.id(&quot;dsParam&quot;).set(&quot;parameter&quot;,{&#xD;
+	attr:cur.get(&quot;a&quot;),&#xD;
+	time:cur.get(&quot;b&quot;)&#xD;
+});&#xD;
+view.id(&quot;dsParam&quot;).flushAsync();}&#xD;
+</ClientEvent>
+      <Property name="readOnly">true</Property>
+      <Property name="fixedColumnCount">3</Property>
+      <Property name="dataSet">dsAttr</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="showFilterBar">true</Property>
+      <Property name="rowHeight">22</Property>
+      <RowNumColumn/>
+      <DataColumn name="a">
+        <Property name="property">a</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="b">
+        <Property name="property">b</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="c">
+        <Property name="property">c</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="d">
+        <Property name="property">d</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="e">
+        <Property name="property">e</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="f">
+        <Property name="property">f</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="g">
+        <Property name="property">g</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="h">
+        <Property name="property">h</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="i">
+        <Property name="property">i</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="j">
+        <Property name="property">j</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="k">
+        <Property name="property">k</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="l">
+        <Property name="property">l</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="m">
+        <Property name="property">m</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="n">
+        <Property name="property">n</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="o">
+        <Property name="property">o</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="p">
+        <Property name="property">p</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="q">
+        <Property name="property">q</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="r">
+        <Property name="property">r</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="s">
+        <Property name="property">s</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="t">
+        <Property name="property">t</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="u">
+        <Property name="property">u</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="v">
+        <Property name="property">v</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="w">
+        <Property name="property">w</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="x">
+        <Property name="property">x</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="y">
+        <Property name="property">y</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="z">
+        <Property name="property">z</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="aa">
+        <Property name="property">aa</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="ab">
+        <Property name="property">ab</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="ac">
+        <Property name="property">ac</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+    </DataGrid>
+    <ImportExcelAction id="importParamAction">
+      <Property name="bigData">true</Property>
+    </ImportExcelAction>
+  </View>
+</ViewConfig>

@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Ftypes</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Root">
+      <Property name="creationType">com.buaa.fly.domain.Root</Property>
+      <PropertyDef name="label"/>
+      <Reference name="categories">
+        <Property name="dataProvider">ftypesPR#currentTree</Property>
+        <Property name="dataType">[Ftypes]</Property>
+        <Property name="activeOnNewEntity">true</Property>
+      </Reference>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="contentOverflow">scroll</Property>
+    <DataSet id="dsExamples">
+      <ClientEvent name="onReady">self.insert({&#xD;
+	label: &quot;机型&quot;&#xD;
+});</ClientEvent>
+      <Property name="dataType">[Root]</Property>
+    </DataSet>
+    <DataSet id="dsDictionary">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+    </DataSet>
+    <DataSetDropDown id="dataSetDropDownD">
+      <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_Outfield&quot;,status:0}).flushAsync();</ClientEvent>
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsDictionary</Property>
+      <Property name="property">name</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="editable">false</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
+    <UpdateAction id="uaFtypes">
+      <Property name="dataResolver">ftypesPR#saveFtypes</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsExamples</Property>
+        <Property name="dataPath">!DIRTY_TREE</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Dialog id="diaFtypes">
+      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_ROOT.#categories');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaFtypes').hide();&#xD;
+}</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
+	view.id('diaFtypes').hide();
+});       </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_ROOT.#categories');
+if(cur){
+	cur.cancel();
+	view.id('diaFtypes').hide();
+}</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afFtypes">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsExamples</Property>
+          <Property name="dataPath">!CURRENT_ROOT.#categories</Property>
+          <Property name="dataType">Ftypes</Property>
+          <AutoFormElement id="FtypeForm">
+            <Property name="name">ftypename</Property>
+            <Property name="property">ftypename</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">alias</Property>
+            <Property name="property">alias</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">moreinfo</Property>
+            <Property name="property">moreinfo</Property>
+            <Property name="editorType">TextArea</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaFpici">
+      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_TYPE.#fpici');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaFpici').hide();&#xD;
+}   &#xD;
+	         </ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
+	view.id('diaFpici').hide();
+});
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_TYPE.#fpici');
+if(cur){
+	cur.cancel();
+	view.id('diaFpici').hide();
+}         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="cols">*</Property>
+          <Property name="dataPath">!CURRENT_TYPE.#fpici</Property>
+          <Property name="dataSet">dsExamples</Property>
+          <Property name="dataType">Fpici</Property>
+          <AutoFormElement>
+            <Property name="property">fTypeName.ftypename</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement id="piciForm">
+            <Property name="name">piciName</Property>
+            <Property name="property">piciName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">more</Property>
+            <Property name="property">more</Property>
+            <Property name="editorType">TextArea</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaFighterinfo">
+      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaFighterinfo').hide();&#xD;
+}	</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
+	view.id('diaFighterinfo').hide();
+});
+</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');
+if(cur){
+	cur.cancel();
+	view.id('diaFighterinfo').hide();
+}	</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afFighterinfo">
+          <Property name="dataSet">dsExamples</Property>
+          <Property name="dataPath">!CURRENT_PICI.#fighterinfo</Property>
+          <Property name="dataType">Fighterinfo</Property>
+          <Property name="cols">*</Property>
+          <AutoFormElement id="fighternoForm">
+            <Property name="name">outfactoryno</Property>
+            <Property name="property">outfactoryno</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">userno</Property>
+            <Property name="property">userno</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">firstFDate</Property>
+            <Property name="property">firstFDate</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaFighterout">
+      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_FLIGHT.#fighterout');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaFighterout').hide();&#xD;
+}	</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
+	view.id('diaFighterout').hide();
+});
+</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_FLIGHT.#fighterout');
+if(cur){
+	cur.cancel();
+	view.id('diaFighterout').hide();
+}	</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afFighterout">
+          <Property name="dataSet">dsExamples</Property>
+          <Property name="dataPath">!CURRENT_FLIGHT.#fighterout</Property>
+          <Property name="dataType">Fighterout</Property>
+          <Property name="cols">*</Property>
+          <AutoFormElement>
+            <Property name="name">outdate</Property>
+            <Property name="property">outdate</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">outaddress</Property>
+            <Property name="property">outaddress</Property>
+            <Property name="trigger">dataSetDropDownD</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <SplitPanel>
+      <Property name="position">270</Property>
+      <MainControl>
+        <CardBook id="cardbook">
+          <Panel>
+            <Property name="caption">机型目录</Property>
+            <Buttons/>
+            <Children>
+              <ToolBar>
+                <Separator/>
+                <ToolBarLabel>
+                  <Property name="text">机型信息管理</Property>
+                </ToolBarLabel>
+                <Separator/>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dsExamples').getData(&quot;!CURRENT_ROOT.categories&quot;).insert({});&#xD;
+view.id(&quot;diaFtypes&quot;).set(&quot;caption&quot;,&quot;新增机型信息&quot;);&#xD;
+view.id(&quot;FtypeForm&quot;).set(&quot;readOnly&quot;, false);&#xD;
+view.id('diaFtypes').show();</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_ROOT.#categories&quot;);&#xD;
+if (cur) {&#xD;
+	view.id(&quot;diaFtypes&quot;).set(&quot;caption&quot;,&quot;修改机型信息&quot;);&#xD;
+	view.id(&quot;FtypeForm&quot;).set(&quot;readOnly&quot;, true);&#xD;
+	view.id('diaFtypes').show();	&#xD;
+}</ClientEvent>
+                  <Property name="caption">修改</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -100px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsExamples').getData('!CURRENT_ROOT.#categories');&#xD;
+var uaFtypes = view.id('uaFtypes');&#xD;
+if(cur){&#xD;
+	var fpici = cur.get(&quot;fpici&quot;);&#xD;
+	if(fpici.toJSON().length)&#xD;
+		dorado.MessageBox.alert(&quot;请先删除机型&quot; + cur.get(&quot;ftypename&quot;) + &quot;下的所有批次!&quot;);&#xD;
+	else{&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此机型?', function(){	&#xD;
+		cur.remove();&#xD;
+		uaFtypes.execute();	&#xD;
+		}); &#xD;
+	}&#xD;
+}</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_ROOT&quot;).reset(&quot;categories&quot;);</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgFtype">
+                <Property name="readOnly">true</Property>
+                <Property name="dataSet">dsExamples</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="rowHeight">22</Property>
+                <Property name="dataPath">!CURRENT_ROOT.categories</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="property">ftypename</Property>
+                </DataColumn>
+                <DataColumn name="piciName">
+                  <Property name="property">alias</Property>
+                </DataColumn>
+                <DataColumn name="more">
+                  <Property name="property">moreinfo</Property>
+                </DataColumn>
+              </DataGrid>
+            </Children>
+            <Tools/>
+          </Panel>
+          <Panel>
+            <Property name="caption">机型信息</Property>
+            <Buttons/>
+            <Children>
+              <AutoForm>
+                <Property name="dataSet">dsExamples</Property>
+                <Property name="dataPath">!CURRENT_TYPE</Property>
+                <Property name="dataType">Ftypes</Property>
+                <Property name="cols">*,*</Property>
+                <Property name="readOnly">true</Property>
+                <AutoFormElement>
+                  <Property name="name">ftypename</Property>
+                  <Property name="property">ftypename</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">alias</Property>
+                  <Property name="property">alias</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">moreinfo</Property>
+                  <Property name="property">moreinfo</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+              <ToolBar>
+                <Separator/>
+                <ToolBarLabel>
+                  <Property name="text">批次信息管理</Property>
+                </ToolBarLabel>
+                <Separator/>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_TYPE&quot;);&#xD;
+view.id('dsExamples').getData(&quot;!CURRENT_TYPE.fpici&quot;).insert({fTypeName:{ftypename:cur.get(&quot;ftypename&quot;)}});&#xD;
+view.id(&quot;diaFpici&quot;).set(&quot;caption&quot;,&quot;新增批次信息&quot;);&#xD;
+view.id(&quot;piciForm&quot;).set(&quot;readOnly&quot;, false);&#xD;
+view.id('diaFpici').show();</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_TYPE.#fpici&quot;);&#xD;
+if (cur) {&#xD;
+	view.id(&quot;piciForm&quot;).set(&quot;readOnly&quot;, true);&#xD;
+	view.id(&quot;diaFpici&quot;).set(&quot;caption&quot;,&quot;修改批次信息&quot;);&#xD;
+	view.id('diaFpici').show();&#xD;
+}</ClientEvent>
+                  <Property name="caption">修改</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsExamples').getData('!CURRENT_TYPE.#fpici');&#xD;
+var uaFtypes = view.id('uaFtypes');&#xD;
+if(cur){&#xD;
+	var fighterinfo = cur.get(&quot;fighterinfo&quot;);&#xD;
+	if(fighterinfo.toJSON().length)&#xD;
+		dorado.MessageBox.alert(&quot;请先删除批次&quot; + cur.get(&quot;piciName&quot;) + &quot;下的所有飞机信息!&quot;);&#xD;
+	else{&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此批次?', function(){	&#xD;
+		cur.remove();&#xD;
+		uaFtypes.execute();	&#xD;
+		}); &#xD;
+	}&#xD;
+}</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_TYPE&quot;).reset(&quot;fpici&quot;);</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                  <Property name="width">57</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgFpici">
+                <Property name="readOnly">true</Property>
+                <Property name="dataSet">dsExamples</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="rowHeight">22</Property>
+                <Property name="dataPath">!CURRENT_TYPE.fpici</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="property">fTypeName.ftypename</Property>
+                </DataColumn>
+                <DataColumn name="piciName">
+                  <Property name="property">piciName</Property>
+                </DataColumn>
+                <DataColumn name="more">
+                  <Property name="property">more</Property>
+                </DataColumn>
+              </DataGrid>
+            </Children>
+            <Tools/>
+          </Panel>
+          <Panel>
+            <Property name="caption">批次信息</Property>
+            <Buttons/>
+            <Children>
+              <AutoForm>
+                <Property name="dataSet">dsExamples</Property>
+                <Property name="dataPath">!CURRENT_PICI</Property>
+                <Property name="dataType">Fpici</Property>
+                <Property name="cols">*,*</Property>
+                <Property name="readOnly">true</Property>
+                <AutoFormElement>
+                  <Property name="name">ftypename</Property>
+                  <Property name="property">fTypeName.ftypename</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">piciName</Property>
+                  <Property name="property">piciName</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">more</Property>
+                  <Property name="property">more</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+              <ToolBar>
+                <Separator/>
+                <ToolBarLabel>
+                  <Property name="text">飞机信息管理</Property>
+                </ToolBarLabel>
+                <Separator/>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_PICI&quot;);&#xD;
+view.id('dsExamples').getData(&quot;!CURRENT_PICI.fighterinfo&quot;).insert({&#xD;
+	piciid: {&#xD;
+		piciID: cur.get(&quot;piciID&quot;),&#xD;
+		piciName:cur.get(&quot;piciName&quot;),&#xD;
+		fTypeName:{ftypename:cur.get(&quot;fTypeName.ftypename&quot;)}&#xD;
+	}});&#xD;
+view.id(&quot;fighternoForm&quot;).set(&quot;readOnly&quot;, false);&#xD;
+view.id(&quot;diaFighterinfo&quot;).set(&quot;caption&quot;,&quot;新增飞机信息&quot;);&#xD;
+view.id('diaFighterinfo').show();&#xD;
+</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_PICI.#fighterinfo&quot;);&#xD;
+if (cur) {&#xD;
+	view.id(&quot;fighternoForm&quot;).set(&quot;readOnly&quot;, true);&#xD;
+	view.id(&quot;diaFighterinfo&quot;).set(&quot;caption&quot;,&quot;修改飞机信息&quot;);&#xD;
+	view.id('diaFighterinfo').show();&#xD;
+}</ClientEvent>
+                  <Property name="caption">修改</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');&#xD;
+var uaFtypes = view.id('uaFtypes');&#xD;
+if(cur){&#xD;
+	dorado.MessageBox.confirm('您是否确认删除此架飞机?', function(){&#xD;
+	cur.remove();&#xD;
+	uaFtypes.execute();	&#xD;
+	}); &#xD;
+}</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_PICI&quot;).reset(&quot;fighterinfo&quot;);&#xD;
+</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                  <Property name="width">57</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgFighterinfo">
+                <Property name="readOnly">true</Property>
+                <Property name="dataSet">dsExamples</Property>
+                <Property name="dataPath">!CURRENT_PICI.fighterinfo</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="rowHeight">22</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="property">piciid.fTypeName.ftypename</Property>
+                  <Property name="name">ftypename</Property>
+                </DataColumn>
+                <DataColumn name="piciName">
+                  <Property name="property">piciid.piciName</Property>
+                </DataColumn>
+                <DataColumn name="outfactoryno">
+                  <Property name="property">outfactoryno</Property>
+                </DataColumn>
+                <DataColumn name="userno">
+                  <Property name="property">userno</Property>
+                </DataColumn>
+                <DataColumn name="firstfdate">
+                  <Property name="property">firstFDate</Property>
+                </DataColumn>
+              </DataGrid>
+            </Children>
+            <Tools/>
+          </Panel>
+          <Panel>
+            <Property name="caption">单机信息</Property>
+            <Buttons/>
+            <Children>
+              <AutoForm>
+                <Property name="dataSet">dsExamples</Property>
+                <Property name="dataPath">!CURRENT_FLIGHT</Property>
+                <Property name="dataType">Fighterinfo</Property>
+                <Property name="cols">*,*</Property>
+                <Property name="readOnly">true</Property>
+                <AutoFormElement>
+                  <Property name="property">piciid.fTypeName.ftypename</Property>
+                  <Property name="name">name</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="property">piciid.piciName</Property>
+                  <Property name="name">piciName</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">outfactoryno</Property>
+                  <Property name="property">outfactoryno</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">userno</Property>
+                  <Property name="property">userno</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">firstFDate</Property>
+                  <Property name="property">firstFDate</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+              <ToolBar>
+                <Separator/>
+                <ToolBarLabel>
+                  <Property name="text">飞机转场信息管理</Property>
+                </ToolBarLabel>
+                <Separator/>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataPath">!CURRENT_FLIGHT.fighterout</Property>
+                  <Property name="dataSet">dsExamples</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_FLIGHT&quot;);&#xD;
+view.id('dsExamples').getData(&quot;!CURRENT_FLIGHT.fighterout&quot;).insert({fighterinfo:{&#xD;
+	outfactoryno: cur.get(&quot;outfactoryno&quot;)&#xD;
+}});&#xD;
+view.id(&quot;diaFighterout&quot;).set(&quot;caption&quot;,&quot;新增飞机转场信息&quot;);&#xD;
+view.id('diaFighterout').show();&#xD;
+</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_FLIGHT.#fighterout&quot;);&#xD;
+if (cur) {&#xD;
+	view.id(&quot;diaFighterout&quot;).set(&quot;caption&quot;,&quot;修改飞机转场信息&quot;);&#xD;
+	view.id('diaFighterout').show();&#xD;
+}</ClientEvent>
+                  <Property name="caption">修改</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsExamples').getData('!CURRENT_FLIGHT.#fighterout');&#xD;
+var uaFtypes = view.id('uaFtypes');&#xD;
+if(cur){&#xD;
+	dorado.MessageBox.confirm('您是否确认删除此转场记录?', function(){&#xD;
+	cur.remove();&#xD;
+	uaFtypes.execute();	&#xD;
+	}); &#xD;
+}</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_FLIGHT&quot;).reset(&quot;fighterout&quot;);&#xD;
+</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                  <Property name="width">57</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgFighterout">
+                <Property name="readOnly">true</Property>
+                <Property name="dataSet">dsExamples</Property>
+                <Property name="dataPath">!CURRENT_FLIGHT.fighterout</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="rowHeight">22</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="property">fighterinfo.piciid.fTypeName.ftypename</Property>
+                  <Property name="name">ftypename</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">fighterinfo.piciid.piciName</Property>
+                  <Property name="name">piciName</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">fighterinfo.outfactoryno</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">outdate</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">outaddress</Property>
+                  <Editor/>
+                </DataColumn>
+              </DataGrid>
+            </Children>
+            <Tools/>
+          </Panel>
+        </CardBook>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <FieldSet id="fsFtype" layoutConstraint="top">
+            <Property name="caption">飞机导航树</Property>
+            <Property name="collapsed">false</Property>
+            <Buttons/>
+            <Children>
+              <ToolBar>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var productTree = this.get(&quot;#dTFtypes&quot;);&#xD;
+var Nodes = productTree.get(&quot;nodes&quot;);&#xD;
+expand(Nodes);&#xD;
+&#xD;
+function expand(nodes){&#xD;
+  nodes.each(function(node){&#xD;
+	node.expand();&#xD;
+    expand(node.get(&quot;nodes&quot;));&#xD;
+  });&#xD;
+}</ClientEvent>
+                  <Property name="caption">全部展开</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -60px -240px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var nodes = this.get(&quot;#dTFtypes.nodes&quot;);&#xD;
+nodes.each(function(node) {&#xD;
+   if (node.get(&quot;expanded&quot;)){&#xD;
+	 node.collapse();&#xD;
+   }&#xD;
+});</ClientEvent>
+                  <Property name="caption">全部收起</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -80px -240px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var dsExamples = view.id(&quot;dsExamples&quot;);&#xD;
+dsExamples.flushAsync();&#xD;
+dsExamples.insert({&#xD;
+	label: &quot;机型&quot;&#xD;
+});</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                </ToolBarButton>
+              </ToolBar>
+            </Children>
+          </FieldSet>
+          <DataTree id="dTFtypes">
+            <ClientEvent name="onCurrentChange">var dataTree1 = this.get(&quot;#dTFtypes&quot;);&#xD;
+var NodeType = dataTree1.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+var book=view.id(&quot;cardbook&quot;);&#xD;
+var index = 0;&#xD;
+if(NodeType==&quot;label&quot;){&#xD;
+}&#xD;
+if(NodeType==&quot;name&quot;){&#xD;
+	index = 1;&#xD;
+}&#xD;
+if(NodeType==&quot;pname&quot;){&#xD;
+	index = 2;&#xD;
+}&#xD;
+if(NodeType==&quot;flight&quot;){&#xD;
+	index = 3;&#xD;
+}&#xD;
+book.set(&quot;currentIndex&quot;, index);&#xD;
+&#xD;
+</ClientEvent>
+            <ClientEvent name="onReady">var Root = view.get(&quot;@Root&quot;);&#xD;
+var ProductTree = view.get(&quot;@Ftypes&quot;);&#xD;
+var Equipment = view.get(&quot;@Fpici&quot;);&#xD;
+var FLIGHT = view.get(&quot;@Fighterinfo&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_ROOT&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == Root) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return Root;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_TYPE&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == ProductTree) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return ProductTree;&#xD;
+	});&#xD;
+	dorado.DataPath.registerInterceptor(&quot;CURRENT_PICI&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == Equipment) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return Equipment;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == FLIGHT) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return FLIGHT;&#xD;
+	});</ClientEvent>
+            <Property name="dataSet">dsExamples</Property>
+            <Property name="currentNodeDataPath">CURRENT_NODE</Property>
+            <Property name="expandingMode">async</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="labelProperty">label</Property>
+                <Property name="expandLevel">1</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
+                <Property name="name">label</Property>
+                <BindingConfig>
+                  <Property name="labelProperty">ftypename</Property>
+                  <Property name="name">name</Property>
+                  <Property name="childrenProperty">categories</Property>
+                  <Property name="expandLevel">1</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                  <BindingConfig>
+                    <Property name="childrenProperty">fpici</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -200px -80px</Property>
+                    <Property name="labelProperty">piciName</Property>
+                    <Property name="name">pname</Property>
+                    <Property name="expandLevel">1</Property>
+                    <BindingConfig>
+                      <Property name="childrenProperty">fighterinfo</Property>
+                      <Property name="labelProperty">outfactoryno</Property>
+                      <Property name="name">flight</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                    </BindingConfig>
+                  </BindingConfig>
+                </BindingConfig>
+              </BindingConfig>
+            </BindingConfigs>
+          </DataTree>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+  </View>
+</ViewConfig>

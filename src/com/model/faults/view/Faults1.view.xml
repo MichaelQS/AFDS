@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Parameter</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <Property name="packages">jit,jitcss</Property>
+    <ToolBar>
+      <Property name="renderOn">#div1</Property>
+      <Property name="style">
+        <Property name="position">absolute</Property>
+        <Property name="top">0</Property>
+        <Property name="left">0</Property>
+      </Property>
+      <Property name="width">650</Property>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id(&quot;uaFaults&quot;).execute();</ClientEvent>
+        <Property name="caption">数据保存</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <HtmlContainer>
+      <ClientEvent name="onReady">var labelType, useGradients, nativeTextSupport, animate;&#xD;
+&#xD;
+(function() {&#xD;
+  var ua = navigator.userAgent,&#xD;
+      iStuff = ua.match(/iPhone/i) || ua.match(/iPad/i),&#xD;
+      typeOfCanvas = typeof HTMLCanvasElement,&#xD;
+      nativeCanvasSupport = (typeOfCanvas == 'object' || typeOfCanvas == 'function'),&#xD;
+      textSupport = nativeCanvasSupport &#xD;
+        &amp;&amp; (typeof document.createElement('canvas').getContext('2d').fillText == 'function');&#xD;
+  //I'm setting this based on the fact that ExCanvas provides text support for IE&#xD;
+  //and that as of today iPhone/iPad current text support is lame&#xD;
+  labelType = (!nativeCanvasSupport || (textSupport &amp;&amp; !iStuff))? 'Native' : 'HTML';&#xD;
+  nativeTextSupport = labelType == 'Native';&#xD;
+  useGradients = nativeCanvasSupport;&#xD;
+  animate = !(iStuff || !nativeCanvasSupport);&#xD;
+})();&#xD;
+&#xD;
+var Log = {&#xD;
+  elem: false,&#xD;
+  write: function(text){&#xD;
+    if (!this.elem) &#xD;
+      this.elem = document.getElementById('log');&#xD;
+    this.elem.innerHTML = text;&#xD;
+    this.elem.style.left = 100 + 'px';&#xD;
+  }&#xD;
+};&#xD;
+&#xD;
+&#xD;
+var json = new Array();&#xD;
+var cur = view.id(&quot;dsTfaults&quot;).getData().toJSON();&#xD;
+if(cur.length != 0){&#xD;
+for(var i = 0; i &lt; cur.length-1; i++){&#xD;
+		json.push({&#xD;
+			&quot;adjacencies&quot;: [{&#xD;
+				&quot;nodeTo&quot;: cur[i+1].event + &quot;_&quot; + cur[i+1].classes,&#xD;
+				&quot;nodeFrom&quot;: cur[i].event + &quot;_&quot; + cur[i].classes,&#xD;
+				&quot;data&quot;: {&#xD;
+					color: '#000'&#xD;
+				}			}],&#xD;
+			&quot;data&quot;: {&#xD;
+				color: '#fff'&#xD;
+			},&#xD;
+			&quot;id&quot;: cur[i].event + &quot;_&quot; + cur[i].classes,&#xD;
+			&quot;name&quot;: cur[i].event + &quot;_&quot; + cur[i].classes,&#xD;
+			&quot;_depth&quot;: 5&#xD;
+		});&#xD;
+	}&#xD;
+	json.push({&#xD;
+			&quot;data&quot;: {&#xD;
+			},&#xD;
+			&quot;id&quot;: cur[cur.length-1].event + &quot;_&quot; + cur[cur.length-1].classes,&#xD;
+			&quot;name&quot;: cur[cur.length-1].event + &quot;_&quot; + cur[cur.length-1].classes&#xD;
+		});&#xD;
+&#xD;
+    //init data&#xD;
+     var st = new $jit.ST({&#xD;
+        //id of viz container element&#xD;
+        injectInto: 'infovis',&#xD;
+        //set duration for the animation&#xD;
+        duration: 800,&#xD;
+        //set animation transition type&#xD;
+        transition: $jit.Trans.Quart.easeInOut,&#xD;
+        //set distance between node and its children&#xD;
+        levelDistance: 50,&#xD;
+        //enable panning&#xD;
+		levelsToShow: 15,&#xD;
+		constrained: false,&#xD;
+		offsetX: 220,&#xD;
+        offsetY: 100,&#xD;
+        Navigation: {&#xD;
+          enable:true,&#xD;
+          panning:true&#xD;
+        },&#xD;
+        //set node and edge styles&#xD;
+        //set overridable=true for styling individual&#xD;
+        //nodes or edges&#xD;
+        Node: {&#xD;
+            height: 20,&#xD;
+            width: 60,&#xD;
+            type: 'rectangle',&#xD;
+            color: '#fff',&#xD;
+            overridable: true&#xD;
+        },&#xD;
+        &#xD;
+        Edge: {&#xD;
+            type: 'bezier',&#xD;
+            overridable: true&#xD;
+        },&#xD;
+        &#xD;
+        onBeforeCompute: function(node){&#xD;
+            Log.write(&quot;loading &quot; + node.name);&#xD;
+        },&#xD;
+        &#xD;
+        onAfterCompute: function(){&#xD;
+            Log.write(&quot;done&quot;);&#xD;
+        },&#xD;
+        &#xD;
+        //This method is called on DOM label creation.&#xD;
+        //Use this method to add event handlers and styles to&#xD;
+        //your node.&#xD;
+        onCreateLabel: function(label, node){&#xD;
+            label.id = node.id;            &#xD;
+            label.innerHTML = node.name;&#xD;
+            label.onclick = function(){&#xD;
+            	if(normal.checked) {&#xD;
+            	  st.onClick(node.id);&#xD;
+            	} else {&#xD;
+                st.setRoot(node.id, 'animate');&#xD;
+            	}&#xD;
+            };&#xD;
+            //set label styles&#xD;
+            var style = label.style;&#xD;
+            style.width = 60 + 'px';&#xD;
+            style.height = 17 + 'px';            &#xD;
+            style.cursor = 'pointer';&#xD;
+            style.color = '#000';&#xD;
+            style.fontSize = '1.2em';&#xD;
+            style.textAlign= 'center';&#xD;
+            style.paddingTop = '3px';&#xD;
+        },&#xD;
+        &#xD;
+        //This method is called right before plotting&#xD;
+        //a node. It's useful for changing an individual node&#xD;
+        //style properties before plotting it.&#xD;
+        //The data properties prefixed with a dollar&#xD;
+        //sign will override the global node style properties.&#xD;
+        onBeforePlotNode: function(node){&#xD;
+            //add some color to the nodes in the path between the&#xD;
+            //root node and the selected node.&#xD;
+            if (node.selected) {&#xD;
+                node.data.$color = &quot;#fff&quot;;&#xD;
+            }&#xD;
+            else {&#xD;
+                delete node.data.$color;&#xD;
+                //if the node belongs to the last plotted level&#xD;
+                if(!node.anySubnode(&quot;exist&quot;)) {&#xD;
+                    //count children number&#xD;
+                    var count = 0;&#xD;
+                    node.eachSubnode(function(n) { count++; });&#xD;
+                    //assign a node color based on&#xD;
+                    //how many children it has&#xD;
+                    node.data.$color = ['#fff', '#fff', '#fff', '#fff', '#fff', '#fff'][count];                    &#xD;
+                }&#xD;
+            }&#xD;
+        },&#xD;
+        &#xD;
+        //This method is called right before plotting&#xD;
+        //an edge. It's useful for changing an individual edge&#xD;
+        //style properties before plotting it.&#xD;
+        //Edge data proprties prefixed with a dollar sign will&#xD;
+        //override the Edge global style properties.&#xD;
+        onBeforePlotLine: function(adj){&#xD;
+            if (adj.nodeFrom.selected &amp;&amp; adj.nodeTo.selected) {&#xD;
+                adj.data.$color = &quot;#ccc&quot;;&#xD;
+                //adj.data.$lineWidth = 3;&#xD;
+            }&#xD;
+            else {&#xD;
+                delete adj.data.$color;&#xD;
+                delete adj.data.$lineWidth;&#xD;
+            }&#xD;
+        }&#xD;
+    });&#xD;
+    //load json data&#xD;
+    st.loadJSON(json);&#xD;
+    //compute node positions and layout&#xD;
+    st.compute();&#xD;
+    //optional: make a translation of the tree&#xD;
+    st.geom.translate(new $jit.Complex(-200, 0), &quot;current&quot;);&#xD;
+    //emulate a click on the root node.&#xD;
+    st.onClick(st.root);&#xD;
+    //end&#xD;
+    //Add event handlers to switch spacetree orientation.&#xD;
+    var top = $jit.id('r-top'), &#xD;
+        left = $jit.id('r-left'), &#xD;
+        bottom = $jit.id('r-bottom'), &#xD;
+        right = $jit.id('r-right'),&#xD;
+        normal = $jit.id('s-normal');&#xD;
+        &#xD;
+    &#xD;
+    function changeHandler() {&#xD;
+        if(this.checked) {&#xD;
+            top.disabled = bottom.disabled = right.disabled = left.disabled = true;&#xD;
+            st.switchPosition(this.value, &quot;animate&quot;, {&#xD;
+                onComplete: function(){&#xD;
+                    top.disabled = bottom.disabled = right.disabled = left.disabled = false;&#xD;
+                }&#xD;
+            });&#xD;
+        }&#xD;
+    };&#xD;
+    &#xD;
+    //top.onchange = left.onchange = bottom.onchange = right.onchange = changeHandler;&#xD;
+    //end&#xD;
+}</ClientEvent>
+      <Property name="content">&lt;div id=&quot;container&quot;>&#xD;
+&lt;div id=&quot;center-container&quot;>&#xD;
+    &lt;div id=&quot;infovis&quot;>&lt;/div>    &#xD;
+&lt;/div>&#xD;
+&lt;div id=&quot;log&quot;>&lt;/div>&#xD;
+&lt;/div></Property>
+      <Property name="renderOn">#div2</Property>
+      <Property name="style">
+        <Property name="position">absolute</Property>
+        <Property name="left">0</Property>
+        <Property name="top">25px</Property>
+      </Property>
+    </HtmlContainer>
+    <DataSet id="dsTfaults">
+      <ClientEvent name="beforeLoadData">var cur = view.id(&quot;dsParam&quot;).getData(&quot;#&quot;);&#xD;
+view.id(&quot;dsTfaults&quot;).set(&quot;parameter&quot;,{&#xD;
+	roadid:cur.get(&quot;roadid&quot;)&#xD;
+});&#xD;
+//view.id(&quot;dsTfaults&quot;).flushAsync();</ClientEvent>
+      <Property name="dataType">[Tfaults]</Property>
+      <Property name="dataProvider">tfaultsPR#queryTfaults</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsParam">
+      <Property name="dataType">[Parameter]</Property>
+      <Property name="dataProvider">parameterPR#queryParameter</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <AjaxAction id="uaFaults">
+      <ClientEvent name="onSuccess">view.id(&quot;deleteTfaults&quot;).execute();</ClientEvent>
+      <Property name="service">tfaultsManager#saveFaults</Property>
+    </AjaxAction>
+    <AjaxAction id="deleteTfaults">
+      <ClientEvent name="onSuccess">window.location.href = &quot;com.model.faults.view.Faults.d&quot;;</ClientEvent>
+      <ClientEvent name="onExecute">view.id(&quot;dsParam&quot;).getData(&quot;#&quot;).remove();&#xD;
+view.id(&quot;dsParam&quot;).getData().insert({&#xD;
+	roadid:&quot;a&quot;&#xD;
+});&#xD;
+view.id(&quot;uaParam&quot;).execute();&#xD;
+</ClientEvent>
+      <Property name="service">tfaultsManager#deleteTfaults</Property>
+    </AjaxAction>
+    <UpdateAction id="uaParam">
+      <Property name="dataResolver">parameterPR#saveParameter</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsParam</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>

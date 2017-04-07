@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Classes</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsClasses">
+      <Property name="dataType">[Classes]</Property>
+      <Property name="dataProvider">classesPR#queryClasses</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaClasses">
+      <Property name="dataResolver">classesPR#saveClasses</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsClasses</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsClasses</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dsClasses').getData().insert();&#xD;
+view.id('diaClasses').show();</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsClasses').getData('#');
+	var ua=view.id('uaClasses')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgClasses">
+      <Property name="dataSet">dsClasses</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="showFilterBar">true</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="readOnly">true</Property>
+      <RowNumColumn/>
+      <DataColumn name="classes">
+        <Property name="property">classes</Property>
+      </DataColumn>
+      <DataColumn name="system">
+        <Property name="property">system</Property>
+      </DataColumn>
+      <DataColumn name="icon">
+        <Property name="property">icon</Property>
+      </DataColumn>
+    </DataGrid>
+    <UploadAction id="uaPicture">
+      <ClientEvent name="onError">var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsClasses').getData('#');&#xD;
+var dxf = returnValue;&#xD;
+cur.set(&quot;icon&quot;,dxf);</ClientEvent>
+      <Property name="fileResolver">uploaddxf#process1</Property>
+      <Filters/>
+    </UploadAction>
+    <Dialog id="diaClasses">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">500</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaClasses').execute();
+view.id('diaClasses').hide();
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsClasses').getData('#');
+				if(cur){
+				cur.cancel();
+				}
+				view.id('diaClasses').hide();
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afPhysics">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsClasses</Property>
+          <Property name="dataPath">#</Property>
+          <AutoFormElement id="f1">
+            <Property name="name">classes</Property>
+            <Property name="property">classes</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">system</Property>
+            <Property name="property">system</Property>
+            <Property name="readOnly">false</Property>
+          </AutoFormElement>
+          <AutoFormElement id="icon">
+            <Property name="name">icon</Property>
+            <Property name="property">icon</Property>
+            <Property name="editorType">TextEditor</Property>
+            <Property name="readOnly">true</Property>
+            <Editor>
+              <Container>
+                <Button>
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaPicture</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

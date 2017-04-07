@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Faults</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsFaults">
+      <ClientEvent name="beforeLoadData">var cur = view.id(&quot;dsParam&quot;).getData(&quot;#&quot;);&#xD;
+view.id(&quot;dsFaults&quot;).set(&quot;parameter&quot;,{&#xD;
+	classes:cur.get(&quot;classes&quot;)&#xD;
+});&#xD;
+//view.id(&quot;dsFaults&quot;).flushAsync();</ClientEvent>
+      <Property name="dataType">[Faults]</Property>
+      <Property name="dataProvider">faultsPR#queryFaults</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaFaults">
+      <Property name="dataResolver">faultsPR#saveFaults</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsFaults</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <DataGrid id="dgFaults">
+      <ClientEvent name="onDoubleClick">var cur = view.id(&quot;dsFaults&quot;).getData(&quot;#&quot;).get(&quot;event&quot;);&#xD;
+view.id(&quot;dsTfaults&quot;).getData(&quot;#&quot;).set(&quot;event&quot;,cur);&#xD;
+</ClientEvent>
+      <Property name="dataSet">dsFaults</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="showFilterBar">true</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="renderOn">#div1</Property>
+      <Property name="style">
+        <Property name="position">absolute</Property>
+        <Property name="top">0</Property>
+        <Property name="left">0</Property>
+      </Property>
+      <Property name="width">450</Property>
+      <Property name="height">450</Property>
+      <Property name="readOnly">true</Property>
+      <RowNumColumn/>
+      <DataColumn name="classes">
+        <Property name="property">classes</Property>
+        <Property name="width">150</Property>
+      </DataColumn>
+      <DataColumn name="event">
+        <Property name="property">event</Property>
+      </DataColumn>
+    </DataGrid>
+    <Panel>
+      <Property name="renderOn">#div2</Property>
+      <Property name="style">
+        <Property name="position">absolute</Property>
+        <Property name="top">0</Property>
+        <Property name="left">450</Property>
+      </Property>
+      <Property name="height">450</Property>
+      <Property name="width">200</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var cur = view.id(&quot;dsParam&quot;).getData(&quot;#&quot;).get(&quot;no&quot;);&#xD;
+var no = cur + 1 ;&#xD;
+view.id(&quot;dsParam&quot;).getData(&quot;#&quot;).set(&quot;no&quot;,no);&#xD;
+view.id(&quot;uaParam&quot;).execute();&#xD;
+view.id(&quot;uaTfaults&quot;).execute();</ClientEvent>
+          <Property name="caption">确定</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsTfaults</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="cols">*</Property>
+          <AutoFormElement>
+            <Property name="property">event</Property>
+            <Property name="labelPosition">top</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">classes</Property>
+            <Property name="labelPosition">top</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Panel>
+    <DataSet id="dsTfaults">
+      <ClientEvent name="onReady">var cur = view.id(&quot;dsParam&quot;).getData(&quot;#&quot;);&#xD;
+view.id(&quot;dsTfaults&quot;).getData().insert({&#xD;
+	classes:cur.get(&quot;classes&quot;),&#xD;
+	origin:cur.get(&quot;origin&quot;),&#xD;
+	roadid:cur.get(&quot;roadid&quot;),&#xD;
+	no:cur.get(&quot;no&quot;)&#xD;
+});</ClientEvent>
+      <Property name="dataType">[Tfaults]</Property>
+      <Property name="dataProvider">tfaultsPR#queryTfaults</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaTfaults">
+      <ClientEvent name="onSuccess">window.location.href = &quot;com.model.faults.view.Faults1.d&quot;;</ClientEvent>
+      <Property name="dataResolver">tfaultsPR#saveTfaults</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsTfaults</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <DataSet id="dsParam">
+      <Property name="dataType">[Parameter]</Property>
+      <Property name="dataProvider">parameterPR#queryParameter</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaParam">
+      <Property name="dataResolver">parameterPR#saveParameter</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsParam</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>

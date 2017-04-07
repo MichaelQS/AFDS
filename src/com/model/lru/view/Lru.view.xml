@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Lru</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsSystems">
+      <Property name="pageSize">20</Property>
+      <Property name="dataProvider">systemsPR#querySystems</Property>
+      <Property name="dataType">[Systems]</Property>
+    </DataSet>
+    <DataSet id="dsClasses">
+      <Property name="dataProvider">classesPR#queryClasses</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="classes"/>
+          <Property name="system"/>
+        </Entity>
+      </Property>
+      <Property name="dataType">[Classes]</Property>
+      <Property name="userData"></Property>
+    </DataSet>
+    <UpdateAction id="uaClasses">
+      <Property name="dataResolver">classesPR#saveClasses</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsClasses</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <SplitPanel>
+      <Property name="direction">top</Property>
+      <Property name="position">500</Property>
+      <MainControl>
+        <Container>
+          <ToolBar>
+            <DataPilot>
+              <Property name="itemCodes">pages</Property>
+              <Property name="dataSet">dsSystems</Property>
+              <Property name="dataPath">#.lei</Property>
+            </DataPilot>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dsSystems').getData(&quot;#&quot;);&#xD;
+view.id('dsSystems').getData(&quot;#.lei&quot;).insert({system:{system:cur.get(&quot;system&quot;)}});&#xD;
+view.id('diaLei').show();&#xD;
+</ClientEvent>
+              <Property name="caption">新增</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('#.#lei');&#xD;
+	var ua=view.id('uaSystems')&#xD;
+	if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+			cur.remove();&#xD;
+			ua.execute();&#xD;
+				}); &#xD;
+			} </ClientEvent>
+              <Property name="caption">删除</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataGrid id="dgLei">
+            <Property name="dataSet">dsSystems</Property>
+            <Property name="dataPath">#.lei</Property>
+            <Property name="height">300</Property>
+            <Property name="filterMode">serverSide</Property>
+            <Property name="showFilterBar">true</Property>
+            <Property name="rowHeight">22</Property>
+            <Property name="readOnly">true</Property>
+            <RowNumColumn/>
+            <DataColumn name="system">
+              <Property name="property">system.system</Property>
+            </DataColumn>
+            <DataColumn name="lei">
+              <Property name="property">lei</Property>
+            </DataColumn>
+            <DataColumn name="other">
+              <Property name="property">other</Property>
+            </DataColumn>
+            <DataColumn name="icon">
+              <Property name="property">icon</Property>
+            </DataColumn>
+          </DataGrid>
+          <Dialog id="diaLei">
+            <Property name="width">400</Property>
+            <Buttons>
+              <Button>
+                <ClientEvent name="onClick">view.id(&quot;uaSystems&quot;).execute();&#xD;
+&#xD;
+view.id('diaLei').hide();&#xD;
+/*&#xD;
+alert(100);&#xD;
+var cur=view.id(&quot;dsSystems&quot;).getData(&quot;#&quot;);&#xD;
+alert(cur);&#xD;
+var lei=cur.get(&quot;lei&quot;);&#xD;
+alert(lei);&#xD;
+var system=cur.get(&quot;system&quot;);&#xD;
+alert(system);&#xD;
+view.id(&quot;dsClasses&quot;).set(&quot;parameter&quot;,{&#xD;
+	classes:lei,&#xD;
+	system:system,&#xD;
+});&#xD;
+alert(111);&#xD;
+var c=view.id(&quot;dsClasses&quot;).getData(&quot;#&quot;);&#xD;
+alert(c);&#xD;
+view.id(&quot;uaClasses&quot;).execute();&#xD;
+//alert(0);&#xD;
+*/</ClientEvent>
+                <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                <Property name="caption">确定</Property>
+              </Button>
+              <Button>
+                <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('#.#lei');&#xD;
+				cur.cancel();&#xD;
+				view.id('diaLei').hide();</ClientEvent>
+                <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                <Property name="caption">取消</Property>
+              </Button>
+            </Buttons>
+            <Children>
+              <AutoForm id="afLei">
+                <Property name="dataSet">dsSystems</Property>
+                <Property name="dataType">Systems</Property>
+                <Property name="dataPath">#.#lei</Property>
+                <AutoFormElement>
+                  <Property name="property">lei</Property>
+                  <Property name="name">lei</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="property">system.system</Property>
+                  <Property name="name">system</Property>
+                  <Property name="editable">false</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="property">other</Property>
+                  <Property name="name">other</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="property">icon</Property>
+                  <Property name="name">icon</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+            </Children>
+            <Tools/>
+          </Dialog>
+          <Dialog id="diaClasses">
+            <Buttons>
+              <Button>
+                <ClientEvent name="onClick">view.id('uaClasses').execute();&#xD;
+view.id('diaClasses').hide();</ClientEvent>
+                <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                <Property name="caption">确定</Property>
+              </Button>
+              <Button>
+                <ClientEvent name="onClick">var cur=view.id('dsClasses').getData('#');&#xD;
+				if(cur){&#xD;
+				cur.cancel();&#xD;
+				}&#xD;
+				view.id('diaClasses').hide();</ClientEvent>
+                <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                <Property name="caption">取消</Property>
+              </Button>
+            </Buttons>
+            <Children>
+              <AutoForm>
+                <Property name="dataSet">dsClasses</Property>
+                <Property name="dataPath">#</Property>
+                <Property name="cols">*</Property>
+                <AutoFormElement>
+                  <Property name="name">classes</Property>
+                  <Property name="property">classes</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">system</Property>
+                  <Property name="property">system</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">icon</Property>
+                  <Property name="property">icon</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+            </Children>
+            <Tools/>
+          </Dialog>
+          <AjaxAction id="ajaxClasses">
+            <Property name="parameter">
+              <Entity>
+                <Property name="lei"></Property>
+              </Entity>
+            </Property>
+            <Property name="service">classesPR#saveClasses</Property>
+          </AjaxAction>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <SplitPanel>
+          <Property name="position">500</Property>
+          <MainControl>
+            <Container>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsSystems</Property>
+                  <Property name="dataPath">#.ft</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsSystems').getData(&quot;#&quot;);&#xD;
+view.id('dsSystems').getData(&quot;#.ft&quot;).insert({system:{system:cur.get(&quot;system&quot;)}});&#xD;
+view.id('diaFeature').show();&#xD;
+</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('#.#ft');&#xD;
+	var ua=view.id('uaSystems')&#xD;
+	if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+			cur.remove();&#xD;
+			ua.execute();&#xD;
+				}); &#xD;
+			} </ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgFeature">
+                <Property name="readOnly">true</Property>
+                <Property name="dataSet">dsSystems</Property>
+                <Property name="dataType">Feature</Property>
+                <Property name="dataPath">#.ft</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="property">feature</Property>
+                  <Property name="name">feature</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">system</Property>
+                  <Property name="property">system.system</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">information</Property>
+                  <Property name="property">information</Property>
+                  <Editor/>
+                </DataColumn>
+              </DataGrid>
+              <Dialog id="diaFeature">
+                <Property name="width">400</Property>
+                <Buttons>
+                  <Button>
+                    <ClientEvent name="onClick">view.id(&quot;uaSystems&quot;).execute();&#xD;
+view.id('diaFeature').hide();</ClientEvent>
+                    <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                    <Property name="caption">确定</Property>
+                  </Button>
+                  <Button>
+                    <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('#.#ft');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaFeature').hide();&#xD;
+}&#xD;
+</ClientEvent>
+                    <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                    <Property name="caption">取消</Property>
+                  </Button>
+                </Buttons>
+                <Children>
+                  <AutoForm id="afFeature">
+                    <Property name="dataSet">dsSystems</Property>
+                    <Property name="dataType">Systems</Property>
+                    <Property name="dataPath">#.#ft</Property>
+                    <AutoFormElement>
+                      <Property name="property">feature</Property>
+                      <Property name="name">feature</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="property">system.system</Property>
+                      <Property name="name">system</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="property">information</Property>
+                      <Property name="name">information</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                  </AutoForm>
+                </Children>
+                <Tools/>
+              </Dialog>
+            </Container>
+          </MainControl>
+          <SideControl>
+            <Container>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsSystems</Property>
+                  <Property name="dataPath">#</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dsSystems').getData().insert();&#xD;
+view.id('diaSystem').show();&#xD;
+</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('#');&#xD;
+var ft=view.id('dsSystems').getData('#.ft');&#xD;
+var lei=view.id('dsSystems').getData('#.lei');&#xD;
+var ua=view.id('uaSystems')&#xD;
+if(ft.toJSON().length == 0 &amp;&amp; lei.toJSON().length == 0){&#xD;
+	if(cur){&#xD;
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+		cur.remove();&#xD;
+		ua.execute();&#xD;
+			}); &#xD;
+		} &#xD;
+	}else{&#xD;
+		dorado.MessageBox.alert(&quot;请先删除子节点&quot;);&#xD;
+	}</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgSystems">
+                <Property name="readOnly">true</Property>
+                <Property name="dataSet">dsSystems</Property>
+                <Property name="dataType">Systems</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="name">system</Property>
+                  <Property name="property">system</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">information</Property>
+                  <Property name="property">information</Property>
+                  <Editor/>
+                </DataColumn>
+              </DataGrid>
+              <Dialog id="diaSystem">
+                <Property name="width">400</Property>
+                <Buttons>
+                  <Button>
+                    <ClientEvent name="onClick">view.id(&quot;uaSystems&quot;).execute();&#xD;
+view.id('diaSystem').hide();</ClientEvent>
+                    <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                    <Property name="caption">确定</Property>
+                  </Button>
+                  <Button>
+                    <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('#');&#xD;
+if(cur){&#xD;
+		cur.cancel();&#xD;
+		}&#xD;
+view.id('diaSystem').hide();</ClientEvent>
+                    <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                    <Property name="caption">取消</Property>
+                  </Button>
+                </Buttons>
+                <Children>
+                  <AutoForm id="afSystem">
+                    <Property name="dataSet">dsSystems</Property>
+                    <Property name="dataType">Systems</Property>
+                    <Property name="dataPath">#</Property>
+                    <AutoFormElement id="f7">
+                      <Property name="property">system</Property>
+                      <Property name="name">system</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                    <AutoFormElement id="f8">
+                      <Property name="property">information</Property>
+                      <Property name="name">information</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                  </AutoForm>
+                </Children>
+                <Tools/>
+              </Dialog>
+              <UpdateAction id="uaSystems">
+                <Property name="dataResolver">systemsPR#saveSystems</Property>
+                <UpdateItem>
+                  <Property name="dataSet">dsSystems</Property>
+                  <Property name="dataPath">!DIRTY_TREE</Property>
+                </UpdateItem>
+              </UpdateAction>
+            </Container>
+          </SideControl>
+        </SplitPanel>
+      </SideControl>
+    </SplitPanel>
+  </View>
+</ViewConfig>

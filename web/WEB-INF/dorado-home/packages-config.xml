@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<Patterns>
+		<Pattern name="js" contentType="text/javascript" charset="UTF-8"
+			mergeRequests='${configure["view.mergeJavaScript"]}' resourceSuffix=".js" />
+		<Pattern name="css" contentType="text/css" charset="UTF-8"
+			mergeRequests='${configure["view.mergeStyleSheet"]}' resourceSuffix=".css" />
+	</Patterns>
+
+	<Packages>
+		<Package name="common" pattern="js">
+		</Package>
+		<Package name="echart" pattern="js" baseUri=">js">
+        /js/echarts,
+        /js/echarts.min
+    </Package>
+    <Package name="gojs" pattern="js" baseUri=">js">
+        /js/go,
+        /js/goSamples,
+        /js/DataInspector
+    </Package>
+    <Package name="gocss" pattern="css" baseUri=">css">
+        /css/goSamples,
+        /css/DataInspector
+    </Package>
+    <Package name="jit" pattern="js" baseUri=">js">
+        /js/jit,
+        /js/jit-yc,
+        /js/excanvas
+    </Package>
+    <Package name="jitcss" pattern="css" baseUri=">css">
+        /css/base,
+        /css/Spacetree
+    </Package>	
+    <Package name="goocss" pattern="css" baseUri=">css">
+        /css/default,
+        /css/GooFlow
+    </Package>
+    <Package name="goojs" pattern="js" baseUri=">js">
+        /js/GooFlow,
+        /js/GooFunc
+    </Package>
+	</Packages>
+</config>

@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsJixing">
+      <Property name="dataType">[Jixing]</Property>
+      <Property name="dataProvider">jixingPR#queryJixing</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsAttr">
+      <Property name="dataProvider">attrPR#queryAttr</Property>
+      <Property name="dataType">[Attr]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsParam">
+      <Property name="dataProvider">attrPR#queryParamGraph</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="attr"></Property>
+          <Property name="time"></Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <SplitPanel>
+      <Property name="position">300</Property>
+      <MainControl>
+        <CardBook id="cardBook1">
+          <Panel>
+            <Property name="caption">导入数据</Property>
+            <Buttons/>
+            <Children>
+              <TabControl>
+                <ControlTab>
+                  <Property name="caption">导入飞机参数配置文件</Property>
+                  <Container>
+                    <ToolBar>
+                      <DataPilot/>
+                      <Separator/>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var importParamAction=view.get(&quot;#importParamAction&quot;);&#xD;
+importParamAction.set(&quot;excelModelId&quot;,&quot;0002&quot;);&#xD;
+importParamAction.execute(function(arg){&#xD;
+	dorado.MessageBox.alert(&quot;成功解析导入[&quot; + arg + &quot;]数据！&quot;);&#xD;
+});</ClientEvent>
+                        <Property name="caption">添加文件</Property>
+                      </ToolBarButton>
+                      <ToolBarButton>
+                        <Property name="caption">删除文件</Property>
+                      </ToolBarButton>
+                      <Separator/>
+                      <ToolBarButton>
+                        <Property name="caption">链接到LRU</Property>
+                      </ToolBarButton>
+                    </ToolBar>
+                    <DataGrid id="dgUploadAttr">
+                      <Property name="dataSet">dsAttr</Property>
+                      <DataColumn name="a">
+                        <Property name="property">a</Property>
+                      </DataColumn>
+                      <DataColumn name="f">
+                        <Property name="property">f</Property>
+                      </DataColumn>
+                      <DataColumn name="c">
+                        <Property name="property">c</Property>
+                      </DataColumn>
+                      <DataColumn name="t">
+                        <Property name="property">t</Property>
+                      </DataColumn>
+                      <DataColumn name="b">
+                        <Property name="property">b</Property>
+                      </DataColumn>
+                      <DataColumn name="z">
+                        <Property name="property">z</Property>
+                      </DataColumn>
+                      <DataColumn name="o">
+                        <Property name="property">o</Property>
+                      </DataColumn>
+                      <DataColumn name="m">
+                        <Property name="property">m</Property>
+                      </DataColumn>
+                      <DataColumn name="s">
+                        <Property name="property">s</Property>
+                      </DataColumn>
+                      <DataColumn name="h">
+                        <Property name="property">h</Property>
+                      </DataColumn>
+                      <DataColumn name="j">
+                        <Property name="property">j</Property>
+                      </DataColumn>
+                      <DataColumn name="u">
+                        <Property name="property">u</Property>
+                      </DataColumn>
+                      <DataColumn name="d">
+                        <Property name="property">d</Property>
+                      </DataColumn>
+                      <DataColumn name="ac">
+                        <Property name="property">ac</Property>
+                      </DataColumn>
+                      <DataColumn name="g">
+                        <Property name="property">g</Property>
+                      </DataColumn>
+                      <DataColumn name="p">
+                        <Property name="property">p</Property>
+                      </DataColumn>
+                      <DataColumn name="q">
+                        <Property name="property">q</Property>
+                      </DataColumn>
+                      <DataColumn name="e">
+                        <Property name="property">e</Property>
+                      </DataColumn>
+                      <DataColumn name="x">
+                        <Property name="property">x</Property>
+                      </DataColumn>
+                      <DataColumn name="r">
+                        <Property name="property">r</Property>
+                      </DataColumn>
+                      <DataColumn name="l">
+                        <Property name="property">l</Property>
+                      </DataColumn>
+                      <DataColumn name="y">
+                        <Property name="property">y</Property>
+                      </DataColumn>
+                      <DataColumn name="w">
+                        <Property name="property">w</Property>
+                      </DataColumn>
+                      <DataColumn name="aa">
+                        <Property name="property">aa</Property>
+                      </DataColumn>
+                      <DataColumn name="ab">
+                        <Property name="property">ab</Property>
+                      </DataColumn>
+                      <DataColumn name="i">
+                        <Property name="property">i</Property>
+                      </DataColumn>
+                      <DataColumn name="k">
+                        <Property name="property">k</Property>
+                      </DataColumn>
+                      <DataColumn name="v">
+                        <Property name="property">v</Property>
+                      </DataColumn>
+                      <DataColumn name="n">
+                        <Property name="property">n</Property>
+                      </DataColumn>
+                      <DataColumn name="oid">
+                        <Property name="property">oid</Property>
+                      </DataColumn>
+                    </DataGrid>
+                  </Container>
+                </ControlTab>
+                <ControlTab>
+                  <Property name="caption">导入飞行参数历史数据</Property>
+                  <SplitPanel>
+                    <Property name="direction">top</Property>
+                    <Property name="position">300</Property>
+                    <MainControl>
+                      <Container>
+                        <ToolBar>
+                          <DataPilot/>
+                          <Separator/>
+                          <AutoForm>
+                            <AutoFormElement>
+                              <Property name="name">外部数据点</Property>
+                              <Editor/>
+                            </AutoFormElement>
+                            <AutoFormElement>
+                              <Property name="name">内部数据点</Property>
+                              <Editor/>
+                            </AutoFormElement>
+                          </AutoForm>
+                        </ToolBar>
+                      </Container>
+                    </MainControl>
+                    <SideControl>
+                      <Container>
+                        <ToolBar>
+                          <DataPilot/>
+                          <Separator/>
+                          <ToolBarButton>
+                            <ClientEvent name="onClick">view.id('diaUploadParam').show();</ClientEvent>
+                            <Property name="caption">添加文件</Property>
+                          </ToolBarButton>
+                          <ToolBarButton>
+                            <Property name="caption">删除文件</Property>
+                          </ToolBarButton>
+                          <Separator/>
+                          <ToolBarButton>
+                            <Property name="caption">开始上传</Property>
+                          </ToolBarButton>
+                          <ToolBarButton>
+                            <Property name="caption">暂停上传</Property>
+                          </ToolBarButton>
+                          <ToolBarButton>
+                            <Property name="caption">清除数据</Property>
+                          </ToolBarButton>
+                        </ToolBar>
+                      </Container>
+                    </SideControl>
+                  </SplitPanel>
+                </ControlTab>
+              </TabControl>
+            </Children>
+            <Tools/>
+          </Panel>
+          <Panel>
+            <Property name="caption">飞机功能系统</Property>
+            <Buttons/>
+            <Children>
+              <SplitPanel>
+                <Property name="direction">top</Property>
+                <Property name="position">400</Property>
+                <MainControl>
+                  <SplitPanel>
+                    <Property name="position">600</Property>
+                    <MainControl>
+                      <ToolBar>
+                        <DataPilot/>
+                        <Separator/>
+                        <ToolBarButton>
+                          <Property name="caption">删除</Property>
+                        </ToolBarButton>
+                      </ToolBar>
+                      <DataGrid id="dataGrid2"/>
+                    </MainControl>
+                    <SideControl>
+                      <ToolBar>
+                        <DataPilot/>
+                        <Separator/>
+                        <ToolBarButton>
+                          <Property name="caption">删除</Property>
+                        </ToolBarButton>
+                      </ToolBar>
+                      <DataGrid id="dataGrid1"/>
+                    </SideControl>
+                  </SplitPanel>
+                </MainControl>
+                <SideControl>
+                  <Container>
+                    <ToolBar>
+                      <DataPilot/>
+                      <Separator/>
+                      <AutoForm>
+                        <AutoFormElement>
+                          <Property name="name">外部数据点</Property>
+                          <Editor/>
+                        </AutoFormElement>
+                        <AutoFormElement>
+                          <Property name="name">内部数据点</Property>
+                          <Editor/>
+                        </AutoFormElement>
+                      </AutoForm>
+                    </ToolBar>
+                    <DataGrid id="dgAttr1">
+                      <ClientEvent name="onDataRowClick">var cur = view.id(&quot;dsAttr&quot;).getData(&quot;#&quot;);&#xD;
+if(cur.get(&quot;a&quot;)!=&quot;Datapoint&quot;&amp;&amp;cur.get(&quot;a&quot;)!=&quot;Name&quot;&amp;&amp;cur.get(&quot;a&quot;)){&#xD;
+view.id(&quot;dsParam&quot;).set(&quot;parameter&quot;,{&#xD;
+	attr:cur.get(&quot;a&quot;),&#xD;
+	time:cur.get(&quot;b&quot;)&#xD;
+});&#xD;
+view.id(&quot;dsParam&quot;).flushAsync();}&#xD;
+</ClientEvent>
+                      <Property name="dataSet">dsAttr</Property>
+                      <Property name="filterMode">serverSide</Property>
+                      <Property name="fixedColumnCount">3</Property>
+                      <Property name="readOnly">true</Property>
+                      <Property name="rowHeight">22</Property>
+                      <Property name="showFilterBar">true</Property>
+                      <DataColumn name="a">
+                        <Property name="property">a</Property>
+                      </DataColumn>
+                      <DataColumn name="f">
+                        <Property name="property">f</Property>
+                      </DataColumn>
+                      <DataColumn name="c">
+                        <Property name="property">c</Property>
+                      </DataColumn>
+                      <DataColumn name="t">
+                        <Property name="property">t</Property>
+                      </DataColumn>
+                      <DataColumn name="b">
+                        <Property name="property">b</Property>
+                      </DataColumn>
+                      <DataColumn name="z">
+                        <Property name="property">z</Property>
+                      </DataColumn>
+                      <DataColumn name="o">
+                        <Property name="property">o</Property>
+                      </DataColumn>
+                      <DataColumn name="m">
+                        <Property name="property">m</Property>
+                      </DataColumn>
+                      <DataColumn name="s">
+                        <Property name="property">s</Property>
+                      </DataColumn>
+                      <DataColumn name="h">
+                        <Property name="property">h</Property>
+                      </DataColumn>
+                      <DataColumn name="j">
+                        <Property name="property">j</Property>
+                      </DataColumn>
+                      <DataColumn name="u">
+                        <Property name="property">u</Property>
+                      </DataColumn>
+                      <DataColumn name="d">
+                        <Property name="property">d</Property>
+                      </DataColumn>
+                      <DataColumn name="ac">
+                        <Property name="property">ac</Property>
+                      </DataColumn>
+                      <DataColumn name="g">
+                        <Property name="property">g</Property>
+                      </DataColumn>
+                      <DataColumn name="p">
+                        <Property name="property">p</Property>
+                      </DataColumn>
+                      <DataColumn name="q">
+                        <Property name="property">q</Property>
+                      </DataColumn>
+                      <DataColumn name="e">
+                        <Property name="property">e</Property>
+                      </DataColumn>
+                      <DataColumn name="x">
+                        <Property name="property">x</Property>
+                      </DataColumn>
+                      <DataColumn name="r">
+                        <Property name="property">r</Property>
+                      </DataColumn>
+                      <DataColumn name="l">
+                        <Property name="property">l</Property>
+                      </DataColumn>
+                      <DataColumn name="y">
+                        <Property name="property">y</Property>
+                      </DataColumn>
+                      <DataColumn name="w">
+                        <Property name="property">w</Property>
+                      </DataColumn>
+                      <DataColumn name="aa">
+                        <Property name="property">aa</Property>
+                      </DataColumn>
+                      <DataColumn name="ab">
+                        <Property name="property">ab</Property>
+                      </DataColumn>
+                      <DataColumn name="i">
+                        <Property name="property">i</Property>
+                      </DataColumn>
+                      <DataColumn name="k">
+                        <Property name="property">k</Property>
+                      </DataColumn>
+                      <DataColumn name="v">
+                        <Property name="property">v</Property>
+                      </DataColumn>
+                      <DataColumn name="n">
+                        <Property name="property">n</Property>
+                      </DataColumn>
+                      <DataColumn name="oid">
+                        <Property name="property">oid</Property>
+                      </DataColumn>
+                    </DataGrid>
+                  </Container>
+                </SideControl>
+              </SplitPanel>
+            </Children>
+            <Tools/>
+          </Panel>
+          <Panel>
+            <Property name="caption">飞机LRU</Property>
+            <Buttons/>
+            <Children>
+              <Container>
+                <ToolBar>
+                  <DataPilot/>
+                  <Separator/>
+                  <ToolBarButton>
+                    <Property name="caption">参数展示</Property>
+                  </ToolBarButton>
+                </ToolBar>
+                <DataGrid id="dataGrid3">
+                  <ClientEvent name="onDataRowClick">var cur = view.id(&quot;dsAttr&quot;).getData(&quot;#&quot;);&#xD;
+if(cur.get(&quot;a&quot;)!=&quot;Datapoint&quot;&amp;&amp;cur.get(&quot;a&quot;)!=&quot;Name&quot;&amp;&amp;cur.get(&quot;a&quot;)){&#xD;
+view.id(&quot;dsParam&quot;).set(&quot;parameter&quot;,{&#xD;
+	attr:cur.get(&quot;a&quot;),&#xD;
+	time:cur.get(&quot;b&quot;)&#xD;
+});&#xD;
+view.id(&quot;dsParam&quot;).flushAsync();}&#xD;
+</ClientEvent>
+                  <Property name="dataSet">dsAttr</Property>
+                  <Property name="filterMode">serverSide</Property>
+                  <Property name="fixedColumnCount">3</Property>
+                  <Property name="readOnly">true</Property>
+                  <Property name="rowHeight">22</Property>
+                  <Property name="showFilterBar">true</Property>
+                  <DataColumn name="a">
+                    <Property name="property">a</Property>
+                  </DataColumn>
+                  <DataColumn name="f">
+                    <Property name="property">f</Property>
+                  </DataColumn>
+                  <DataColumn name="c">
+                    <Property name="property">c</Property>
+                  </DataColumn>
+                  <DataColumn name="t">
+                    <Property name="property">t</Property>
+                  </DataColumn>
+                  <DataColumn name="b">
+                    <Property name="property">b</Property>
+                  </DataColumn>
+                  <DataColumn name="z">
+                    <Property name="property">z</Property>
+                  </DataColumn>
+                  <DataColumn name="o">
+                    <Property name="property">o</Property>
+                  </DataColumn>
+                  <DataColumn name="m">
+                    <Property name="property">m</Property>
+                  </DataColumn>
+                  <DataColumn name="s">
+                    <Property name="property">s</Property>
+                  </DataColumn>
+                  <DataColumn name="h">
+                    <Property name="property">h</Property>
+                  </DataColumn>
+                  <DataColumn name="j">
+                    <Property name="property">j</Property>
+                  </DataColumn>
+                  <DataColumn name="u">
+                    <Property name="property">u</Property>
+                  </DataColumn>
+                  <DataColumn name="d">
+                    <Property name="property">d</Property>
+                  </DataColumn>
+                  <DataColumn name="ac">
+                    <Property name="property">ac</Property>
+                  </DataColumn>
+                  <DataColumn name="g">
+                    <Property name="property">g</Property>
+                  </DataColumn>
+                  <DataColumn name="p">
+                    <Property name="property">p</Property>
+                  </DataColumn>
+                  <DataColumn name="q">
+                    <Property name="property">q</Property>
+                  </DataColumn>
+                  <DataColumn name="e">
+                    <Property name="property">e</Property>
+                  </DataColumn>
+                  <DataColumn name="x">
+                    <Property name="property">x</Property>
+                  </DataColumn>
+                  <DataColumn name="r">
+                    <Property name="property">r</Property>
+                  </DataColumn>
+                  <DataColumn name="l">
+                    <Property name="property">l</Property>
+                  </DataColumn>
+                  <DataColumn name="y">
+                    <Property name="property">y</Property>
+                  </DataColumn>
+                  <DataColumn name="w">
+                    <Property name="property">w</Property>
+                  </DataColumn>
+                  <DataColumn name="aa">
+                    <Property name="property">aa</Property>
+                  </DataColumn>
+                  <DataColumn name="ab">
+                    <Property name="property">ab</Property>
+                  </DataColumn>
+                  <DataColumn name="i">
+                    <Property name="property">i</Property>
+                  </DataColumn>
+                  <DataColumn name="k">
+                    <Property name="property">k</Property>
+                  </DataColumn>
+                  <DataColumn name="v">
+                    <Property name="property">v</Property>
+                  </DataColumn>
+                  <DataColumn name="n">
+                    <Property name="property">n</Property>
+                  </DataColumn>
+                  <DataColumn name="oid">
+                    <Property name="property">oid</Property>
+                  </DataColumn>
+                </DataGrid>
+              </Container>
+            </Children>
+            <Tools/>
+          </Panel>
+        </CardBook>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <FieldSet>
+            <Property name="caption">飞行参数管理</Property>
+            <Buttons/>
+            <Children>
+              <ToolBar>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var productTree = this.get(&quot;#dtJixing&quot;);&#xD;
+var Nodes = productTree.get(&quot;nodes&quot;);&#xD;
+expand(Nodes);&#xD;
+&#xD;
+function expand(nodes){&#xD;
+  nodes.each(function(node){&#xD;
+	node.expand();&#xD;
+    expand(node.get(&quot;nodes&quot;));&#xD;
+  });&#xD;
+}</ClientEvent>
+                  <Property name="caption">全部展开</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var nodes = this.get(&quot;#dtJixing.nodes&quot;);&#xD;
+nodes.each(function(node) {&#xD;
+   if (node.get(&quot;expanded&quot;)){&#xD;
+	 node.collapse();&#xD;
+   }&#xD;
+});</ClientEvent>
+                  <Property name="caption">全部展开</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var dsJixing = view.id(&quot;dsJixing&quot;);&#xD;
+dsJixing.flushAsync();</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                </ToolBarButton>
+              </ToolBar>
+            </Children>
+          </FieldSet>
+          <ToolBar>
+            <ToolBarLabel>
+              <Property name="text">飞机机型</Property>
+            </ToolBarLabel>
+          </ToolBar>
+          <DataTree id="dtJixing">
+            <ClientEvent name="onReady">var jixing = view.get(&quot;@Jixing&quot;);&#xD;
+var system = view.get(&quot;@Systems&quot;);&#xD;
+var lei = view.get(&quot;@Lei&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_JIXING&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == jixing) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return jixing;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_SYSTEM&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == system) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return system;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_LEI&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == feature) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return lei;&#xD;
+	});</ClientEvent>
+            <ClientEvent name="onDataRowClick">&#xD;
+var dataTree1 = this.get(&quot;#dtJixing&quot;);&#xD;
+var NodeType = dataTree1.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+var book=view.id(&quot;cardBook1&quot;);&#xD;
+var index = 0;&#xD;
+if(NodeType==&quot;jixing&quot;){&#xD;
+}&#xD;
+if(NodeType==&quot;system&quot;){&#xD;
+	index = 1;&#xD;
+}&#xD;
+if(NodeType==&quot;lei&quot;){&#xD;
+	index = 2;&#xD;
+}&#xD;
+&#xD;
+book.set(&quot;currentIndex&quot;, index);&#xD;
+&#xD;
+</ClientEvent>
+            <Property name="dataSet">dsJixing</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="name">jixing</Property>
+                <Property name="labelProperty">jixing</Property>
+                <Property name="expandLevel">1</Property>
+                <BindingConfig>
+                  <Property name="childrenProperty">sy</Property>
+                  <Property name="labelProperty">system</Property>
+                  <Property name="name">system</Property>
+                  <Property name="expandLevel">1</Property>
+                  <BindingConfig>
+                    <Property name="childrenProperty">lei</Property>
+                    <Property name="labelProperty">lei</Property>
+                    <Property name="name">lei</Property>
+                    <Property name="expandLevel">1</Property>
+                  </BindingConfig>
+                </BindingConfig>
+              </BindingConfig>
+            </BindingConfigs>
+          </DataTree>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+    <Dialog id="diaUpload">
+      <Buttons/>
+      <Children/>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaDownload">
+      <Buttons/>
+      <Children/>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaUploadAttr">
+      <Property name="caption">飞行数据属性配置</Property>
+      <Property name="width">600</Property>
+      <Property name="height">300</Property>
+      <Buttons>
+        <Button>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="labelSeparator">:</Property>
+          <AutoFormElement>
+            <Property name="name">飞机类型</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">时间</Property>
+            <Property name="trigger">dDDUploadAttr</Property>
+            <Editor>
+              <DateTimeSpinner>
+                <Property name="trigger">dDDUploadAttr</Property>
+                <Property name="type">dateTime</Property>
+              </DateTimeSpinner>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">文件</Property>
+            <Editor>
+              <Container>
+                <Button>
+                  <Property name="caption">文件上传</Property>
+                  <Property name="width">125</Property>
+                  <Property name="action">ulActionAttr</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">备注</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DateDropDown id="dDDUploadAttr"/>
+    <Dialog id="diaUploadParam">
+      <Property name="height">300</Property>
+      <Property name="width">600</Property>
+      <Buttons>
+        <Button>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <AutoFormElement>
+            <Property name="name">飞机机型</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">操作人员</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">时间</Property>
+            <Editor>
+              <DateTimeSpinner>
+                <Property name="trigger">dDDUploadParam</Property>
+                <Property name="type">dateTime</Property>
+              </DateTimeSpinner>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">文件名</Property>
+            <Editor>
+              <Container>
+                <Button>
+                  <Property name="caption">文件上传</Property>
+                  <Property name="action">ulActioParam</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">备注</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UploadAction id="ulActionAttr">
+      <Filters/>
+    </UploadAction>
+    <UploadAction id="ulActioParam">
+      <Filters/>
+    </UploadAction>
+    <DateDropDown id="dDDUploadParam"/>
+    <ImportExcelAction id="importParamAction">
+      <Property name="bigData">true</Property>
+    </ImportExcelAction>
+  </View>
+</ViewConfig>

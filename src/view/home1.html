@@ -1,0 +1,358 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>飞机故障诊断系统</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/animate.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/owl.theme.css">
+<link rel="stylesheet" href="css/owl.carousel.css">
+
+<!-- Main css -->
+<link rel="stylesheet" href="css/homestyle.css">
+
+<!-- Google Font -->
+<link href='http://fonts.useso.com/css?family=Source+Sans+Pro:400,300,600' rel='stylesheet' type='text/css'>
+<link href='http://fonts.useso.com/css?family=Lora:700italic' rel='stylesheet' type='text/css'>
+
+</head>
+<body data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+
+
+<!-- =========================
+     PRE LOADER       
+============================== -->
+<div  class="preloader">
+
+	<div class="sk-spinner sk-spinner-pulse"></div>
+
+</div>
+
+
+<!-- =========================
+    NAVIGATION SECTION   
+============================== -->
+<div class="navbar navbar-default navbar-fixed-top sticky-navigation" role="navigation">
+	<div class="container">
+
+		<div class="navbar-header">
+			<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+				<span class="icon icon-bar"></span>
+			</button>
+			<a href="#" class="navbar-brand">AFDS</a>
+		</div>
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right main-navigation">
+				<li><a href="#home" class="smoothScroll">Home</a></li>
+				<li><a href="#overview" class="smoothScroll">关于系统</a></li>
+				<li><a href="#trainer" class="smoothScroll">建立模型</a></li>
+				<li><a href="#price" class="smoothScroll">故障诊断</a></li>
+				<li><a href="#blog" class="smoothScroll">基础功能</a></li>
+				<li><a href="#testimonial" class="smoothScroll">相关信息</a></li>
+			</ul>
+		</div>
+
+	</div>
+</div>
+
+
+<!-- =========================
+    HOME SECTION   
+============================== -->
+<section id="home" class="parallax-section">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-md-offset-1 col-md-10 col-sm-12">
+				<h3 class="wow bounceIn" data-wow-delay="0.9s">AIRCRAFT DIAGNOSE FAULT SYSTEM</h3>
+				<h1 class="wow fadeInUp" data-wow-delay="1.6s">飞机故障诊断系统</h1>
+				<a href="#overview" class="wow fadeInUp smoothScroll btn btn-default" data-wow-delay="2s">START NOW</a>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+
+<!-- =========================
+    OVERVIEW SECTION   
+============================== -->
+<section id="overview" class="parallax-section">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-md-6 col-sm-12">
+				<img src="images/overview-img.jpg" class="img-responsive" alt="Overview">
+				<blockquote class="wow fadeInUp" data-wow-delay="1.9s">AFDS是一套面向飞机的故障诊断专家系统.</blockquote>
+			</div>
+
+			<div class="col-md-1"></div>
+
+			<div class="wow fadeInUp col-md-4 col-sm-12" data-wow-delay="1s">
+				<div class="overview-detail">
+					<h2>关于AFDS</h2>
+					<p>AFDS实现飞机故障诊断系统智能化建模、排故引导、诊断维修以及故障知识的自学习等功能。</p>
+					<a href="#trainer" class="btn btn-default smoothScroll">了解更多</a>
+				</div>
+			</div>
+
+			<div class="col-md-1"></div>
+
+		</div>
+	</div>
+</section>
+
+
+<!-- =========================
+    TRAINER SECTION   
+============================== -->
+<section id="trainer" class="parallax-section">
+	<div class="container">
+		<div class="row">
+
+			<div class="wow fadeInUp col-md-12 col-sm-12" data-wow-delay="1.3s">
+				<h2>诊断模型的建立</h2>
+				<p>建立物理模型、故障模型和检测模型</p>
+			</div>
+
+			<div class="wow fadeInUp col-md-4 col-sm-6" data-wow-delay="1.9s">
+				<div class="trainer-thumb">
+					<img src="images/trainer-img1.jpg" class="img-responsive" alt="Trainer">
+						<div class="trainer-overlay">
+							<div class="trainer-des">
+								<h2>物理模型</h2>
+								<ul class="social-icon">
+									<li><a href="http://localhost:8110/AFDS/com.model.lru.view.Lru1.d" target="_blank" class="wow fadeInUp" data-wow-delay="1s">系统组织管理</a></li>
+									<li><a href="http://localhost:8110/AFDS/com.model.physics.view.Physics1.d" target="_blank" class="wow fadeInUp" data-wow-delay="1.3s">结构模型建立</a></li>
+								</ul>
+							</div>
+						</div>
+				</div>
+				<p>模拟飞机各系统功能组成结构</p>
+			</div>
+
+			<div class="wow fadeInUp col-md-4 col-sm-6" data-wow-delay="2s">
+				<div class="trainer-thumb">
+					<img src="images/trainer-img2.jpg" class="img-responsive" alt="Trainer">
+						<div class="trainer-overlay">
+							<div class="trainer-des">
+								<h2>故障模型</h2>
+								<ul class="social-icon">
+									
+									<li><a href="http://localhost:8110/AFDS/com.model.faults.view.fault.d" target="_blank" class="wow fadeInUp" data-wow-delay="1s">输入故障传播路径</a></li>
+									
+								</ul>
+							</div>
+						</div>
+				</div>
+				<p>模拟飞机故障传递路径</p>
+			</div>
+
+			<div class="wow fadeInUp col-md-4 col-sm-6" data-wow-delay="2.3s">
+				<div class="trainer-thumb">
+					<img src="images/trainer-img3.jpg" class="img-responsive" alt="Trainer">
+						<div class="trainer-overlay">
+							<div class="trainer-des">
+								<h2>参数模型</h2>
+								<ul class="social-icon">
+									
+									<li><a href="http://localhost:8110/AFDS/com.model.detect.view.Detect.d" target="_blank" class="wow fadeInUp" data-wow-delay="1s">建立检测模型</a></li>
+									
+								</ul>
+							</div>
+						</div>
+				</div>
+				<p>建立飞行参数诊断规则</p>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+
+
+
+<!-- =========================
+    PRICE SECTION   
+============================== -->
+<section id="price" class="parallax-section">
+	<div class="container">
+		<div class="row">
+
+			<div class="wow fadeInUp col-md-12 col-sm-12" data-wow-delay="0.9s">
+				<h2>故障诊断</h2>
+				<p>故障诊断实现了排故引导和参数诊断两大功能</p>
+			</div>
+
+			
+
+			<div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="1.3s">
+				<div class="pricing__item">
+                    <h3 class="pricing__title">排故引导</h3>
+                                     
+                    <ul class="pricing__feature-list">
+                        <li class="pricing__feature">指导排故</li>
+                        <li class="pricing__feature">参数检测</li>
+                        <li class="pricing__feature">系统分层</li>
+                        <li class="pricing__feature">维修意见</li>
+                        <li class="pricing__feature">数据反馈</li>
+                    </ul>
+                    <button class="pricing__action" onclick="javascript:window.open('http://localhost:8110/bdf2-project/view.Diagnose1.d')">开始诊断</button>
+                </div>
+			</div>
+			
+			<div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="1.3s">
+				<div class="pricing__item">
+                    <h3 class="pricing__title">参数查看</h3>
+                                     
+                    <ul class="pricing__feature-list">
+                        <li class="pricing__feature">参数图表</li>
+                        <li class="pricing__feature">参数对比</li>
+                        <li class="pricing__feature">参数最值</li>
+                        <li class="pricing__feature">参数导入</li>
+                        <li class="pricing__feature">图表下载</li>
+                    </ul>
+                    <button class="pricing__action" onclick="javascript:window.open('http://localhost:8110/bdf2-project/com.model.param.view.Param1.d')">开始诊断</button>
+                </div>
+			</div>
+			
+
+		</div>
+	</div>
+</section>
+
+
+<!-- =========================
+    BLOG SECTION   
+============================== -->
+<section id="blog" class="parallax-section">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-md-12 col-sm-12 text-center">
+				<h2>基础功能</h2>
+				<p>包括参数导入格式的 定义和系统基础功能两部分</p>
+			</div>
+
+			<div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="0.9s">
+				<div class="blog-thumb">
+					<span class="blog-date">参数格式</span>
+					<h3 class="blog-title">定义飞行参数数据格式</h3>
+					<h5 id="blog-author"><a href="http://localhost:8110/bdf2-project/bdf2.importexcel.view.ImportExcel.d" target="_blank" >点击进入</a></h5>
+				</div>
+			</div>
+
+			<div class="wow fadeInUp col-md-6 col-sm-12" data-wow-delay="1.3s">
+				<div class="blog-thumb">
+					<span class="blog-date">系统功能</span>
+					<h3 class="blog-title">定义数据字典、用户信息等基础数据</h3>
+					<h5 id="blog-author"><a href="http://localhost:8110/bdf2-project/bdf2.core.view.frame.main.MainFrame1.d" target="_blank" >点击进入</a></h5>
+				</div>
+			</div>
+
+			
+		</div>
+	</div>
+</section>
+
+
+
+<!-- =========================
+    TESTIMONIAL SECTION   
+============================== -->
+<section id="testimonial" class="parallax-section">
+	<div class="container">
+		<div class="row">
+
+			<!-- Testimonial Owl Carousel section
+			================================================== -->
+			<div id="owl-testimonial" class="owl-carousel">
+
+				<div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
+					<img src="images/end (1).jpg" style="width:480px" alt="Trainer">
+				</div>
+
+				<div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
+					<img src="images/end (2).jpg" style="width:480px" alt="Trainer">
+				</div>
+
+				<div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
+					<img src="images/end (3).jpg" style="width:480px" alt="Trainer">
+				</div>
+
+				<div class="item col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 wow fadeInUp" data-wow-delay="0.6s">
+					<img src="images/end (4).jpg" style="width:480px" alt="Trainer">
+				</div>
+				
+			</div>
+
+		</div>
+	</div>
+</section>
+
+
+<!-- =========================
+    FOOTER SECTION   
+============================== -->
+<footer>
+	<div class="container">
+		<div class="row">
+
+			<div class="wow fadeInUp col-md-4 col-sm-4" data-wow-delay="0.6s">
+				<h2>关于我们</h2>
+				<p>北京航空航天大学 新主楼 A503</p>
+			</div>
+
+			<div class="wow fadeInUp col-md-5 col-sm-4"  data-wow-delay="0.9s">
+				<h2>Sessions</h2>
+					<div>
+						<h5>Morning</h5>
+						<h4>6:00 AM - 11:00 PM</h4>
+					</div>
+					<div>
+						<h5>Evening</h5>
+						<h4>4:00 PM - 9:00 PM</h4>
+					</div>
+			</div>
+
+			<div class="wow fadeInUp col-md-3 col-sm-4" data-wow-delay="1s">
+				<h2>Follow us</h2>
+				<ul class="social-icon">
+					<li><a href="#" data-wow-delay="1s"></a></li>
+					<li><a href="#" data-wow-delay="1.3s"></a></li>
+					<li><a href="#" data-wow-delay="1.6s"></a></li>
+					<li><a href="#" data-wow-delay="1.9s"></a></li>
+					<li><a href="#" data-wow-delay="2s"></a></li>
+				</ul>
+			</div>
+
+			<div class="clearfix"></div>
+			
+		</div>
+	</div>
+</footer>
+
+<!-- =========================
+     SCRIPTS   
+============================== -->
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.parallax.js"></script>
+<script src="js/jquery.nav.js"></script>
+<script src="js/jquery.backstretch.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/smoothscroll.js"></script>
+<script src="js/wow.min.js"></script>
+<script src="js/custom.js"></script>
+
+</body>
+</html>

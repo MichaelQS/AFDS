@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Jiance</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <UpdateAction id="uaJiance">
+      <Property name="dataResolver">jiancePR#saveJiance</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsJiance</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <DataSet id="dsJiance">
+      <Property name="dataType">[Jiance]</Property>
+      <Property name="dataProvider">jiancePR#queryJiance</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <ImportExcelAction id="importParamAction">
+      <Property name="bigData">true</Property>
+    </ImportExcelAction>
+    <DataSet id="dsFaults">
+      <Property name="dataType">[Faults]</Property>
+      <Property name="dataProvider">faultsPR#queryFaults</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <ListDropDown id="LRU">
+      <ClientEvent name="onValueSelect">view.id(&quot;dsFaults&quot;).set(&quot;parameter&quot;,{&#xD;
+	classes:arg.selectedValue&#xD;
+});&#xD;
+view.id(&quot;dsFaults&quot;).flushAsync();</ClientEvent>
+      <Property name="items">
+        <Collection>
+          <Value>耳机</Value>
+          <Value>防滑刹车控制盒</Value>
+          <Value>主告警灯盒</Value>
+          <Value>警告处理机</Value>
+          <Value>灯光告警计算机</Value>
+          <Value>左脚蹬</Value>
+          <Value>右脚蹬</Value>
+          <Value>前轮轮载开关</Value>
+          <Value>左刹车指令传感器</Value>
+          <Value>右刹车指令传感器</Value>
+          <Value>刹车电源开关</Value>
+          <Value>压力信号开关</Value>
+          <Value>左起落架舱门终点开关</Value>
+          <Value>右起落架舱门终点开关</Value>
+          <Value>电源</Value>
+          <Value>左起落架下位锁开关</Value>
+          <Value>右起落架下位锁开关</Value>
+          <Value>刹车通道开关</Value>
+          <Value>数据处理机</Value>
+          <Value>数据记录机</Value>
+          <Value>起落架收放开关</Value>
+          <Value>左液压锁</Value>
+          <Value>右液压锁</Value>
+          <Value>机电综合计算机</Value>
+          <Value>任务处理机</Value>
+          <Value>显示器</Value>
+          <Value>左刹车压力传感器</Value>
+          <Value>右刹车压力传感器</Value>
+          <Value>左伺服阀</Value>
+          <Value>右伺服阀</Value>
+          <Value>左机轮速度传感器</Value>
+          <Value>右机轮速度传感器</Value>
+          <Value>左机轮</Value>
+          <Value>右机轮</Value>
+          <Value>气压换向阀</Value>
+          <Value>气压牵引刹车阀</Value>
+          <Value>应急刹车阀</Value>
+        </Collection>
+      </Property>
+    </ListDropDown>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsJiance</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id(&quot;dsJiance&quot;).getData().insert();&#xD;
+view.id(&quot;diaJiance&quot;).show();</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <Property name="caption">导入G2数据模型</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+        <Property name="action">sentG2datapoint</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgJiance">
+      <ClientEvent name="onDoubleClick">var cur = view.id(&quot;dsJiance&quot;).getData(&quot;#&quot;).get(&quot;oid&quot;);&#xD;
+view.id(&quot;showJiance&quot;).set(&quot;parameter&quot;,{&#xD;
+	oid:cur&#xD;
+});&#xD;
+view.id(&quot;showJiance&quot;).execute();</ClientEvent>
+      <Property name="dataSet">dsJiance</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="showFilterBar">true</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="readOnly">true</Property>
+      <RowNumColumn/>
+      <DataColumn name="event">
+        <Property name="property">event</Property>
+      </DataColumn>
+      <DataColumn name="classes">
+        <Property name="property">classes</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaJiance">
+      <ClientEvent name="onClose">var cur=view.id('dsJiance').getData('#');&#xD;
+				if(cur){&#xD;
+				cur.cancel();&#xD;
+				}&#xD;
+view.id('diaJiance').hide();</ClientEvent>
+      <Property name="caption">新增检测模型</Property>
+      <Property name="width">400</Property>
+      <Property name="height">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var cur = view.id(&quot;dsFaults&quot;).getData(&quot;#&quot;);
+view.id(&quot;dsJiance&quot;).getData(&quot;#&quot;).set({
+	classes:cur.get(&quot;classes&quot;),
+	event:cur.get(&quot;event&quot;)
+});
+view.id('uaJiance').execute();
+view.id('diaJiance').hide();      </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsJiance').getData('#');
+				if(cur){
+				cur.cancel();
+				}
+view.id('diaJiance').hide();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <ToolBar>
+          <FormElement>
+            <Property name="trigger">LRU</Property>
+            <Property name="label">所属类</Property>
+            <Editor/>
+          </FormElement>
+        </ToolBar>
+        <DataGrid id="dgFaults">
+          <Property name="dataSet">dsFaults</Property>
+          <Property name="dataPath"></Property>
+          <Property name="filterMode">serverSide</Property>
+          <Property name="showFilterBar">true</Property>
+          <Property name="rowHeight">22</Property>
+          <Property name="renderOn">#div1</Property>
+          <Property name="style">
+            <Property name="position">absolute</Property>
+            <Property name="top">0</Property>
+            <Property name="left">0</Property>
+          </Property>
+          <Property name="readOnly">true</Property>
+          <RowNumColumn/>
+          <DataColumn name="classes">
+            <Property name="property">classes</Property>
+            <Property name="width">150</Property>
+          </DataColumn>
+          <DataColumn name="event">
+            <Property name="property">event</Property>
+          </DataColumn>
+        </DataGrid>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <AjaxAction id="showJiance">
+      <Property name="service">jianceManager#showJiance</Property>
+    </AjaxAction>
+    <AjaxAction id="sentG2datapoint">
+      <Property name="service">jianceManager#sentG2datapoint</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

@@ -1,0 +1,1387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Physics</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <Property name="height">440</Property>
+    <Property name="width">650</Property>
+    <SplitPanel>
+      <Property name="position">150</Property>
+      <MainControl>
+        <TabControl id="tabcontrol">
+          <ControlTab>
+            <Property name="caption">功能</Property>
+            <Container>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsSystems</Property>
+                  <Property name="dataPath">CURRENT_SYSTEM.ft</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id(&quot;tabcontrol&quot;).set(&quot;currentTab&quot;,1);&#xD;
+var cur=view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;);&#xD;
+view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM.ft&quot;).insert({system:{system:cur.get(&quot;system&quot;)}});&#xD;
+view.id('diafeature').show();</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('!CURRENT_SYSTEM.#ft');&#xD;
+	var ua=view.id('uaSystems')&#xD;
+	if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+			cur.remove();&#xD;
+			ua.execute();&#xD;
+				}); &#xD;
+			} </ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgFeature">
+                <Property name="dataSet">dsSystems</Property>
+                <Property name="dataPath">!CURRENT_SYSTEM.ft</Property>
+                <Property name="dataType">Feature</Property>
+                <Property name="readOnly">true</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="property">feature</Property>
+                  <Property name="name">feature</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">system</Property>
+                  <Property name="property">system.system</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">information</Property>
+                  <Property name="property">information</Property>
+                  <Editor/>
+                </DataColumn>
+              </DataGrid>
+              <Dialog id="diafeature">
+                <Property name="width">400</Property>
+                <Buttons>
+                  <Button>
+                    <ClientEvent name="onClick">view.id(&quot;uaSystems&quot;).execute();&#xD;
+view.id('diafeature').hide();</ClientEvent>
+                    <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                    <Property name="caption">确定</Property>
+                  </Button>
+                  <Button>
+                    <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('!CURRENT_SYSTEM.#ft');&#xD;
+				cur.cancel();&#xD;
+				view.id('diafeature').hide();</ClientEvent>
+                    <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                    <Property name="caption">取消</Property>
+                  </Button>
+                </Buttons>
+                <Children>
+                  <AutoForm id="afFeature">
+                    <Property name="dataSet">dsSystems</Property>
+                    <Property name="dataType">Systems</Property>
+                    <Property name="dataPath">!CURRENT_SYSTEM.#ft</Property>
+                    <AutoFormElement>
+                      <Property name="property">feature</Property>
+                      <Property name="name">feature</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="property">system.system</Property>
+                      <Property name="name">system</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="property">information</Property>
+                      <Property name="name">information</Property>
+                      <Editor/>
+                    </AutoFormElement>
+                  </AutoForm>
+                </Children>
+                <Tools/>
+              </Dialog>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">LRU</Property>
+            <Container>
+              <DataSet id="dsPhysics">
+                <Property name="dataType">[Physics]</Property>
+                <Property name="dataProvider">physicsPR#queryPhysics</Property>
+                <Property name="pageSize">20</Property>
+              </DataSet>
+              <UpdateAction id="uaPhysics">
+                <ClientEvent name="onSuccess">var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+	var cur = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;oid&quot;);&#xD;
+}&#xD;
+else if(NodeType == &quot;feature&quot;){&#xD;
+	var cur = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;oid&quot;);&#xD;
+}&#xD;
+view.id(&quot;dsLine&quot;).set(&quot;parameter&quot;,{origin:cur});&#xD;
+view.id(&quot;dsLine&quot;).flushAsync();</ClientEvent>
+                <Property name="dataResolver">physicsPR#savePhysics</Property>
+                <UpdateItem>
+                  <Property name="dataSet">dsPhysics</Property>
+                </UpdateItem>
+              </UpdateAction>
+              <AjaxAction id="ajaColor">
+                <Property name="parameter">
+                  <Entity>
+                    <Property name="oid"></Property>
+                  </Entity>
+                </Property>
+                <Property name="service">physicsManager#changeColor</Property>
+              </AjaxAction>
+              <Dialog id="diaLRU" layout="hbox">
+                <Property name="center">true</Property>
+                <Property name="modal">true</Property>
+                <Property name="width">600</Property>
+                <Property name="height">320</Property>
+                <Buttons/>
+                <Children>
+                  <Image id="image" layoutConstraint="right">
+                    <Property name="width">280</Property>
+                    <Property name="height">210</Property>
+                    <Property name="hideMode">visibility</Property>
+                    <Property name="visible">true</Property>
+                  </Image>
+                  <AutoForm id="afLRU">
+                    <Property name="cols">*</Property>
+                    <Property name="dataSet">dsPhysics</Property>
+                    <Property name="dataPath">#</Property>
+                    <Property name="readOnly">true</Property>
+                    <Property name="width">300</Property>
+                    <AutoFormElement>
+                      <Property name="name">lru</Property>
+                      <Property name="property">lru</Property>
+                      <Property name="trigger">LRU</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">system</Property>
+                      <Property name="property">system</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">feature</Property>
+                      <Property name="property">feature</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">x</Property>
+                      <Property name="property">x</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">y</Property>
+                      <Property name="property">y</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">z</Property>
+                      <Property name="property">z</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">localsituation</Property>
+                      <Property name="property">localsituation</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">input</Property>
+                      <Property name="property">input</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">output</Property>
+                      <Property name="property">output</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                  </AutoForm>
+                </Children>
+                <Tools/>
+              </Dialog>
+              <Dialog id="diaPhysics">
+                <Property name="center">true</Property>
+                <Property name="modal">true</Property>
+                <Property name="width">500</Property>
+                <Buttons>
+                  <Button>
+                    <ClientEvent name="onClick">/*var cla = view.id(&quot;f1&quot;).get(&quot;value&quot;);
+var x = view.id(&quot;f2&quot;).get(&quot;value&quot;);
+var y = view.id(&quot;f3&quot;).get(&quot;value&quot;);
+view.id(&quot;CreateLRU&quot;).set(&quot;parameter&quot;,{
+	cla: cla,
+	x: x,
+	y: y
+});
+view.id(&quot;CreateLRU&quot;).execute();*/
+view.id('uaPhysics').execute();
+           view.id('diaPhysics').hide();
+         </ClientEvent>
+                    <Property name="caption">确定</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                  </Button>
+                  <Button>
+                    <ClientEvent name="onClick">var cur=view.id('dsPhysics').getData('#');
+				if(cur){
+				cur.cancel();
+				}
+				view.id('diaPhysics').hide();
+	         </ClientEvent>
+                    <Property name="caption">取消</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                  </Button>
+                </Buttons>
+                <Children>
+                  <AutoForm id="afPhysics">
+                    <Property name="cols">*,*</Property>
+                    <Property name="dataSet">dsPhysics</Property>
+                    <Property name="dataPath">#</Property>
+                    <AutoFormElement id="f1">
+                      <Property name="name">lru</Property>
+                      <Property name="property">lru</Property>
+                      <Property name="trigger">LRU</Property>
+                    </AutoFormElement>
+                    <AutoFormElement id="f2">
+                      <Property name="name">x</Property>
+                      <Property name="property">x</Property>
+                      <Property name="labelWidth">125</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">system</Property>
+                      <Property name="property">system</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement id="f3">
+                      <Property name="name">y</Property>
+                      <Property name="property">y</Property>
+                      <Property name="labelWidth">125</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">feature</Property>
+                      <Property name="property">feature</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">z</Property>
+                      <Property name="property">z</Property>
+                      <Property name="labelWidth">125</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">localsituation</Property>
+                      <Property name="property">localsituation</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">input</Property>
+                      <Property name="property">input</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">output</Property>
+                      <Property name="property">output</Property>
+                    </AutoFormElement>
+                    <AutoFormElement id="appearance">
+                      <Property name="name">appearance</Property>
+                      <Property name="property">appearance</Property>
+                      <Property name="editorType">TextEditor</Property>
+                      <Property name="readOnly">true</Property>
+                      <Editor>
+                        <Container>
+                          <Button>
+                            <Property name="caption">上传</Property>
+                            <Property name="action">uaPicture</Property>
+                          </Button>
+                        </Container>
+                      </Editor>
+                    </AutoFormElement>
+                  </AutoForm>
+                </Children>
+                <Tools/>
+              </Dialog>
+              <ListDropDown id="LRU">
+                <Property name="items">
+                  <Collection>
+                    <Value>耳机</Value>
+                    <Value>防滑刹车控制盒</Value>
+                    <Value>主告警灯盒</Value>
+                    <Value>警告处理机</Value>
+                    <Value>灯光告警计算机</Value>
+                    <Value>左脚蹬</Value>
+                    <Value>右脚蹬</Value>
+                    <Value>前轮轮载开关</Value>
+                    <Value>左刹车指令传感器</Value>
+                    <Value>右刹车指令传感器</Value>
+                    <Value>刹车电源开关</Value>
+                    <Value>压力信号开关</Value>
+                    <Value>左起落架舱门终点开关</Value>
+                    <Value>右起落架舱门终点开关</Value>
+                    <Value>电源</Value>
+                    <Value>左起落架下位锁开关</Value>
+                    <Value>右起落架下位锁开关</Value>
+                    <Value>刹车通道开关</Value>
+                    <Value>数据处理机</Value>
+                    <Value>数据记录机</Value>
+                    <Value>起落架收放开关</Value>
+                    <Value>左液压锁</Value>
+                    <Value>右液压锁</Value>
+                    <Value>机电综合计算机</Value>
+                    <Value>任务处理机</Value>
+                    <Value>显示器</Value>
+                    <Value>左刹车压力传感器</Value>
+                    <Value>右刹车压力传感器</Value>
+                    <Value>左伺服阀</Value>
+                    <Value>右伺服阀</Value>
+                    <Value>左机轮速度传感器</Value>
+                    <Value>右机轮速度传感器</Value>
+                    <Value>左机轮</Value>
+                    <Value>右机轮</Value>
+                    <Value>气压换向阀</Value>
+                    <Value>气压牵引刹车阀</Value>
+                    <Value>应急刹车阀</Value>
+                  </Collection>
+                </Property>
+              </ListDropDown>
+              <DataSetDropDown id="dataSetLRU">
+                <Property name="dataSet">dsPhysics</Property>
+                <Property name="displayProperty">lru</Property>
+                <Property name="property">lru</Property>
+              </DataSetDropDown>
+              <UploadAction id="uaPicture">
+                <ClientEvent name="onError">var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+                <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsPhysics').getData('#');&#xD;
+var app = &quot;F:\\workplace\\AFDS\\web\\images\\&quot; + returnValue;&#xD;
+cur.set(&quot;appearance&quot;,app);&#xD;
+var p = view.id(&quot;dsPhysics&quot;).getData(&quot;#&quot;).get(&quot;appearance&quot;);&#xD;
+if(p != null){&#xD;
+	var file = &quot;>images/&quot; + p;&#xD;
+view.id(&quot;picture&quot;).set(&quot;image&quot;,file)&#xD;
+}&#xD;
+</ClientEvent>
+                <Property name="fileResolver">upload#process1</Property>
+                <Filters/>
+              </UploadAction>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsLine</Property>
+                  <Property name="dataPath"></Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_NODE&quot;);&#xD;
+var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+view.id('dsPhysics').getData().insert({origin:cur.get(&quot;oid&quot;),system:cur.get(&quot;system&quot;)});&#xD;
+}else if(NodeType == &quot;feature&quot;)&#xD;
+{&#xD;
+view.id('dsPhysics').getData().insert({origin:cur.get(&quot;oid&quot;),system:cur.get(&quot;system.system&quot;),feature:cur.get(&quot;feature&quot;)});&#xD;
+}&#xD;
+view.id('diaPhysics').show();</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsPhysics').getData('#');
+	var ua=view.id('uaPhysics')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var p = view.id(&quot;dsPhysics&quot;).getData(&quot;#&quot;).get(&quot;appearance&quot;);&#xD;
+if(p != null){&#xD;
+var arr = new Array();&#xD;
+arr = p.split(&quot;\\&quot;);&#xD;
+	if(arr.length > 1){&#xD;
+		var result = arr[5];&#xD;
+		}&#xD;
+		var file = &quot;>images/&quot; + result;&#xD;
+		view.id(&quot;image&quot;).set(&quot;image&quot;,file);&#xD;
+	}else{&#xD;
+		view.id(&quot;image&quot;).set(&quot;image&quot;,&quot;>images/none.jpg&quot;);&#xD;
+	}&#xD;
+view.id(&quot;diaLRU&quot;).show();</ClientEvent>
+                  <Property name="caption">显示内容</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgPhysics">
+                <ClientEvent name="onDoubleClick">var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+	var cur = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;oid&quot;);&#xD;
+	var name = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;system&quot;);&#xD;
+}&#xD;
+else if(NodeType == &quot;feature&quot;){&#xD;
+	var cur = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;oid&quot;);&#xD;
+	var name = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;feature&quot;);&#xD;
+}&#xD;
+view.id(&quot;ajaRecolor&quot;).set(&quot;parameter&quot;,{&#xD;
+	name:name&#xD;
+});&#xD;
+view.id(&quot;ajaRecolor&quot;).execute();&#xD;
+var cur = view.id(&quot;dsPhysics&quot;).getData(&quot;#&quot;);&#xD;
+view.id(&quot;ajaColor&quot;).set(&quot;parameter&quot;,{&#xD;
+	oid:cur.get(&quot;oid&quot;)&#xD;
+}).execute();&#xD;
+</ClientEvent>
+                <Property name="readOnly">true</Property>
+                <Property name="fixedColumnCount">4</Property>
+                <Property name="dataSet">dsPhysics</Property>
+                <Property name="dataPath"></Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="showFilterBar">true</Property>
+                <Property name="rowHeight">22</Property>
+                <RowNumColumn/>
+                <DataColumn name="lru">
+                  <Property name="property">lru</Property>
+                  <Property name="width">100</Property>
+                </DataColumn>
+                <DataColumn name="x">
+                  <Property name="property">x</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="y">
+                  <Property name="property">y</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="z">
+                  <Property name="property">z</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="localsituation">
+                  <Property name="property">localsituation</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="appearance">
+                  <Property name="property">appearance</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="system">
+                  <Property name="property">system</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="feature">
+                  <Property name="property">feature</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="input">
+                  <Property name="property">input</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="output">
+                  <Property name="property">output</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">连接线</Property>
+            <Container>
+              <DataSet id="dsLine">
+                <Property name="dataType">[Line]</Property>
+                <Property name="dataProvider">linePR#queryLine</Property>
+                <Property name="pageSize">20</Property>
+              </DataSet>
+              <UpdateAction id="uaLine">
+                <Property name="dataResolver">linePR#saveLine</Property>
+                <UpdateItem>
+                  <Property name="dataSet">dsLine</Property>
+                </UpdateItem>
+              </UpdateAction>
+              <Dialog id="diaLine">
+                <Property name="width">520</Property>
+                <Buttons>
+                  <Button>
+                    <ClientEvent name="onClick">view.id(&quot;uaLine&quot;).execute();
+           view.id('diaLine').hide();    </ClientEvent>
+                    <Property name="caption">确定</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                  </Button>
+                  <Button>
+                    <ClientEvent name="onClick">var cur=view.id('dsLine').getData('#');
+				if(cur){
+				cur.cancel();
+				}
+				view.id('diaLine').hide();
+	         </ClientEvent>
+                    <Property name="caption">取消</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                  </Button>
+                </Buttons>
+                <Children>
+                  <AutoForm id="afLine">
+                    <Property name="cols">*,*</Property>
+                    <Property name="dataSet">dsLine</Property>
+                    <Property name="dataPath">#</Property>
+                    <Property name="width">500</Property>
+                    <AutoFormElement id="f4">
+                      <Property name="name">line</Property>
+                      <Property name="property">line</Property>
+                      <Property name="trigger">linename</Property>
+                    </AutoFormElement>
+                    <AutoFormElement id="f5">
+                      <Property name="name">input</Property>
+                      <Property name="property">input</Property>
+                      <Property name="trigger">dataSetLRU</Property>
+                    </AutoFormElement>
+                    <AutoFormElement id="f6">
+                      <Property name="name">output</Property>
+                      <Property name="property">output</Property>
+                      <Property name="trigger">dataSetLRU</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">information</Property>
+                      <Property name="property">information</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">system</Property>
+                      <Property name="property">system</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">feature</Property>
+                      <Property name="property">feature</Property>
+                      <Property name="readOnly">true</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">inlocation</Property>
+                      <Property name="property">inlocation</Property>
+                      <Property name="trigger">inlocation</Property>
+                    </AutoFormElement>
+                    <AutoFormElement>
+                      <Property name="name">outlocation</Property>
+                      <Property name="property">outlocation</Property>
+                      <Property name="trigger">outlocation</Property>
+                    </AutoFormElement>
+                  </AutoForm>
+                </Children>
+                <Tools/>
+              </Dialog>
+              <ListDropDown id="linename">
+                <Property name="items">
+                  <Collection>
+                    <Value>电流管</Value>
+                    <Value>液压管</Value>
+                    <Value>气压管</Value>
+                  </Collection>
+                </Property>
+              </ListDropDown>
+              <ListDropDown id="inlocation">
+                <Property name="items">
+                  <Collection>
+                    <Entity>
+                      <Property name="key">TOP</Property>
+                      <Property name="label">上</Property>
+                    </Entity>
+                    <Entity>
+                      <Property name="key">BOTTOM</Property>
+                      <Property name="label">下</Property>
+                    </Entity>
+                    <Entity>
+                      <Property name="key">LEFT</Property>
+                      <Property name="label">左</Property>
+                    </Entity>
+                    <Entity>
+                      <Property name="key">RIGHT</Property>
+                      <Property name="label">右</Property>
+                    </Entity>
+                  </Collection>
+                </Property>
+                <Property name="displayProperty">label</Property>
+                <Property name="property">key</Property>
+              </ListDropDown>
+              <ListDropDown id="outlocation">
+                <Property name="items">
+                  <Collection>
+                    <Entity>
+                      <Property name="key">TOP</Property>
+                      <Property name="label">上</Property>
+                    </Entity>
+                    <Entity>
+                      <Property name="key">BOTTOM</Property>
+                      <Property name="label">下</Property>
+                    </Entity>
+                    <Entity>
+                      <Property name="key">LEFT</Property>
+                      <Property name="label">左</Property>
+                    </Entity>
+                    <Entity>
+                      <Property name="key">RIGHT</Property>
+                      <Property name="label">右</Property>
+                    </Entity>
+                  </Collection>
+                </Property>
+                <Property name="displayProperty">label</Property>
+                <Property name="property">key</Property>
+              </ListDropDown>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsLine</Property>
+                  <Property name="dataPath"></Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_NODE&quot;);&#xD;
+var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+view.id('dsLine').getData().insert({origin:cur.get(&quot;oid&quot;),system:cur.get(&quot;system&quot;)});&#xD;
+}else if(NodeType == &quot;feature&quot;)&#xD;
+{&#xD;
+view.id('dsLine').getData().insert({origin:cur.get(&quot;oid&quot;),system:cur.get(&quot;system.system&quot;),feature:cur.get(&quot;feature&quot;)});&#xD;
+}&#xD;
+	view.id('diaLine').show();</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsLine').getData('#');
+	var ua=view.id('uaLine')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+			ua.execute();
+				}); 
+			} 	</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgLine">
+                <Property name="dataSet">dsLine</Property>
+                <Property name="dataPath"></Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="showFilterBar">true</Property>
+                <Property name="rowHeight">22</Property>
+                <Property name="fixedColumnCount">3</Property>
+                <Property name="readOnly">true</Property>
+                <RowNumColumn/>
+                <DataColumn name="name">
+                  <Property name="property">name</Property>
+                </DataColumn>
+                <DataColumn name="line">
+                  <Property name="property">line</Property>
+                </DataColumn>
+                <DataColumn name="input">
+                  <Property name="property">input</Property>
+                </DataColumn>
+                <DataColumn name="output">
+                  <Property name="property">output</Property>
+                </DataColumn>
+                <DataColumn name="information">
+                  <Property name="property">information</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">system</Property>
+                  <Property name="name">system</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">feature</Property>
+                  <Property name="name">feature</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">inlocation</Property>
+                  <Property name="name">inlocation</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">outlocation</Property>
+                  <Property name="name">outlocation</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">模型自动生成</Property>
+            <Container>
+              <DataSet id="dataSetline">
+                <Property name="dataType">[Line]</Property>
+                <Property name="dataProvider">linePR#queryLine</Property>
+                <Property name="pageSize">20</Property>
+              </DataSet>
+              <DataSet id="dataSetlru">
+                <Property name="dataProvider">physicsPR#queryPhysics</Property>
+                <Property name="dataType">[Physics]</Property>
+                <Property name="pageSize">20</Property>
+              </DataSet>
+              <DataSet id="dsSystemschoose">
+                <Property name="dataProvider">systemsPR#querySystems</Property>
+                <Property name="dataType">[Systems]</Property>
+                <Property name="pageSize">20</Property>
+              </DataSet>
+              <CustomDropDown id="dataTreeDropDown">
+                <Property name="height">200</Property>
+                <Property name="editable">false</Property>
+                <Property name="autoOpen">true</Property>
+                <DataTree id="dtSystemschoose">
+                  <ClientEvent name="onReady">var system = view.get(&quot;@Systems&quot;);&#xD;
+var feature = view.get(&quot;@Feature&quot;);&#xD;
+var LRU = view.get(&quot;@Physics&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_SYSTEM1&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == system) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return system;&#xD;
+	});&#xD;
+	dorado.DataPath.registerInterceptor(&quot;CURRENT_FEATURE1&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == feature) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return feature;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_LRU1&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == LRU) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return LRU;&#xD;
+	});</ClientEvent>
+                  <ClientEvent name="onDataRowClick">var cur = view.id(&quot;dsSystemschoose&quot;).getData(&quot;!CURRENT_NODE1&quot;);&#xD;
+var dataTree = this.get(&quot;#dtSystemschoose&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+var cur = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM1&quot;).get(&quot;oid&quot;);&#xD;
+view.id(&quot;treechoose&quot;).set(&quot;value&quot;,view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM1&quot;).get(&quot;system&quot;));&#xD;
+}&#xD;
+else if(NodeType == &quot;feature&quot;){&#xD;
+var cur = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE1&quot;).get(&quot;oid&quot;);&#xD;
+view.id(&quot;treechoose&quot;).set(&quot;value&quot;,view.id('dsSystems').getData(&quot;!CURRENT_FEATURE1&quot;).get(&quot;feature&quot;));&#xD;
+}&#xD;
+view.id(&quot;dataSetlru&quot;).set(&quot;parameter&quot;,{origin:cur});&#xD;
+view.id(&quot;dataSetlru&quot;).flushAsync();&#xD;
+view.id(&quot;dataSetline&quot;).set(&quot;parameter&quot;,{origin:cur});&#xD;
+view.id(&quot;dataSetline&quot;).flushAsync();&#xD;
+view.get(&quot;#dataTreeDropDown&quot;).close();</ClientEvent>
+                  <Property name="dataSet">dsSystemschoose</Property>
+                  <Property name="currentNodeDataPath">CURRENT_NODE1</Property>
+                  <BindingConfigs>
+                    <BindingConfig>
+                      <Property name="labelProperty">system</Property>
+                      <Property name="name">system</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -260px -100px</Property>
+                      <Property name="expandLevel">1</Property>
+                      <BindingConfig>
+                        <Property name="childrenProperty">ft</Property>
+                        <Property name="labelProperty">feature</Property>
+                        <Property name="name">feature</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
+                      </BindingConfig>
+                    </BindingConfig>
+                  </BindingConfigs>
+                </DataTree>
+              </CustomDropDown>
+              <CustomDropDown id="lruDropDown">
+                <Property name="autoOpen">true</Property>
+                <Property name="height">400</Property>
+                <Container>
+                  <ToolBar layoutConstraint="bottom">
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var curs = view.id(&quot;dglru&quot;).get(&quot;selection&quot;);&#xD;
+var node = view.id(&quot;dsSystems&quot;).getData(&quot;!CURRENT_NODE&quot;);&#xD;
+var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+curs.each(function(cur){&#xD;
+	var arr = new Array();&#xD;
+	arr = cur.get(&quot;lru&quot;).split(&quot;_&quot;);&#xD;
+	if(arr.length > 1){&#xD;
+		var result = arr[0];&#xD;
+		}&#xD;
+	view.id('dsPhysics').getData().insert({&#xD;
+		lru:result,&#xD;
+		x:cur.get(&quot;x&quot;),&#xD;
+		y:cur.get(&quot;y&quot;),&#xD;
+		z:cur.get(&quot;z&quot;),&#xD;
+		localsituation:cur.get(&quot;localsituation&quot;),&#xD;
+		system:node.get(&quot;system&quot;),&#xD;
+		appearance:cur.get(&quot;appearance&quot;),&#xD;
+		input:cur.get(&quot;input&quot;),&#xD;
+		output:cur.get(&quot;output&quot;),&#xD;
+		origin:node.get(&quot;oid&quot;)&#xD;
+	});&#xD;
+});&#xD;
+}else if(NodeType == &quot;feature&quot;)&#xD;
+{&#xD;
+	curs.each(function(cur){&#xD;
+	var arr = new Array();&#xD;
+	arr = cur.get(&quot;lru&quot;).split(&quot;_&quot;);&#xD;
+	if(arr.length > 1){&#xD;
+		var result = arr[0];&#xD;
+		}&#xD;
+	view.id('dsPhysics').getData().insert({&#xD;
+		lru:result,&#xD;
+		x:cur.get(&quot;x&quot;),&#xD;
+		y:cur.get(&quot;y&quot;),&#xD;
+		z:cur.get(&quot;z&quot;),&#xD;
+		localsituation:cur.get(&quot;localsituation&quot;),&#xD;
+		system:node.get(&quot;system.system&quot;),&#xD;
+		feature:node.get(&quot;feature&quot;),&#xD;
+		appearance:cur.get(&quot;appearance&quot;),&#xD;
+		input:cur.get(&quot;input&quot;),&#xD;
+		output:cur.get(&quot;output&quot;),&#xD;
+		origin:node.get(&quot;oid&quot;)&#xD;
+	});&#xD;
+});&#xD;
+}&#xD;
+var lines = view.id(&quot;dataSetline&quot;).getData();&#xD;
+var lrus = view.id(&quot;dglru&quot;).get(&quot;selection&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+lines.each(function(line){&#xD;
+	curs.each(function(cur){&#xD;
+		if(line.get(&quot;input&quot;) == cur.get(&quot;lru&quot;)){&#xD;
+			var str = new Array();&#xD;
+				str = cur.get(&quot;lru&quot;).split(&quot;_&quot;);&#xD;
+				if(str.length > 1){&#xD;
+					var re = str[0];&#xD;
+					}&#xD;
+				lrus.each(function(lru){&#xD;
+					if(line.get(&quot;output&quot;) == lru.get(&quot;lru&quot;)){&#xD;
+						var str1 = new Array();&#xD;
+						str1 = lru.get(&quot;lru&quot;).split(&quot;_&quot;);&#xD;
+						if(str1.length > 1){&#xD;
+							var re1 = str1[0];&#xD;
+							}&#xD;
+					view.id('dsLine').getData().insert({&#xD;
+						line:line.get(&quot;line&quot;),&#xD;
+						input:re + &quot;_&quot; + node.get(&quot;system.system&quot;) + &quot;_null&quot;,&#xD;
+						output:re1 + &quot;_&quot; + node.get(&quot;system.system&quot;) + &quot;_null&quot;,&#xD;
+						inlocation:line.get(&quot;inlocation&quot;),&#xD;
+						outlocation:line.get(&quot;outlocation&quot;),&#xD;
+						system:node.get(&quot;system&quot;),&#xD;
+						information:line.get(&quot;information&quot;),&#xD;
+						origin:node.get(&quot;oid&quot;)&#xD;
+	});&#xD;
+				}&#xD;
+			});&#xD;
+		}&#xD;
+	});&#xD;
+});}else if(NodeType == &quot;feature&quot;)&#xD;
+{&#xD;
+	lines.each(function(line){&#xD;
+		curs.each(function(cur){&#xD;
+			if(line.get(&quot;input&quot;) == cur.get(&quot;lru&quot;)){&#xD;
+				var str = new Array();&#xD;
+				str = cur.get(&quot;lru&quot;).split(&quot;_&quot;);&#xD;
+				if(str.length > 1){&#xD;
+					var re = str[0];&#xD;
+					}&#xD;
+				lrus.each(function(lru){&#xD;
+					if(line.get(&quot;output&quot;) == lru.get(&quot;lru&quot;)){&#xD;
+						var str1 = new Array();&#xD;
+						str1 = lru.get(&quot;lru&quot;).split(&quot;_&quot;);&#xD;
+						if(str1.length > 1){&#xD;
+							var re1 = str1[0];&#xD;
+							}&#xD;
+						view.id('dsLine').getData().insert({&#xD;
+							line:line.get(&quot;line&quot;),&#xD;
+							input:re + &quot;_&quot; + node.get(&quot;system.system&quot;) + &quot;_&quot; + node.get(&quot;feature&quot;),&#xD;
+							output:re1 + &quot;_&quot; + node.get(&quot;system.system&quot;) + &quot;_&quot; + node.get(&quot;feature&quot;),&#xD;
+							inlocation:line.get(&quot;inlocation&quot;),&#xD;
+							outlocation:line.get(&quot;outlocation&quot;),&#xD;
+							system:node.get(&quot;system.system&quot;),&#xD;
+							feature:node.get(&quot;feature&quot;),&#xD;
+							information:line.get(&quot;information&quot;),&#xD;
+							origin:node.get(&quot;oid&quot;)&#xD;
+		});&#xD;
+					}&#xD;
+				});&#xD;
+			}&#xD;
+		});&#xD;
+});}&#xD;
+view.get(&quot;#lruDropDown&quot;).close();</ClientEvent>
+                      <Property name="caption">确定</Property>
+                    </ToolBarButton>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">view.get(&quot;#lruDropDown&quot;).close();</ClientEvent>
+                      <Property name="caption">取消</Property>
+                    </ToolBarButton>
+                  </ToolBar>
+                  <DataGrid id="dglru">
+                    <Property name="dataSet">dataSetlru</Property>
+                    <Property name="selectionMode">multiRows</Property>
+                    <RowSelectorColumn/>
+                    <DataColumn name="lru">
+                      <Property name="property">lru</Property>
+                      <Property name="width">120</Property>
+                    </DataColumn>
+                    <DataColumn name="system">
+                      <Property name="property">system</Property>
+                      <Property name="width">120</Property>
+                    </DataColumn>
+                    <DataColumn name="feature">
+                      <Property name="property">feature</Property>
+                      <Property name="width">120</Property>
+                    </DataColumn>
+                    <DataColumn name="localsituation">
+                      <Property name="property">localsituation</Property>
+                      <Property name="width">120</Property>
+                    </DataColumn>
+                  </DataGrid>
+                </Container>
+              </CustomDropDown>
+              <AutoForm>
+                <Property name="cols">*,*</Property>
+                <AutoFormElement id="treechoose">
+                  <Property name="trigger">dataTreeDropDown</Property>
+                  <Property name="label">选择系统或功能：</Property>
+                  <Property name="labelWidth">125</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="trigger">lruDropDown</Property>
+                  <Property name="label">选择LRU：</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsLine</Property>
+                  <Property name="dataPath"></Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('uaPhysics').execute();&#xD;
+view.id('uaLine').execute();</ClientEvent>
+                  <Property name="caption">保存</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -140px -260px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgLRU">
+                <Property name="readOnly">true</Property>
+                <Property name="fixedColumnCount">4</Property>
+                <Property name="dataSet">dsPhysics</Property>
+                <Property name="dataPath"></Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="showFilterBar">true</Property>
+                <Property name="rowHeight">22</Property>
+                <RowNumColumn/>
+                <DataColumn name="lru">
+                  <Property name="property">lru</Property>
+                  <Property name="width">100</Property>
+                </DataColumn>
+                <DataColumn name="x">
+                  <Property name="property">x</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="y">
+                  <Property name="property">y</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="z">
+                  <Property name="property">z</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="localsituation">
+                  <Property name="property">localsituation</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="appearance">
+                  <Property name="property">appearance</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="system">
+                  <Property name="property">system</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="feature">
+                  <Property name="property">feature</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="input">
+                  <Property name="property">input</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="output">
+                  <Property name="property">output</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </ControlTab>
+        </TabControl>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <AjaxAction id="ajaRecolor">
+            <Property name="service">faultsManager#reColor</Property>
+          </AjaxAction>
+          <AjaxAction id="showSystem">
+            <Property name="service">systemsPR#showSystem</Property>
+            <Property name="parameter">
+              <Entity>
+                <Property name="ws"></Property>
+              </Entity>
+            </Property>
+          </AjaxAction>
+          <DataSet id="dsSystems">
+            <Property name="dataProvider">systemsPR#querySystems</Property>
+            <Property name="dataType">[Systems]</Property>
+            <Property name="pageSize">20</Property>
+          </DataSet>
+          <ToolBar>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id(&quot;tabcontrol&quot;).set(&quot;currentTab&quot;,1);&#xD;
+view.id('dtSystems').set(&quot;userData&quot;,&quot;1&quot;);&#xD;
+view.id('dsSystems').getData().insert();&#xD;
+view.id('diasystem').show();</ClientEvent>
+              <Property name="icon">url(>skin>common/icons.gif) -280px -100px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('#');&#xD;
+var ft=view.id('dsSystems').getData('!CURRENT_SYSTEM.ft');&#xD;
+	var ua=view.id('uaSystems')&#xD;
+	if(ft.toJSON().length = 0){&#xD;
+		if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+			view.id('dtSystems').set(&quot;userData&quot;,&quot;1&quot;);&#xD;
+			cur.remove();&#xD;
+			ua.execute();&#xD;
+				}); &#xD;
+			} &#xD;
+			}else{&#xD;
+				dorado.MessageBox.alert(&quot;请先删除子节点&quot;);&#xD;
+			}&#xD;
+</ClientEvent>
+              <Property name="icon">url(>skin>common/icons.gif) -300px -100px</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataTree id="dtSystems">
+            <ClientEvent name="onReady">var system = view.get(&quot;@Systems&quot;);&#xD;
+var feature = view.get(&quot;@Feature&quot;);&#xD;
+var LRU = view.get(&quot;@Physics&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_SYSTEM&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == system) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return system;&#xD;
+	});&#xD;
+	dorado.DataPath.registerInterceptor(&quot;CURRENT_FEATURE&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == feature) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return feature;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_LRU&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == LRU) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return LRU;&#xD;
+	});</ClientEvent>
+            <ClientEvent name="onCurrentChange">var dataTree = this.get(&quot;#dtSystems&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType == &quot;system&quot;){&#xD;
+	var cur = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;oid&quot;);&#xD;
+	var name = view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;).get(&quot;system&quot;);&#xD;
+}&#xD;
+else if(NodeType == &quot;feature&quot;){&#xD;
+	var cur = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;oid&quot;);&#xD;
+	var name = view.id('dsSystems').getData(&quot;!CURRENT_FEATURE&quot;).get(&quot;feature&quot;);&#xD;
+}&#xD;
+if(view.id(&quot;dtSystems&quot;).get(&quot;userData&quot;) != &quot;1&quot;){&#xD;
+	view.id(&quot;ajaRecolor&quot;).set(&quot;parameter&quot;,{&#xD;
+	name:name&#xD;
+	});&#xD;
+	view.id(&quot;ajaRecolor&quot;).execute();&#xD;
+	view.id('showSystem').set(&quot;parameter&quot;,{&#xD;
+	ws:cur&#xD;
+	});&#xD;
+	view.id('showSystem').execute();&#xD;
+	view.id(&quot;dsPhysics&quot;).set(&quot;parameter&quot;,{origin:cur});&#xD;
+	view.id(&quot;dsPhysics&quot;).flushAsync();&#xD;
+	view.id(&quot;dsLine&quot;).set(&quot;parameter&quot;,{origin:cur});&#xD;
+	view.id(&quot;dsLine&quot;).flushAsync();&#xD;
+}</ClientEvent>
+            <Property name="dataSet">dsSystems</Property>
+            <Property name="currentNodeDataPath">CURRENT_NODE</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="labelProperty">system</Property>
+                <Property name="name">system</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -260px -100px</Property>
+                <Property name="expandLevel">1</Property>
+                <BindingConfig>
+                  <Property name="childrenProperty">ft</Property>
+                  <Property name="labelProperty">feature</Property>
+                  <Property name="name">feature</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
+                </BindingConfig>
+              </BindingConfig>
+            </BindingConfigs>
+          </DataTree>
+          <Dialog id="diasystem">
+            <Property name="width">400</Property>
+            <Buttons>
+              <Button>
+                <ClientEvent name="onClick">view.id('dtSystems').set(&quot;userData&quot;,null);&#xD;
+view.id(&quot;uaSystems&quot;).execute();&#xD;
+           view.id('diasystem').hide();</ClientEvent>
+                <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                <Property name="caption">确定</Property>
+              </Button>
+              <Button>
+                <ClientEvent name="onClick">&#xD;
+var cur=view.id('dsSystems').getData('#');&#xD;
+				if(cur){&#xD;
+				cur.cancel();&#xD;
+				}&#xD;
+				view.id('diasystem').hide();&#xD;
+				view.id('dtSystems').set(&quot;userData&quot;,null);</ClientEvent>
+                <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                <Property name="caption">取消</Property>
+              </Button>
+            </Buttons>
+            <Children>
+              <AutoForm id="afSystem">
+                <Property name="dataSet">dsSystems</Property>
+                <Property name="dataType">Systems</Property>
+                <Property name="dataPath">!CURRENT_SYSTEM</Property>
+                <AutoFormElement id="f7">
+                  <Property name="property">system</Property>
+                  <Property name="name">system</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement id="f8">
+                  <Property name="property">information</Property>
+                  <Property name="name">information</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+            </Children>
+            <Tools/>
+          </Dialog>
+          <UpdateAction id="uaSystems">
+            <Property name="dataResolver">systemsPR#saveSystems</Property>
+            <UpdateItem>
+              <Property name="dataSet">dsSystems</Property>
+              <Property name="dataPath">!DIRTY_TREE</Property>
+            </UpdateItem>
+          </UpdateAction>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+    <SplitPanel>
+      <Property name="position">500</Property>
+      <MainControl>
+        <Container>
+          <ToolBar>
+            <DataPilot>
+              <Property name="itemCodes">pages</Property>
+              <Property name="dataSet">dsSystems</Property>
+              <Property name="dataPath">CURRENT_SYSTEM.ft</Property>
+            </DataPilot>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id(&quot;tabcontrol&quot;).set(&quot;currentTab&quot;,1);&#xD;
+var cur=view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM&quot;);&#xD;
+view.id('dsSystems').getData(&quot;!CURRENT_SYSTEM.ft&quot;).insert({system:{system:cur.get(&quot;system&quot;)}});&#xD;
+view.id('diafeature').show();</ClientEvent>
+              <Property name="caption">新增</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('!CURRENT_SYSTEM.#ft');&#xD;
+	var ua=view.id('uaSystems')&#xD;
+	if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+			cur.remove();&#xD;
+			ua.execute();&#xD;
+				}); &#xD;
+			} </ClientEvent>
+              <Property name="caption">删除</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataGrid id="dgFeature">
+            <Property name="dataSet">dsSystems</Property>
+            <Property name="dataPath">#.ft</Property>
+            <Property name="dataType">Feature</Property>
+            <Property name="readOnly">true</Property>
+            <RowNumColumn/>
+            <DataColumn>
+              <Property name="property">feature</Property>
+              <Property name="name">feature</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">system</Property>
+              <Property name="property">system.system</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">information</Property>
+              <Property name="property">information</Property>
+              <Editor/>
+            </DataColumn>
+          </DataGrid>
+          <Dialog id="diafeature">
+            <Property name="width">400</Property>
+            <Buttons>
+              <Button>
+                <ClientEvent name="onClick">view.id(&quot;uaSystems&quot;).execute();&#xD;
+view.id('diafeature').hide();</ClientEvent>
+                <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                <Property name="caption">确定</Property>
+              </Button>
+              <Button>
+                <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('!CURRENT_SYSTEM.#ft');&#xD;
+				cur.cancel();&#xD;
+				view.id('diafeature').hide();</ClientEvent>
+                <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                <Property name="caption">取消</Property>
+              </Button>
+            </Buttons>
+            <Children>
+              <AutoForm id="afFeature">
+                <Property name="dataSet">dsSystems</Property>
+                <Property name="dataType">Systems</Property>
+                <Property name="dataPath">!CURRENT_SYSTEM.#ft</Property>
+                <AutoFormElement>
+                  <Property name="property">feature</Property>
+                  <Property name="name">feature</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="property">system.system</Property>
+                  <Property name="name">system</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="property">information</Property>
+                  <Property name="name">information</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+            </Children>
+            <Tools/>
+          </Dialog>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <DataSet id="dsSystems">
+            <Property name="dataProvider">systemsPR#querySystems</Property>
+            <Property name="dataType">[Systems]</Property>
+            <Property name="pageSize">20</Property>
+          </DataSet>
+          <ToolBar>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id(&quot;tabcontrol&quot;).set(&quot;currentTab&quot;,1);&#xD;
+view.id('dtSystems').set(&quot;userData&quot;,&quot;1&quot;);&#xD;
+view.id('dsSystems').getData().insert();&#xD;
+view.id('diasystem').show();</ClientEvent>
+              <Property name="icon">url(>skin>common/icons.gif) -280px -100px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dsSystems').getData('#');&#xD;
+var ft=view.id('dsSystems').getData('!CURRENT_SYSTEM.ft');&#xD;
+	var ua=view.id('uaSystems')&#xD;
+	if(ft.toJSON().length = 0){&#xD;
+		if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+			view.id('dtSystems').set(&quot;userData&quot;,&quot;1&quot;);&#xD;
+			cur.remove();&#xD;
+			ua.execute();&#xD;
+				}); &#xD;
+			} &#xD;
+			}else{&#xD;
+				dorado.MessageBox.alert(&quot;请先删除子节点&quot;);&#xD;
+			}&#xD;
+</ClientEvent>
+              <Property name="icon">url(>skin>common/icons.gif) -300px -100px</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataGrid id="dgSystems">
+            <Property name="dataSet">dsSystems</Property>
+            <Property name="dataPath">#</Property>
+            <Property name="dataType">Systems</Property>
+            <Property name="readOnly">true</Property>
+            <RowNumColumn/>
+            <DataColumn>
+              <Property name="property">feature</Property>
+              <Property name="name">feature</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">system</Property>
+              <Property name="property">system.system</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">information</Property>
+              <Property name="property">information</Property>
+              <Editor/>
+            </DataColumn>
+          </DataGrid>
+          <Dialog id="diasystem">
+            <Property name="width">400</Property>
+            <Buttons>
+              <Button>
+                <ClientEvent name="onClick">view.id('dtSystems').set(&quot;userData&quot;,null);&#xD;
+view.id(&quot;uaSystems&quot;).execute();&#xD;
+           view.id('diasystem').hide();</ClientEvent>
+                <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                <Property name="caption">确定</Property>
+              </Button>
+              <Button>
+                <ClientEvent name="onClick">&#xD;
+var cur=view.id('dsSystems').getData('#');&#xD;
+				if(cur){&#xD;
+				cur.cancel();&#xD;
+				}&#xD;
+				view.id('diasystem').hide();&#xD;
+				view.id('dtSystems').set(&quot;userData&quot;,null);</ClientEvent>
+                <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                <Property name="caption">取消</Property>
+              </Button>
+            </Buttons>
+            <Children>
+              <AutoForm id="afSystem">
+                <Property name="dataSet">dsSystems</Property>
+                <Property name="dataType">Systems</Property>
+                <Property name="dataPath">!CURRENT_SYSTEM</Property>
+                <AutoFormElement id="f7">
+                  <Property name="property">system</Property>
+                  <Property name="name">system</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement id="f8">
+                  <Property name="property">information</Property>
+                  <Property name="name">information</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+            </Children>
+            <Tools/>
+          </Dialog>
+          <UpdateAction id="uaSystems">
+            <Property name="dataResolver">systemsPR#saveSystems</Property>
+            <UpdateItem>
+              <Property name="dataSet">dsSystems</Property>
+              <Property name="dataPath">!DIRTY_TREE</Property>
+            </UpdateItem>
+          </UpdateAction>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+  </View>
+</ViewConfig>

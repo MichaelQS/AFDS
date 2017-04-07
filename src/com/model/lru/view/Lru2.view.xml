@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Lru</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <Property name="title">结构树管理</Property>
+    <UpdateAction id="uaJixing">
+      <Property name="dataResolver">jixingPR#saveJixing</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsJixing</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <DataSet id="dsJixing">
+      <Property name="dataType">[Jixing]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataProvider">jixingPR#queryJixing</Property>
+    </DataSet>
+    <DataSet id="dsAttr">
+      <Property name="dataType">[Attr]</Property>
+      <Property name="dataProvider">attrPR#queryAttr</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <SplitPanel>
+      <Property name="direction">left</Property>
+      <Property name="position">270</Property>
+      <MainControl>
+        <CardBook id="cardBook1">
+          <Panel id="panel1">
+            <Property name="caption">飞机系统管理</Property>
+            <Buttons/>
+            <Children>
+              <ToolBar>
+                <Separator/>
+                <ToolBarLabel>
+                  <Property name="text">飞机系统管理</Property>
+                </ToolBarLabel>
+                <Separator/>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_JIXING&quot;);&#xD;
+view.id('dsJixing').getData(&quot;!CURRENT_JIXING.sy&quot;).insert({jixing:{oid:cur.get(&quot;oid&quot;)}});&#xD;
+view.id('diaSystem').show();</ClientEvent>
+                  <Property name="caption">新增系统</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_JIXING.#sy&quot;);&#xD;
+if(cur){&#xD;
+	view.id(&quot;diaSystem&quot;).show();&#xD;
+}</ClientEvent>
+                  <Property name="caption">修改系统</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsJixing').getData('!CURRENT_JIXING.#sy');&#xD;
+var ua = view.id('uaJixing');&#xD;
+if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此系统?', function(){	&#xD;
+		cur.remove();&#xD;
+		ua.execute();	&#xD;
+		}); &#xD;
+}</ClientEvent>
+                  <Property name="caption">删除系统</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgSystems">
+                <Property name="dataPath">!CURRENT_JIXING.sy</Property>
+                <Property name="dataSet">dsJixing</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="rowHeight">22</Property>
+                <RowNumColumn/>
+                <DataColumn name="jixing">
+                  <Property name="property">jixing.jixing</Property>
+                </DataColumn>
+                <DataColumn name="system">
+                  <Property name="property">system</Property>
+                </DataColumn>
+                <DataColumn name="background">
+                  <Property name="property">background</Property>
+                </DataColumn>
+                <DataColumn name="other">
+                  <Property name="property">other</Property>
+                </DataColumn>
+              </DataGrid>
+            </Children>
+            <Tools/>
+          </Panel>
+          <Panel id="panel2">
+            <Property name="caption">飞机子系统及LRU管理</Property>
+            <Buttons/>
+            <Children>
+              <SplitPanel>
+                <Property name="direction">top</Property>
+                <Property name="position">300</Property>
+                <MainControl>
+                  <Container>
+                    <ToolBar>
+                      <ToolBarLabel>
+                        <Property name="text">LRU目录</Property>
+                      </ToolBarLabel>
+                      <Separator/>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM&quot;);&#xD;
+view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM.lei&quot;).insert({system:{oid:cur.get(&quot;oid&quot;)}});&#xD;
+view.id('diaLei').show();&#xD;
+</ClientEvent>
+                        <Property name="caption">新增LRU</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                      </ToolBarButton>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM.#lei&quot;);&#xD;
+if(cur){&#xD;
+	view.id(&quot;diaLei&quot;).show();&#xD;
+}</ClientEvent>
+                        <Property name="caption">修改LRU</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -200px -0px</Property>
+                      </ToolBarButton>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur = view.id('dsJixing').getData('!CURRENT_SYSTEM.#lei');&#xD;
+var ua = view.id('uaJixing');&#xD;
+if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此LRU类?', function(){	&#xD;
+		cur.remove();&#xD;
+		ua.execute();	&#xD;
+		}); &#xD;
+}</ClientEvent>
+                        <Property name="caption">删除LRU</Property>
+                        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                      </ToolBarButton>
+                    </ToolBar>
+                    <DataGrid id="dgLei">
+                      <Property name="readOnly">true</Property>
+                      <Property name="dataSet">dsJixing</Property>
+                      <Property name="filterMode">serverSide</Property>
+                      <Property name="rowHeight">22</Property>
+                      <Property name="dataPath">!CURRENT_SYSTEM.lei</Property>
+                      <Property name="height">500</Property>
+                      <RowNumColumn/>
+                      <DataColumn name="lei">
+                        <Property name="property">lei</Property>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="name">jixing</Property>
+                        <Property name="property">system.jixing.jixing</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn name="system">
+                        <Property name="property">system.system</Property>
+                      </DataColumn>
+                      <DataColumn name="icon">
+                        <Property name="property">icon</Property>
+                      </DataColumn>
+                      <DataColumn name="other">
+                        <Property name="property">other</Property>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">input</Property>
+                        <Property name="name">input</Property>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">output</Property>
+                        <Property name="name">output</Property>
+                      </DataColumn>
+                    </DataGrid>
+                  </Container>
+                </MainControl>
+                <SideControl>
+                  <Container>
+                    <ToolBar>
+                      <ToolBarLabel>
+                        <Property name="text">功能子系统目录</Property>
+                      </ToolBarLabel>
+                      <Separator/>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM&quot;);&#xD;
+view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM.ft&quot;).insert({system:{oid:cur.get(&quot;oid&quot;)}});&#xD;
+view.id('diaFeature').show();</ClientEvent>
+                        <Property name="caption">新增子系统</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                      </ToolBarButton>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM.#ft&quot;);&#xD;
+if(cur){&#xD;
+	view.id(&quot;diaFeature&quot;).show();&#xD;
+}</ClientEvent>
+                        <Property name="caption">修改子系统</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -200px -0px</Property>
+                      </ToolBarButton>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur = view.id('dsJixing').getData('!CURRENT_SYSTEM.#ft');&#xD;
+var ua = view.id('uaJixing');&#xD;
+if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此功能子系统?', function(){	&#xD;
+		cur.remove();&#xD;
+		ua.execute();	&#xD;
+		}); &#xD;
+}</ClientEvent>
+                        <Property name="caption">删除子系统</Property>
+                        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                      </ToolBarButton>
+                    </ToolBar>
+                    <DataGrid id="dgFeature">
+                      <Property name="readOnly">true</Property>
+                      <Property name="dataSet">dsJixing</Property>
+                      <Property name="dataType">Feature</Property>
+                      <Property name="dataPath">!CURRENT_SYSTEM.ft</Property>
+                      <RowNumColumn/>
+                      <DataColumn>
+                        <Property name="name">jixing</Property>
+                        <Property name="property">system.jixing.jixing</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="name">system</Property>
+                        <Property name="property">system.system</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">feature</Property>
+                        <Property name="name">feature</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">background</Property>
+                        <Property name="name">background</Property>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">other</Property>
+                        <Property name="name">other</Property>
+                      </DataColumn>
+                    </DataGrid>
+                  </Container>
+                </SideControl>
+              </SplitPanel>
+            </Children>
+            <Tools/>
+          </Panel>
+        </CardBook>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <FieldSet id="fsFtype">
+            <Property name="caption">飞机机型管理</Property>
+            <Buttons/>
+            <Children>
+              <ToolBar>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dsJixing').getData().insert();&#xD;
+view.id('diaJixing').show();</ClientEvent>
+                  <Property name="caption">新增机型</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsJixing').getData(&quot;!CURRENT_JIXING&quot;);&#xD;
+if(cur){&#xD;
+	view.id(&quot;diaJixing&quot;).show();&#xD;
+}&#xD;
+</ClientEvent>
+                  <Property name="caption">修改机型</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsJixing').getData('!CURRENT_JIXING');&#xD;
+var ua = view.id('uaJixing');&#xD;
+if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此机型?', function(){	&#xD;
+		cur.remove();&#xD;
+		ua.execute();	&#xD;
+		}); &#xD;
+}</ClientEvent>
+                  <Property name="caption">删除机型</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var dsJixing=view.id(&quot;dsJixing&quot;);&#xD;
+dsJixing.flushAsync();&#xD;
+</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                </ToolBarButton>
+              </ToolBar>
+            </Children>
+          </FieldSet>
+          <DataTree id="dtJixing">
+            <ClientEvent name="onReady">var jixing = view.get(&quot;@Jixing&quot;);&#xD;
+var system = view.get(&quot;@Systems&quot;);&#xD;
+var feature = view.get(&quot;@Feature&quot;);&#xD;
+var lei = view.get(&quot;@Lei&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_JIXING&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == jixing) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return jixing;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_SYSTEM&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == system) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return system;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_FEATURE&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == feature) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return feature;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_LEI&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == lei) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return lei;&#xD;
+	});</ClientEvent>
+            <ClientEvent name="onDataRowClick">&#xD;
+&#xD;
+dataTree = this.get(&quot;#dtJixing&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+&#xD;
+if(NodeType==&quot;jixing&quot;){&#xD;
+	view.id(&quot;dgSystems&quot;).refresh();&#xD;
+}&#xD;
+if(NodeType==&quot;system&quot;){&#xD;
+	view.id(&quot;dgFeature&quot;).refresh();&#xD;
+	view.id(&quot;dgLei&quot;).refresh();&#xD;
+}&#xD;
+</ClientEvent>
+            <ClientEvent name="onCurrentChange">var dataTree1 = this.get(&quot;#dtJixing&quot;);&#xD;
+var NodeType = dataTree1.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+var book=view.id(&quot;cardBook1&quot;);&#xD;
+var index = 0;&#xD;
+if(NodeType==&quot;jixing&quot;){&#xD;
+}&#xD;
+if(NodeType==&quot;system&quot;){&#xD;
+	index = 1;&#xD;
+}&#xD;
+&#xD;
+if(NodeType==&quot;lei&quot;){&#xD;
+	index = 2;&#xD;
+}&#xD;
+&#xD;
+book.set(&quot;currentIndex&quot;, index);</ClientEvent>
+            <Property name="dataSet">dsJixing</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="name">jixing</Property>
+                <Property name="expandLevel">1</Property>
+                <Property name="labelProperty">jixing</Property>
+                <BindingConfig>
+                  <Property name="name">system</Property>
+                  <Property name="childrenProperty">sy</Property>
+                  <Property name="labelProperty">system</Property>
+                </BindingConfig>
+              </BindingConfig>
+            </BindingConfigs>
+          </DataTree>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+    <Dialog id="diaJixing">
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaJixing').execute(function(){&#xD;
+	view.id('diaJixing').hide();&#xD;
+});       </ClientEvent>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afFtypes">
+          <Property name="dataSet">dsJixing</Property>
+          <Property name="dataType">Jixing</Property>
+          <Property name="cols">*</Property>
+          <Property name="dataPath">!CURRENT_JIXING</Property>
+          <AutoFormElement>
+            <Property name="name">jixing</Property>
+            <Property name="property">jixing</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">other</Property>
+            <Property name="property">other</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaSystem">
+      <Property name="width">400</Property>
+      <Property name="caption">系统信息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;uaJixing&quot;).execute();&#xD;
+view.id('diaSystem').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsJixing').getData('!CURRENT_JIXING.sy');&#xD;
+if(cur){&#xD;
+		cur.cancel();&#xD;
+		}&#xD;
+view.id('diaSystem').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSystem">
+          <Property name="dataSet">dsJixing</Property>
+          <Property name="dataType">Systems</Property>
+          <Property name="dataPath">!CURRENT_JIXING.#sy</Property>
+          <AutoFormElement>
+            <Property name="property">system</Property>
+            <Property name="name">system</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">jixing.jixing</Property>
+            <Property name="name">jixing</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">background</Property>
+            <Property name="name">background</Property>
+            <Editor>
+              <Container>
+                <Button>
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaPicture2</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">other</Property>
+            <Property name="name">other</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaLei">
+      <Property name="width">400</Property>
+      <Property name="caption">LRU类信息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;uaJixing&quot;).execute();&#xD;
+view.id('diaLei').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsJixing').getData('!CURRENT_SYSTEM.#lei');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+}&#xD;
+view.id('diaLei').hide();&#xD;
+				</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afLei">
+          <Property name="dataSet">dsJixing</Property>
+          <Property name="dataType">Lei</Property>
+          <Property name="dataPath">!CURRENT_SYSTEM.#lei</Property>
+          <AutoFormElement>
+            <Property name="property">lei</Property>
+            <Property name="name">lei</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">system.system</Property>
+            <Property name="name">system</Property>
+            <Property name="editable">false</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">other</Property>
+            <Property name="name">other</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">icon</Property>
+            <Property name="name">icon</Property>
+            <Editor>
+              <Container>
+                <Button>
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaPicture</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">input</Property>
+            <Property name="name">input</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">output</Property>
+            <Property name="name">output</Property>
+            <Property name="readOnly">false</Property>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaFeature">
+      <Property name="width">400</Property>
+      <Property name="caption">功能子系统信息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;uaJixing&quot;).execute();&#xD;
+view.id('diaFeature').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsJixing').getData('!CURRENT_SYSTEM.#ft');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+}&#xD;
+view.id('diaFeature').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afFeature">
+          <Property name="dataSet">dsJixing</Property>
+          <Property name="dataType">Feature</Property>
+          <Property name="dataPath">!CURRENT_SYSTEM.#ft</Property>
+          <AutoFormElement>
+            <Property name="property">feature</Property>
+            <Property name="name">feature</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">system.system</Property>
+            <Property name="name">system</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">background</Property>
+            <Property name="name">background</Property>
+            <Editor>
+              <Container>
+                <Button>
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaPicture1</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">other</Property>
+            <Property name="name">other</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UploadAction id="uaPicture">
+      <ClientEvent name="onError">var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsJixing').getData('!CURRENT_SYSTEM.#lei');&#xD;
+var app = &quot;images\\&quot; + returnValue;&#xD;
+cur.set(&quot;icon&quot;,app);</ClientEvent>
+      <Property name="fileResolver">upload#process1</Property>
+      <Filters/>
+    </UploadAction>
+    <UploadAction id="uaPicture1">
+      <ClientEvent name="onError">var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsJixing').getData('!CURRENT_SYSTEM.#ft');&#xD;
+var app = &quot;images\\&quot; + returnValue;&#xD;
+cur.set(&quot;background&quot;,app);</ClientEvent>
+      <Property name="fileResolver">upload#process1</Property>
+      <Filters/>
+    </UploadAction>
+    <UploadAction id="uaPicture2">
+      <ClientEvent name="onError">var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsJixing').getData('!CURRENT_JIXING.#sy');&#xD;
+var app = &quot;images\\&quot; + returnValue;&#xD;
+cur.set(&quot;background&quot;,app);</ClientEvent>
+      <Property name="fileResolver">upload#process1</Property>
+      <Filters/>
+    </UploadAction>
+    <Dialog id="diaLRUsensor">
+      <Buttons/>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsAttr</Property>
+          <Property name="dataType">Attr</Property>
+          <Property name="dataPath">!CURRENT_LEI.#attr</Property>
+          <AutoFormElement>
+            <Property name="name">c</Property>
+            <Property name="property">c</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">t</Property>
+            <Property name="property">t</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">b</Property>
+            <Property name="property">b</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">z</Property>
+            <Property name="property">z</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">o</Property>
+            <Property name="property">o</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">m</Property>
+            <Property name="property">m</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">a</Property>
+            <Property name="property">a</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">f</Property>
+            <Property name="property">f</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">s</Property>
+            <Property name="property">s</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">h</Property>
+            <Property name="property">h</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">j</Property>
+            <Property name="property">j</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">u</Property>
+            <Property name="property">u</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">d</Property>
+            <Property name="property">d</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ac</Property>
+            <Property name="property">ac</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">g</Property>
+            <Property name="property">g</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">p</Property>
+            <Property name="property">p</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">q</Property>
+            <Property name="property">q</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">e</Property>
+            <Property name="property">e</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">x</Property>
+            <Property name="property">x</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">r</Property>
+            <Property name="property">r</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">l</Property>
+            <Property name="property">l</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">y</Property>
+            <Property name="property">y</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">w</Property>
+            <Property name="property">w</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">aa</Property>
+            <Property name="property">aa</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ab</Property>
+            <Property name="property">ab</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">i</Property>
+            <Property name="property">i</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">k</Property>
+            <Property name="property">k</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">v</Property>
+            <Property name="property">v</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">n</Property>
+            <Property name="property">n</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">oid</Property>
+            <Property name="property">oid</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">lei</Property>
+            <Property name="property">lei</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

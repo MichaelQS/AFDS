@@ -1,0 +1,10 @@
+@charset "utf-8";
+.d-block-view {
+	border: 0px #A1A1A1 solid;
+	background: #FFFFFF;
+}
+
+.d-block-view .block
+{
+	background: #FFFFFF;
+}

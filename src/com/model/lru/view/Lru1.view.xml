@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Lru</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <SplitPanel>
+      <Property name="direction">left</Property>
+      <Property name="position">260</Property>
+      <MainControl>
+        <SplitPanel>
+          <Property name="direction">bottom</Property>
+          <Property name="position">500</Property>
+          <MainControl>
+            <Container>
+              <ToolBar>
+                <ToolBarLabel>
+                  <Property name="text">系统目录</Property>
+                </ToolBarLabel>
+                <Separator/>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_JIXING&quot;);&#xD;
+view.id('dsJixing').getData(&quot;!CURRENT_JIXING.sy&quot;).insert({jixing:{oid:cur.get(&quot;oid&quot;)}});&#xD;
+view.id('diaSystem').show();</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_JIXING.#sy&quot;);&#xD;
+if(cur){&#xD;
+	view.id(&quot;diaSystem&quot;).show();&#xD;
+}</ClientEvent>
+                  <Property name="caption">修改</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -200px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsJixing').getData('!CURRENT_JIXING.#sy');&#xD;
+var ua = view.id('uaJixing');&#xD;
+if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此系统?', function(){	&#xD;
+		cur.remove();&#xD;
+		ua.execute();	&#xD;
+		}); &#xD;
+}</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgSystems">
+                <Property name="readOnly">true</Property>
+                <Property name="dataSet">dsJixing</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="rowHeight">22</Property>
+                <Property name="dataPath">!CURRENT_JIXING.sy</Property>
+                <RowNumColumn/>
+                <DataColumn name="jixing">
+                  <Property name="property">jixing.jixing</Property>
+                </DataColumn>
+                <DataColumn name="system">
+                  <Property name="property">system</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">background</Property>
+                  <Property name="name">background</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">other</Property>
+                  <Property name="name">other</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </MainControl>
+          <SideControl>
+            <Container>
+              <SplitPanel>
+                <Property name="position">900</Property>
+                <Property name="direction">right</Property>
+                <MainControl>
+                  <Container>
+                    <ToolBar>
+                      <ToolBarLabel>
+                        <Property name="text">功能子系统目录</Property>
+                      </ToolBarLabel>
+                      <Separator/>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM&quot;);&#xD;
+view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM.ft&quot;).insert({system:{oid:cur.get(&quot;oid&quot;)}});&#xD;
+view.id('diaFeature').show();</ClientEvent>
+                        <Property name="caption">新增</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                      </ToolBarButton>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM.#ft&quot;);&#xD;
+if(cur){&#xD;
+	view.id(&quot;diaFeature&quot;).show();&#xD;
+}</ClientEvent>
+                        <Property name="caption">修改</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -200px -0px</Property>
+                      </ToolBarButton>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur = view.id('dsJixing').getData('!CURRENT_SYSTEM.#ft');&#xD;
+var ua = view.id('uaJixing');&#xD;
+if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此功能子系统?', function(){	&#xD;
+		cur.remove();&#xD;
+		ua.execute();	&#xD;
+		}); &#xD;
+}</ClientEvent>
+                        <Property name="caption">删除</Property>
+                        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                      </ToolBarButton>
+                    </ToolBar>
+                    <DataGrid id="dgFeature">
+                      <Property name="readOnly">true</Property>
+                      <Property name="dataSet">dsJixing</Property>
+                      <Property name="dataType">Feature</Property>
+                      <Property name="dataPath">!CURRENT_SYSTEM.ft</Property>
+                      <RowNumColumn/>
+                      <DataColumn>
+                        <Property name="name">jixing</Property>
+                        <Property name="property">system.jixing.jixing</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="name">system</Property>
+                        <Property name="property">system.system</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">feature</Property>
+                        <Property name="name">feature</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">background</Property>
+                        <Property name="name">background</Property>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">other</Property>
+                        <Property name="name">other</Property>
+                      </DataColumn>
+                    </DataGrid>
+                  </Container>
+                </MainControl>
+                <SideControl>
+                  <Container>
+                    <ToolBar>
+                      <ToolBarLabel>
+                        <Property name="text">LRU目录</Property>
+                      </ToolBarLabel>
+                      <Separator/>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM&quot;);&#xD;
+view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM.lei&quot;).insert({system:{oid:cur.get(&quot;oid&quot;)}});&#xD;
+view.id('diaLei').show();&#xD;
+</ClientEvent>
+                        <Property name="caption">新增</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                      </ToolBarButton>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur=view.id('dsJixing').getData(&quot;!CURRENT_SYSTEM.#lei&quot;);&#xD;
+if(cur){&#xD;
+	view.id(&quot;diaLei&quot;).show();&#xD;
+}</ClientEvent>
+                        <Property name="caption">修改</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -200px -0px</Property>
+                      </ToolBarButton>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var cur = view.id('dsJixing').getData('!CURRENT_SYSTEM.#lei');&#xD;
+var ua = view.id('uaJixing');&#xD;
+if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此LRU类?', function(){	&#xD;
+		cur.remove();&#xD;
+		ua.execute();	&#xD;
+		}); &#xD;
+}</ClientEvent>
+                        <Property name="caption">删除</Property>
+                        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                      </ToolBarButton>
+                    </ToolBar>
+                    <DataGrid id="dgLei">
+                      <Property name="readOnly">true</Property>
+                      <Property name="dataSet">dsJixing</Property>
+                      <Property name="filterMode">serverSide</Property>
+                      <Property name="rowHeight">22</Property>
+                      <Property name="dataPath">!CURRENT_SYSTEM.lei</Property>
+                      <Property name="height">500</Property>
+                      <RowNumColumn/>
+                      <DataColumn name="lei">
+                        <Property name="property">lei</Property>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="name">jixing</Property>
+                        <Property name="property">system.jixing.jixing</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn name="system">
+                        <Property name="property">system.system</Property>
+                      </DataColumn>
+                      <DataColumn name="icon">
+                        <Property name="property">icon</Property>
+                      </DataColumn>
+                      <DataColumn name="other">
+                        <Property name="property">other</Property>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">input</Property>
+                        <Property name="name">input</Property>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">output</Property>
+                        <Property name="name">output</Property>
+                      </DataColumn>
+                    </DataGrid>
+                  </Container>
+                </SideControl>
+              </SplitPanel>
+            </Container>
+          </SideControl>
+        </SplitPanel>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <DataSet id="dsJixing">
+            <Property name="dataProvider">jixingPR#queryJixing</Property>
+            <Property name="dataType">[Jixing]</Property>
+            <Property name="pageSize">20</Property>
+          </DataSet>
+          <ToolBar>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id('dsJixing').getData().insert();&#xD;
+view.id('diaJixing').show();&#xD;
+</ClientEvent>
+              <Property name="caption">新增机型</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur = view.id('dsJixing').getData(&quot;!CURRENT_JIXING&quot;);&#xD;
+if(cur){&#xD;
+	view.id(&quot;diaJixing&quot;).show();&#xD;
+}&#xD;
+</ClientEvent>
+              <Property name="caption">修改机型</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -200px -0px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur = view.id('dsJixing').getData('!CURRENT_JIXING');&#xD;
+var ua = view.id('uaJixing');&#xD;
+if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此机型?', function(){	&#xD;
+		cur.remove();&#xD;
+		ua.execute();	&#xD;
+		}); &#xD;
+}</ClientEvent>
+              <Property name="caption">删除机型</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <ToolBar>
+            <ToolBarLabel>
+              <Property name="text">飞机结构树</Property>
+            </ToolBarLabel>
+          </ToolBar>
+          <DataTree id="dtJixing">
+            <ClientEvent name="onReady">var jixing = view.get(&quot;@Jixing&quot;);&#xD;
+var system = view.get(&quot;@Systems&quot;);&#xD;
+var feature = view.get(&quot;@Feature&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_JIXING&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == jixing) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return jixing;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_SYSTEM&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == system) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return system;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_FEATURE&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == feature) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return feature;&#xD;
+	});</ClientEvent>
+            <ClientEvent name="onDataRowClick">var dataTree = this.get(&quot;#dtJixing&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType==&quot;jixing&quot;){&#xD;
+	view.id(&quot;dgSystems&quot;).refresh();&#xD;
+}&#xD;
+if(NodeType==&quot;system&quot;){&#xD;
+	view.id(&quot;dgFeature&quot;).refresh();&#xD;
+	view.id(&quot;dgLei&quot;).refresh();&#xD;
+}</ClientEvent>
+            <Property name="dataSet">dsJixing</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                <Property name="expandLevel">1</Property>
+                <Property name="labelProperty">jixing</Property>
+                <Property name="name">jixing</Property>
+                <BindingConfig>
+                  <Property name="expandLevel">1</Property>
+                  <Property name="childrenProperty">sy</Property>
+                  <Property name="labelProperty">system</Property>
+                  <Property name="name">system</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -200px -80px</Property>
+                  <BindingConfig>
+                    <Property name="childrenProperty">lei</Property>
+                    <Property name="expandLevel">1</Property>
+                    <Property name="labelProperty">lei</Property>
+                    <Property name="name">lei</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  </BindingConfig>
+                </BindingConfig>
+              </BindingConfig>
+            </BindingConfigs>
+          </DataTree>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+    <Dialog id="diaLei">
+      <Property name="width">400</Property>
+      <Property name="caption">LRU类信息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;uaJixing&quot;).execute();&#xD;
+view.id('diaLei').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsJixing').getData('!CURRENT_SYSTEM.#lei');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+}&#xD;
+view.id('diaLei').hide();&#xD;
+				</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afLei">
+          <Property name="dataSet">dsJixing</Property>
+          <Property name="dataType">Lei</Property>
+          <Property name="dataPath">!CURRENT_SYSTEM.#lei</Property>
+          <AutoFormElement>
+            <Property name="property">lei</Property>
+            <Property name="name">lei</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">system.system</Property>
+            <Property name="name">system</Property>
+            <Property name="editable">false</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">other</Property>
+            <Property name="name">other</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">icon</Property>
+            <Property name="name">icon</Property>
+            <Editor>
+              <Container>
+                <Button>
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaPicture</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">input</Property>
+            <Property name="name">input</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">output</Property>
+            <Property name="name">output</Property>
+            <Property name="readOnly">false</Property>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaSystem">
+      <Property name="width">400</Property>
+      <Property name="caption">系统信息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;uaJixing&quot;).execute();&#xD;
+view.id('diaSystem').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsJixing').getData('!CURRENT_JIXING.sy');&#xD;
+if(cur){&#xD;
+		cur.cancel();&#xD;
+		}&#xD;
+view.id('diaSystem').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSystem">
+          <Property name="dataSet">dsJixing</Property>
+          <Property name="dataType">Systems</Property>
+          <Property name="dataPath">!CURRENT_JIXING.#sy</Property>
+          <AutoFormElement>
+            <Property name="property">system</Property>
+            <Property name="name">system</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">jixing.jixing</Property>
+            <Property name="name">jixing</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">background</Property>
+            <Property name="name">background</Property>
+            <Editor>
+              <Container>
+                <Button>
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaPicture2</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">other</Property>
+            <Property name="name">other</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaJixing">
+      <Property name="width">400</Property>
+      <Property name="caption">机型信息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;uaJixing&quot;).execute();&#xD;
+view.id('diaJixing').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsJixing').getData('#');&#xD;
+if(cur){&#xD;
+		cur.cancel();&#xD;
+		}&#xD;
+view.id('diaJixing').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afJixing">
+          <Property name="dataSet">dsJixing</Property>
+          <Property name="dataType">Jixing</Property>
+          <Property name="dataPath">!CURRENT_JIXING</Property>
+          <AutoFormElement>
+            <Property name="name">jixing</Property>
+            <Property name="property">jixing</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">other</Property>
+            <Property name="property">other</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaFeature">
+      <Property name="width">400</Property>
+      <Property name="caption">功能子系统信息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;uaJixing&quot;).execute();&#xD;
+view.id('diaFeature').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsJixing').getData('!CURRENT_SYSTEM.#ft');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+}&#xD;
+view.id('diaFeature').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afFeature">
+          <Property name="dataSet">dsJixing</Property>
+          <Property name="dataType">Feature</Property>
+          <Property name="dataPath">!CURRENT_SYSTEM.#ft</Property>
+          <AutoFormElement>
+            <Property name="property">feature</Property>
+            <Property name="name">feature</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">system.system</Property>
+            <Property name="name">system</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">background</Property>
+            <Property name="name">background</Property>
+            <Editor>
+              <Container>
+                <Button>
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaPicture1</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">other</Property>
+            <Property name="name">other</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UploadAction id="uaPicture">
+      <ClientEvent name="onError">var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsJixing').getData('!CURRENT_SYSTEM.#lei');&#xD;
+var app = &quot;images\\&quot; + returnValue;&#xD;
+cur.set(&quot;icon&quot;,app);</ClientEvent>
+      <Property name="fileResolver">upload#process1</Property>
+      <Filters/>
+    </UploadAction>
+    <UploadAction id="uaPicture1">
+      <ClientEvent name="onError">var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsJixing').getData('!CURRENT_SYSTEM.#ft');&#xD;
+var app = &quot;images\\&quot; + returnValue;&#xD;
+cur.set(&quot;background&quot;,app);</ClientEvent>
+      <Property name="fileResolver">upload#process1</Property>
+      <Filters/>
+    </UploadAction>
+    <UploadAction id="uaPicture2">
+      <ClientEvent name="onError">var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsJixing').getData('!CURRENT_JIXING.#sy');&#xD;
+var app = &quot;images\\&quot; + returnValue;&#xD;
+cur.set(&quot;background&quot;,app);</ClientEvent>
+      <Property name="fileResolver">upload#process1</Property>
+      <Filters/>
+    </UploadAction>
+    <UpdateAction id="uaJixing">
+      <Property name="dataResolver">jixingPR#saveJixing</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsJixing</Property>
+        <Property name="dataPath">!DIRTY_TREE</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>

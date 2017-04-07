@@ -1,0 +1,66 @@
+
+
+
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Road</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    </Model>
+  <View>
+  
+<DataSet id="dsRoad">
+	  <Property name="dataType">[Road]</Property>
+	  <Property name="dataProvider">roadPR#queryRoad</Property>
+	  <Property name="pageSize">20</Property>
+	  </DataSet><UpdateAction id="uaRoad">
+  <Property name="dataResolver">roadPR#saveRoad</Property>
+  <UpdateItem>
+     <Property name="dataSet">dsRoad</Property>
+  </UpdateItem>
+</UpdateAction>
+<ToolBar>
+<DataPilot>
+
+	<Property name="itemCodes">pages,+,-,x</Property>
+	<Property name="dataSet">dsRoad</Property>
+	<Property name="dataPath"></Property>
+</DataPilot>
+
+
+<ToolBarButton>
+  <Property name="caption">数据保存</Property>
+  <Property name="action">uaRoad</Property>
+  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+</ToolBarButton> 
+</ToolBar>
+<DataGrid id="dgRoad">
+	<RowNumColumn/>
+	<DataColumn name="frequency">
+	<Property name="property">frequency</Property>
+               	</DataColumn>
+	<DataColumn name="time">
+	<Property name="property">time</Property>
+               	</DataColumn>
+	<DataColumn name="number">
+	<Property name="property">number</Property>
+               	</DataColumn>
+	<DataColumn name="address">
+	<Property name="property">address</Property>
+               	</DataColumn>
+	<DataColumn name="fuser">
+	<Property name="property">fuser</Property>
+               	</DataColumn>
+	<DataColumn name="roadid">
+	<Property name="property">roadid</Property>
+               	</DataColumn>
+	<Property name="dataSet">dsRoad</Property>
+	<Property name="dataPath"></Property>
+	  	<Property name="filterMode">serverSide</Property>
+	<Property name="showFilterBar">true</Property>
+  	<Property name="rowHeight">22</Property>
+	</DataGrid>   
+     </View>
+</ViewConfig>

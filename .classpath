@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Program Files (x86)/Gensym/g2-2011/javalink/bin/x64"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Program Files/Gensym/g2-2011/javalink/classes/beanbuilder.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Gensym/g2-2011/javalink/classes/classtools.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Gensym/g2-2011/javalink/classes/core.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Gensym/g2-2011/javalink/classes/javalink.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

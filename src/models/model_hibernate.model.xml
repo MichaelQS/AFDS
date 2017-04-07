@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="Feature">
+    <Property name="matchType">com.model.domain.Feature</Property>
+    <PropertyDef name="feature">
+      <Property name="dataType">String</Property>
+      <Property name="label">功能</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="background">
+      <Property name="dataType">String</Property>
+      <Property name="label">背景图片</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="system">
+      <Property name="dataType">Systems</Property>
+      <Property name="label">系统</Property>
+    </PropertyDef>
+    <PropertyDef name="other">
+      <Property name="dataType">String</Property>
+      <Property name="label">备注</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Systems" meta="x:768;y:270">
+    <Property name="matchType">com.model.domain.Systems</Property>
+    <PropertyDef name="system">
+      <Property name="dataType">String</Property>
+      <Property name="label">系统</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="other">
+      <Property name="dataType">String</Property>
+      <Property name="label">备注</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <Reference name="ft">
+      <Property name="dataProvider">featurePR#queryFeature</Property>
+      <Property name="dataType">[Feature]</Property>
+      <Property name="label">ft</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="oid">$${this.oid}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+    <Reference name="lei">
+      <Property name="dataProvider">leiPR#queryLei</Property>
+      <Property name="dataType">[Lei]</Property>
+      <Property name="label">lei</Property>
+      <Property name="pageSize">99</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="oid">$${this.oid}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+    <PropertyDef name="jixing">
+      <Property name="dataType">Jixing</Property>
+      <Property name="label">机型</Property>
+    </PropertyDef>
+    <PropertyDef name="background">
+      <Property name="dataType">String</Property>
+      <Property name="label">背景图片</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Physics" meta="x:105;y:37">
+    <Property name="matchType">com.model.domain.Physics</Property>
+    <PropertyDef name="z">
+      <Property name="dataType">Double</Property>
+      <Property name="label">z轴</Property>
+    </PropertyDef>
+    <PropertyDef name="input">
+      <Property name="dataType">String</Property>
+      <Property name="label">输入</Property>
+    </PropertyDef>
+    <PropertyDef name="feature">
+      <Property name="dataType">String</Property>
+      <Property name="label">功能</Property>
+    </PropertyDef>
+    <PropertyDef name="system">
+      <Property name="dataType">String</Property>
+      <Property name="label">系统</Property>
+    </PropertyDef>
+    <PropertyDef name="x">
+      <Property name="dataType">Double</Property>
+      <Property name="label">x轴</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="localsituation">
+      <Property name="dataType">String</Property>
+      <Property name="label">仓位</Property>
+    </PropertyDef>
+    <PropertyDef name="lru">
+      <Property name="dataType">String</Property>
+      <Property name="label">LRU名称</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="y">
+      <Property name="dataType">Double</Property>
+      <Property name="label">y轴</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="output">
+      <Property name="dataType">String</Property>
+      <Property name="label">输出</Property>
+    </PropertyDef>
+    <PropertyDef name="appearance">
+      <Property name="dataType">String</Property>
+      <Property name="label">外观</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="origin">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Faults" meta="x:120;y:195">
+    <Property name="matchType">com.model.domain.Faults</Property>
+    <PropertyDef name="classes">
+      <Property name="dataType">String</Property>
+      <Property name="label">所属类</Property>
+    </PropertyDef>
+    <PropertyDef name="feature">
+      <Property name="dataType">String</Property>
+      <Property name="label">功能</Property>
+    </PropertyDef>
+    <PropertyDef name="parentnode">
+      <Property name="dataType">String</Property>
+      <Property name="label">parentnode</Property>
+    </PropertyDef>
+    <PropertyDef name="event">
+      <Property name="dataType">String</Property>
+      <Property name="label">故障事件</Property>
+    </PropertyDef>
+    <PropertyDef name="system">
+      <Property name="dataType">String</Property>
+      <Property name="label">系统</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="roadid">
+      <Property name="dataType">Road</Property>
+      <Property name="label">路径id</Property>
+    </PropertyDef>
+    <PropertyDef name="origin">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="road">
+      <Property name="dataType">String</Property>
+      <Property name="label">road</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Parameter" meta="x:30;y:465">
+    <Property name="matchType">com.model.domain.Parameter</Property>
+    <PropertyDef name="roadid">
+      <Property name="dataType">String</Property>
+      <Property name="label">路径id</Property>
+    </PropertyDef>
+    <PropertyDef name="no">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">序号</Property>
+    </PropertyDef>
+    <PropertyDef name="classes">
+      <Property name="dataType">String</Property>
+      <Property name="label">所属类</Property>
+    </PropertyDef>
+    <PropertyDef name="origin">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Tfaults" meta="x:33;y:286">
+    <Property name="matchType">com.model.domain.Tfaults</Property>
+    <PropertyDef name="origin">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="no">
+      <Property name="dataType">String</Property>
+      <Property name="label">序号</Property>
+    </PropertyDef>
+    <PropertyDef name="classes">
+      <Property name="dataType">String</Property>
+      <Property name="label">所属类</Property>
+    </PropertyDef>
+    <PropertyDef name="event">
+      <Property name="dataType">String</Property>
+      <Property name="label">故障事件</Property>
+    </PropertyDef>
+    <PropertyDef name="roadid">
+      <Property name="dataType">String</Property>
+      <Property name="label">路径id</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Param" meta="x:270;y:328">
+    <Property name="matchType">com.model.domain.Param</Property>
+    <PropertyDef name="e">
+      <Property name="dataType">String</Property>
+      <Property name="label">e</Property>
+    </PropertyDef>
+    <PropertyDef name="p">
+      <Property name="dataType">String</Property>
+      <Property name="label">p</Property>
+    </PropertyDef>
+    <PropertyDef name="i">
+      <Property name="dataType">String</Property>
+      <Property name="label">i</Property>
+    </PropertyDef>
+    <PropertyDef name="l">
+      <Property name="dataType">String</Property>
+      <Property name="label">l</Property>
+    </PropertyDef>
+    <PropertyDef name="u">
+      <Property name="dataType">String</Property>
+      <Property name="label">u</Property>
+    </PropertyDef>
+    <PropertyDef name="v">
+      <Property name="dataType">String</Property>
+      <Property name="label">v</Property>
+    </PropertyDef>
+    <PropertyDef name="n">
+      <Property name="dataType">String</Property>
+      <Property name="label">n</Property>
+    </PropertyDef>
+    <PropertyDef name="g">
+      <Property name="dataType">String</Property>
+      <Property name="label">g</Property>
+    </PropertyDef>
+    <PropertyDef name="h">
+      <Property name="dataType">String</Property>
+      <Property name="label">h</Property>
+    </PropertyDef>
+    <PropertyDef name="y">
+      <Property name="dataType">String</Property>
+      <Property name="label">y</Property>
+    </PropertyDef>
+    <PropertyDef name="t">
+      <Property name="dataType">String</Property>
+      <Property name="label">t</Property>
+    </PropertyDef>
+    <PropertyDef name="r">
+      <Property name="dataType">String</Property>
+      <Property name="label">r</Property>
+    </PropertyDef>
+    <PropertyDef name="j">
+      <Property name="dataType">String</Property>
+      <Property name="label">j</Property>
+    </PropertyDef>
+    <PropertyDef name="s">
+      <Property name="dataType">String</Property>
+      <Property name="label">s</Property>
+    </PropertyDef>
+    <PropertyDef name="w">
+      <Property name="dataType">String</Property>
+      <Property name="label">w</Property>
+    </PropertyDef>
+    <PropertyDef name="z">
+      <Property name="dataType">String</Property>
+      <Property name="label">z</Property>
+    </PropertyDef>
+    <PropertyDef name="c">
+      <Property name="dataType">String</Property>
+      <Property name="label">c</Property>
+    </PropertyDef>
+    <PropertyDef name="o">
+      <Property name="dataType">String</Property>
+      <Property name="label">o</Property>
+    </PropertyDef>
+    <PropertyDef name="x">
+      <Property name="dataType">String</Property>
+      <Property name="label">x</Property>
+    </PropertyDef>
+    <PropertyDef name="f">
+      <Property name="dataType">String</Property>
+      <Property name="label">f</Property>
+    </PropertyDef>
+    <PropertyDef name="a">
+      <Property name="dataType">String</Property>
+      <Property name="label">a</Property>
+    </PropertyDef>
+    <PropertyDef name="d">
+      <Property name="dataType">String</Property>
+      <Property name="label">d</Property>
+    </PropertyDef>
+    <PropertyDef name="m">
+      <Property name="dataType">String</Property>
+      <Property name="label">m</Property>
+    </PropertyDef>
+    <PropertyDef name="b">
+      <Property name="dataType">String</Property>
+      <Property name="label">b</Property>
+    </PropertyDef>
+    <PropertyDef name="k">
+      <Property name="dataType">String</Property>
+      <Property name="label">k</Property>
+    </PropertyDef>
+    <PropertyDef name="q">
+      <Property name="dataType">String</Property>
+      <Property name="label">q</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">BigDecimal</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Attr" meta="x:470;y:286">
+    <Property name="matchType">com.model.domain.Attr</Property>
+    <PropertyDef name="c">
+      <Property name="dataType">String</Property>
+      <Property name="label">Datapoint Tag Type</Property>
+    </PropertyDef>
+    <PropertyDef name="t">
+      <Property name="dataType">String</Property>
+      <Property name="label">Rate High</Property>
+    </PropertyDef>
+    <PropertyDef name="b">
+      <Property name="dataType">String</Property>
+      <Property name="label">Default Update Interval</Property>
+    </PropertyDef>
+    <PropertyDef name="z">
+      <Property name="dataType">String</Property>
+      <Property name="label">OPC Item ID</Property>
+    </PropertyDef>
+    <PropertyDef name="o">
+      <Property name="dataType">String</Property>
+      <Property name="label">Target Low</Property>
+    </PropertyDef>
+    <PropertyDef name="m">
+      <Property name="dataType">String</Property>
+      <Property name="label">Target High-High</Property>
+    </PropertyDef>
+    <PropertyDef name="a">
+      <Property name="dataType">String</Property>
+      <Property name="label">Datapoint Name</Property>
+    </PropertyDef>
+    <PropertyDef name="f">
+      <Property name="dataType">String</Property>
+      <Property name="label">Related Process Map Datapoint Names</Property>
+    </PropertyDef>
+    <PropertyDef name="s">
+      <Property name="dataType">String</Property>
+      <Property name="label">Rate High-High</Property>
+    </PropertyDef>
+    <PropertyDef name="h">
+      <Property name="dataType">String</Property>
+      <Property name="label">Min-Max High-High</Property>
+    </PropertyDef>
+    <PropertyDef name="j">
+      <Property name="dataType">String</Property>
+      <Property name="label">Min-Max Low</Property>
+    </PropertyDef>
+    <PropertyDef name="u">
+      <Property name="dataType">String</Property>
+      <Property name="label">Rate Low</Property>
+    </PropertyDef>
+    <PropertyDef name="d">
+      <Property name="dataType">String</Property>
+      <Property name="label">Datapoint Type</Property>
+    </PropertyDef>
+    <PropertyDef name="ac">
+      <Property name="dataType">String</Property>
+      <Property name="label">Low Process Limit</Property>
+    </PropertyDef>
+    <PropertyDef name="g">
+      <Property name="dataType">String</Property>
+      <Property name="label">Min-Max Enabled</Property>
+    </PropertyDef>
+    <PropertyDef name="p">
+      <Property name="dataType">String</Property>
+      <Property name="label">Target Low-Low</Property>
+    </PropertyDef>
+    <PropertyDef name="q">
+      <Property name="dataType">String</Property>
+      <Property name="label">Target Target-Value</Property>
+    </PropertyDef>
+    <PropertyDef name="e">
+      <Property name="dataType">String</Property>
+      <Property name="label">Datapoint Units</Property>
+    </PropertyDef>
+    <PropertyDef name="x">
+      <Property name="dataType">String</Property>
+      <Property name="label">Animation Enabled</Property>
+    </PropertyDef>
+    <PropertyDef name="r">
+      <Property name="dataType">String</Property>
+      <Property name="label">Rate Enabled</Property>
+    </PropertyDef>
+    <PropertyDef name="l">
+      <Property name="dataType">String</Property>
+      <Property name="label">Target Enabled</Property>
+    </PropertyDef>
+    <PropertyDef name="y">
+      <Property name="dataType">String</Property>
+      <Property name="label">Animation Object Name</Property>
+    </PropertyDef>
+    <PropertyDef name="w">
+      <Property name="dataType">String</Property>
+      <Property name="label">Rate Inerval</Property>
+    </PropertyDef>
+    <PropertyDef name="aa">
+      <Property name="dataType">String</Property>
+      <Property name="label">OPC Access Path</Property>
+    </PropertyDef>
+    <PropertyDef name="ab">
+      <Property name="dataType">String</Property>
+      <Property name="label">High Process Limit</Property>
+    </PropertyDef>
+    <PropertyDef name="i">
+      <Property name="dataType">String</Property>
+      <Property name="label">Min-Max High</Property>
+    </PropertyDef>
+    <PropertyDef name="k">
+      <Property name="dataType">String</Property>
+      <Property name="label">Min-Max Low-Low</Property>
+    </PropertyDef>
+    <PropertyDef name="v">
+      <Property name="dataType">String</Property>
+      <Property name="label">Rate Low-Low</Property>
+    </PropertyDef>
+    <PropertyDef name="n">
+      <Property name="dataType">String</Property>
+      <Property name="label">Target High</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">BigDecimal</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="lei">
+      <Property name="dataType">Lei</Property>
+      <Property name="label">类</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Repair" meta="x:90;y:328">
+    <Property name="matchType">com.model.domain.Repair</Property>
+    <PropertyDef name="event">
+      <Property name="dataType">String</Property>
+      <Property name="label">路径</Property>
+    </PropertyDef>
+    <PropertyDef name="method">
+      <Property name="dataType">String</Property>
+      <Property name="label">维修方法</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="tool">
+      <Property name="dataType">String</Property>
+      <Property name="label">维修工具</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="location">
+      <Property name="dataType">String</Property>
+      <Property name="label">发生位置</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Repairresult" meta="x:225;y:165">
+    <Property name="matchType">com.model.domain.Repairresult</Property>
+    <PropertyDef name="method">
+      <Property name="dataType">String</Property>
+      <Property name="label">维修方法</Property>
+    </PropertyDef>
+    <PropertyDef name="tool">
+      <Property name="dataType">String</Property>
+      <Property name="label">维修工具</Property>
+    </PropertyDef>
+    <PropertyDef name="event">
+      <Property name="dataType">String</Property>
+      <Property name="label">故障事件</Property>
+    </PropertyDef>
+    <PropertyDef name="location">
+      <Property name="dataType">String</Property>
+      <Property name="label">故障位置</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="dataType">String</Property>
+      <Property name="label">id</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Jiance" meta="x:180;y:45">
+    <Property name="matchType">com.model.domain.Jiance</Property>
+    <PropertyDef name="event">
+      <Property name="dataType">String</Property>
+      <Property name="label">故障事件</Property>
+    </PropertyDef>
+    <PropertyDef name="classes">
+      <Property name="dataType">String</Property>
+      <Property name="label">所属类</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Classes" meta="x:675;y:113">
+    <Property name="matchType">com.model.domain.Classes</Property>
+    <PropertyDef name="system">
+      <Property name="dataType">String</Property>
+      <Property name="label">系统</Property>
+    </PropertyDef>
+    <PropertyDef name="icon">
+      <Property name="dataType">String</Property>
+      <Property name="label">图标</Property>
+    </PropertyDef>
+    <PropertyDef name="classes">
+      <Property name="dataType">String</Property>
+      <Property name="label">类名</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Detect" meta="x:540;y:345">
+    <Property name="matchType">com.model.domain.Detect</Property>
+    <PropertyDef name="diagram">
+      <Property name="dataType">String</Property>
+      <Property name="label">检测模型</Property>
+    </PropertyDef>
+    <PropertyDef name="type">
+      <Property name="dataType">String</Property>
+      <Property name="label">类型</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="dataType">String</Property>
+      <Property name="label">所属系统</Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property name="dataType">String</Property>
+      <Property name="label">故障事件</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="datapoint">
+      <Property name="dataType">String</Property>
+      <Property name="label">数据点</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Line" meta="x:195;y:300">
+    <Property name="matchType">com.model.domain.Line</Property>
+    <PropertyDef name="toport">
+      <Property name="dataType">String</Property>
+      <Property name="label">toport</Property>
+    </PropertyDef>
+    <PropertyDef name="feature">
+      <Property name="dataType">String</Property>
+      <Property name="label">feature</Property>
+    </PropertyDef>
+    <PropertyDef name="line">
+      <Property name="dataType">String</Property>
+      <Property name="label">line</Property>
+    </PropertyDef>
+    <PropertyDef name="tol">
+      <Property name="dataType">String</Property>
+      <Property name="label">tol</Property>
+    </PropertyDef>
+    <PropertyDef name="fromport">
+      <Property name="dataType">String</Property>
+      <Property name="label">fromport</Property>
+    </PropertyDef>
+    <PropertyDef name="system">
+      <Property name="dataType">String</Property>
+      <Property name="label">system</Property>
+    </PropertyDef>
+    <PropertyDef name="froml">
+      <Property name="dataType">String</Property>
+      <Property name="label">froml</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="points">
+      <Property name="dataType">String</Property>
+      <Property name="label">points</Property>
+    </PropertyDef>
+    <PropertyDef name="icon">
+      <Property name="dataType">String</Property>
+      <Property name="label">针脚信息</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="dataType">String</Property>
+      <Property name="label">id</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Lru" meta="x:915;y:116">
+    <Property name="matchType">com.model.domain.Lru</Property>
+    <PropertyDef name="loc">
+      <Property name="dataType">String</Property>
+      <Property name="label">位置</Property>
+    </PropertyDef>
+    <PropertyDef name="source">
+      <Property name="dataType">String</Property>
+      <Property name="label">图片</Property>
+    </PropertyDef>
+    <PropertyDef name="text">
+      <Property name="dataType">String</Property>
+      <Property name="label">LRU</Property>
+    </PropertyDef>
+    <PropertyDef name="system">
+      <Property name="dataType">String</Property>
+      <Property name="label">系统</Property>
+    </PropertyDef>
+    <PropertyDef name="feature">
+      <Property name="dataType">String</Property>
+      <Property name="label">功能</Property>
+    </PropertyDef>
+    <PropertyDef name="ke">
+      <Property name="dataType">String</Property>
+      <Property name="label">ke</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="input">
+      <Property name="dataType">String</Property>
+      <Property name="label">输入</Property>
+    </PropertyDef>
+    <PropertyDef name="output">
+      <Property name="dataType">String</Property>
+      <Property name="label">输出</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="dataType">String</Property>
+      <Property name="label">id</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Lei" meta="x:780;y:113">
+    <Property name="matchType">com.model.domain.Lei</Property>
+    <PropertyDef name="system">
+      <Property name="dataType">Systems</Property>
+      <Property name="label">系统</Property>
+    </PropertyDef>
+    <PropertyDef name="lei">
+      <Property name="dataType">String</Property>
+      <Property name="label">LRU</Property>
+    </PropertyDef>
+    <PropertyDef name="other">
+      <Property name="dataType">String</Property>
+      <Property name="label">备注</Property>
+    </PropertyDef>
+    <PropertyDef name="icon">
+      <Property name="dataType">String</Property>
+      <Property name="label">图像</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="input">
+      <Property name="dataType">String</Property>
+      <Property name="label">输入</Property>
+    </PropertyDef>
+    <PropertyDef name="output">
+      <Property name="dataType">String</Property>
+      <Property name="label">输出</Property>
+    </PropertyDef>
+    <Reference name="attr">
+      <Property name="dataType">[Attr]</Property>
+      <Property name="dataProvider">attrPR#queryAttr</Property>
+      <Property name="label">attr</Property>
+      <Property name="pageSize">99</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="oid">$${this.oid}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+  </DataType>
+  <DataType name="Road" meta="x:369;y:37">
+    <Property name="matchType">com.model.domain.Road</Property>
+    <PropertyDef name="frequency">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">次数</Property>
+      <Property name="defaultValue">1</Property>
+    </PropertyDef>
+    <PropertyDef name="time">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">时间</Property>
+    </PropertyDef>
+    <PropertyDef name="number">
+      <Property name="dataType">String</Property>
+      <Property name="label">编号</Property>
+    </PropertyDef>
+    <PropertyDef name="address">
+      <Property name="dataType">String</Property>
+      <Property name="label">地点</Property>
+    </PropertyDef>
+    <PropertyDef name="fuser">
+      <Property name="dataType">String</Property>
+      <Property name="label">用户</Property>
+    </PropertyDef>
+    <PropertyDef name="roadid">
+      <Property name="dataType">String</Property>
+      <Property name="label">roadid</Property>
+    </PropertyDef>
+    <Reference name="fault">
+      <Property name="dataProvider">faultsPR#queryFaults</Property>
+      <Property name="dataType">[Faults]</Property>
+      <Property name="label">fault</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="roadid">$${this.roadid}</Property>
+          <Property name="event"></Property>
+          <Property name="classes"></Property>
+        </Entity>
+      </Property>
+    </Reference>
+    <PropertyDef name="feature">
+      <Property name="label">功能</Property>
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="system">
+      <Property name="dataType">String</Property>
+      <Property name="label">系统</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="label">id</Property>
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Detectlru" meta="x:525;y:75">
+    <Property name="matchType">com.model.domain.Detectlru</Property>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="text">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="para">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="other">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="color">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="line">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="loc">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="figure">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="diagram">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Detectline" meta="x:334;y:347">
+    <Property name="matchType">com.model.domain.Detectline</Property>
+    <PropertyDef name="toid">
+      <Property name="dataType">String</Property>
+      <Property name="label">toid</Property>
+    </PropertyDef>
+    <PropertyDef name="diagram">
+      <Property name="dataType">String</Property>
+      <Property name="label">diagram</Property>
+    </PropertyDef>
+    <PropertyDef name="fromid">
+      <Property name="dataType">String</Property>
+      <Property name="label">fromid</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Jixing">
+    <Property name="matchType">com.model.domain.Jixing</Property>
+    <PropertyDef name="other">
+      <Property name="dataType">String</Property>
+      <Property name="label">备注</Property>
+    </PropertyDef>
+    <PropertyDef name="jixing">
+      <Property name="dataType">String</Property>
+      <Property name="label">机型</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <Reference name="sy">
+      <Property name="dataProvider">systemsPR#querySystems</Property>
+      <Property name="label">sy</Property>
+      <Property name="dataType">[Systems]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="oid">$${this.oid}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+  </DataType>
+</Model>

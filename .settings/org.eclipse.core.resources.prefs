@@ -1,0 +1,13 @@
+#Sun Feb 19 16:30:04 CST 2017
+eclipse.preferences.version=1
+encoding//src/com/model/classes/manager/ClassesManager.java=UTF-8
+encoding//src/com/model/detect/manager/DetectManager.java=UTF-8
+encoding//src/com/model/jiance/manager/JianceManager.java=UTF-8
+encoding//src/com/model/jixing/manager/JixingManager.java=UTF-8
+encoding//src/com/model/lei/manager/LeiManager.java=UTF-8
+encoding//src/com/model/line/manager/LineManager.java=UTF-8
+encoding//src/com/model/lru/manager/LruManager.java=UTF-8
+encoding//src/com/model/parameter/manager/ParameterManager.java=UTF-8
+encoding//src/com/model/repair/manager/RepairManager.java=UTF-8
+encoding//src/com/model/road/manager/RoadManager.java=UTF-8
+encoding//src/com/model/tfaults/manager/TfaultsManager.java=UTF-8

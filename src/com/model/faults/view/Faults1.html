@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="zh-CN" style = "overflow:hidden;">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+#outputPageHeader()
+</head>
+<body style = "width:640px;height:440px;">
+<object id="G2Gateway" 
+classid="clsid:AC4C85D0-B16C-11d1-A718-006008C5F933"
+align="baseline" border="0" width="0" height="0"></object>
+<script language="VBScript">
+<!--
+Sub window_onLoad()
+G2Gateway.RemoteInitializationString = window.navigator.appName
+lResult = G2Gateway.Connect(TRUE)
+end sub
+
+Sub window_onUnload()
+call G2Gateway.Disconnect()
+end sub
+
+Sub G2Gateway_G2Disconnected()
+msg = "Disconnected from G2 at " + G2Gateway.G2Location
+call window.alert(msg)
+end sub
+
+Sub G2Gateway_Error(Name, ErrorCode, DeferredCallIdentifier)
+msg = "Error from G2; " + Name
+call window.alert(msg)
+end sub
+
+Sub G2Gateway_G2Paused()
+msg = "G2 Paused."
+call window.alert(msg)
+end sub
+
+Sub G2Gateway_G2Resumed()
+call window.alert("G2 Resumed.")
+end sub
+
+Sub CommandButton2_Click()
+Call G2Gateway.PostMessage(Form1.TextBox1.Text)
+end sub
+Private Sub G2Gateway_RpcCalled(ProcedureName, InputArguments, ReturnArguments)
+If ProcedureName = "Get" Then
+   ReturnArguments = "A Single Value" 
+End If
+window.location.href = "http://localhost:8082/AFDS/com.model.faults.view.Faults2.d"
+End Sub
+-->
+</script>
+<div class="place" id= "div1"></div>
+<div class="place" id= "div2"></div>
+</body>
+</html>

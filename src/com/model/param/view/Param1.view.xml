@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Param</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <Property name="packages">echart</Property>
+    <DataSet id="dsParam">
+      <Property name="dataProvider">attrPR#queryParamGraph</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="attr"></Property>
+          <Property name="time"></Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsAttr">
+      <Property name="dataType">[Attr]</Property>
+      <Property name="dataProvider">attrPR#queryAttr</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsAttr</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">	&#xD;
+//view.id(&quot;dsParam&quot;).flushAsync();    &#xD;
+view.id(&quot;Graph&quot;).show();&#xD;
+&#xD;
+/*var cur = view.id(&quot;dsAttr&quot;).getData(&quot;#&quot;);&#xD;
+&#xD;
+if(cur.get(&quot;a&quot;)!=&quot;Datapoint&quot;&amp;&amp;cur.get(&quot;a&quot;)!=&quot;Name&quot;&amp;&amp;cur.get(&quot;a&quot;)){&#xD;
+view.id(&quot;dsParam&quot;).set(&quot;parameter&quot;,{&#xD;
+	attr:cur.get(&quot;a&quot;),&#xD;
+	time:cur.get(&quot;b&quot;)&#xD;
+});&#xD;
+view.id(&quot;dsParam&quot;).flushAsync();}&#xD;
+&#xD;
+&#xD;
+&#xD;
+var cur = view.id(&quot;dsAttr&quot;).getData(&quot;#&quot;);&#xD;
+if (cur.get(&quot;a&quot;) != &quot;Datapoint&quot; &amp;&amp; cur.get(&quot;a&quot;) != &quot;Name&quot; &amp;&amp; cur.get(&quot;a&quot;)) {&#xD;
+    view.id(&quot;Graph&quot;).show();&#xD;
+}else {&#xD;
+    alert(&quot;请选择一个参数！&quot;);&#xD;
+}//view.id(&quot;Graph&quot;).show();&#xD;
+*/</ClientEvent>
+        <Property name="caption">参数图</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -240px -40px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var importParamAction=view.get(&quot;#importParamAction&quot;);&#xD;
+importParamAction.set(&quot;excelModelId&quot;,&quot;0002&quot;);&#xD;
+importParamAction.execute(function(arg){&#xD;
+	dorado.MessageBox.alert(&quot;成功解析导入[&quot; + arg + &quot;]数据！&quot;);&#xD;
+});</ClientEvent>
+        <Property name="caption">导入飞参属性</Property>
+        <Property name="icon">dorado/res/com/bstek/bdf2/importexcel/view/icons/page_excel.png</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var importParamAction=view.get(&quot;#importParamAction&quot;);&#xD;
+importParamAction.set(&quot;excelModelId&quot;,&quot;0001&quot;);&#xD;
+importParamAction.execute(function(arg){&#xD;
+	dorado.MessageBox.alert(&quot;成功解析导入[&quot; + arg + &quot;]数据！&quot;);&#xD;
+});</ClientEvent>
+        <Property name="caption">导入飞参数据</Property>
+        <Property name="icon">dorado/res/com/bstek/bdf2/importexcel/view/icons/page_excel.png</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <Property name="caption">清空数据</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgAttr">
+      <Property name="readOnly">true</Property>
+      <Property name="fixedColumnCount">3</Property>
+      <Property name="dataSet">dsAttr</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="showFilterBar">true</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="selectionMode">multiRows</Property>
+      <Property name="highlightSelectedRow">true</Property>
+      <Property name="highlightHoverRow">true</Property>
+      <Property name="highlightCurrentRow">false</Property>
+      <RowNumColumn/>
+      <RowSelectorColumn/>
+      <DataColumn>
+        <Property name="property">a</Property>
+        <Property name="width">120</Property>
+        <Property name="name">name</Property>
+      </DataColumn>
+      <DataColumn name="b">
+        <Property name="property">b</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="c">
+        <Property name="property">c</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="d">
+        <Property name="property">d</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="e">
+        <Property name="property">e</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="f">
+        <Property name="property">f</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="g">
+        <Property name="property">g</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="h">
+        <Property name="property">h</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="i">
+        <Property name="property">i</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="j">
+        <Property name="property">j</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="k">
+        <Property name="property">k</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="l">
+        <Property name="property">l</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="m">
+        <Property name="property">m</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="n">
+        <Property name="property">n</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="o">
+        <Property name="property">o</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="p">
+        <Property name="property">p</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="q">
+        <Property name="property">q</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="r">
+        <Property name="property">r</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="s">
+        <Property name="property">s</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="t">
+        <Property name="property">t</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="u">
+        <Property name="property">u</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="v">
+        <Property name="property">v</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="w">
+        <Property name="property">w</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="x">
+        <Property name="property">x</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="y">
+        <Property name="property">y</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="z">
+        <Property name="property">z</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="aa">
+        <Property name="property">aa</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="ab">
+        <Property name="property">ab</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="ac">
+        <Property name="property">ac</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+    </DataGrid>
+    <ImportExcelAction id="importParamAction">
+      <Property name="bigData">true</Property>
+    </ImportExcelAction>
+    <Dialog id="paramGraph">
+      <ClientEvent name="beforeShow">var cur = view.id(&quot;dsParam&quot;).getData(&quot;#&quot;).get(&quot;param&quot;);&#xD;
+if(cur &lt;= 0){&#xD;
+	view.id(&quot;chart&quot;).set(&quot;yAxis&quot;,{&#xD;
+	max:500,&#xD;
+	min:-500,&#xD;
+	steps:100&#xD;
+	});&#xD;
+}&#xD;
+if(cur > 0 &amp;&amp; cur &lt;= 10){&#xD;
+	view.id(&quot;chart&quot;).set(&quot;yAxis&quot;,{&#xD;
+	max:20,&#xD;
+	min:-20,&#xD;
+	steps:4&#xD;
+	});&#xD;
+}&#xD;
+else if(cur > 10 &amp;&amp; cur &lt;= 100){&#xD;
+	view.id(&quot;chart&quot;).set(&quot;yAxis&quot;,{&#xD;
+	max:200,&#xD;
+	min:-200,&#xD;
+	steps:40&#xD;
+	});&#xD;
+}&#xD;
+else if(cur > 100 &amp;&amp; cur &lt;= 500){&#xD;
+	view.id(&quot;chart&quot;).set(&quot;yAxis&quot;,{&#xD;
+	max:1000,&#xD;
+	min:0,&#xD;
+	steps:100&#xD;
+	});&#xD;
+}&#xD;
+else if(cur > 500 &amp;&amp; cur &lt;= 1000){&#xD;
+	view.id(&quot;chart&quot;).set(&quot;yAxis&quot;,{&#xD;
+	max:1500,&#xD;
+	min:500,&#xD;
+	steps:100&#xD;
+	});&#xD;
+}&#xD;
+else if(cur > 1000){&#xD;
+	view.id(&quot;chart&quot;).set(&quot;yAxis&quot;,{&#xD;
+	max:2000,&#xD;
+	min:500,&#xD;
+	steps:150&#xD;
+	});&#xD;
+}</ClientEvent>
+      <Property name="height">450</Property>
+      <Property name="width">630</Property>
+      <Buttons/>
+      <Children>
+        <OpenFlashChart id="chart">
+          <YAxis>
+            <Property name="max">1100</Property>
+            <Property name="min">700</Property>
+            <Property name="steps">100</Property>
+          </YAxis>
+          <Elements>
+            <Line>
+              <Property name="dataSet">dsParam</Property>
+              <Property name="bindingConfig">
+                <Property name="valueProperty">param</Property>
+              </Property>
+            </Line>
+          </Elements>
+        </OpenFlashChart>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="Graph">
+      <ClientEvent name="beforeShow" signature="self,dgAttr">var selection =dgAttr.get(&quot;selection&quot;);&#xD;
+var Elements=[];&#xD;
+var Datapoints=[];&#xD;
+var Highs=[];&#xD;
+var Lows=[];&#xD;
+//alert(selection);&#xD;
+&#xD;
+   if (selection &amp;&amp; selection.length) {&#xD;
+			selection.each(function(data){&#xD;
+				//alert(data);&#xD;
+				if (data.get(&quot;a&quot;) != &quot;Datapoint&quot; &amp;&amp; data.get(&quot;a&quot;) != &quot;Name&quot; &amp;&amp; data.get(&quot;a&quot;)) {&#xD;
+					view.id(&quot;dsParam&quot;).set(&quot;parameter&quot;,{&#xD;
+						attr: data.get(&quot;a&quot;),&#xD;
+						time: data.get(&quot;b&quot;)&#xD;
+					});&#xD;
+				&#xD;
+				attr=data.get(&quot;a&quot;);&#xD;
+				time=data.get(&quot;b&quot;);&#xD;
+				high=data.get(&quot;ab&quot;);&#xD;
+				low=data.get(&quot;ac&quot;);&#xD;
+				//alert(attr);&#xD;
+				//alert(time);&#xD;
+				//alert(high);&#xD;
+				//alert(0);&#xD;
+				//alert(low);&#xD;
+				Highs.push(high);&#xD;
+				Lows.push(low);&#xD;
+				//存储dsParam当前数据&#xD;
+				//alert(6);&#xD;
+				var cur = view.id(&quot;dsParam&quot;).getData();&#xD;
+				//a=cur.toJSON();&#xD;
+				//alert(7);&#xD;
+                //alert(cur);&#xD;
+				//alert(&quot;cur.toJSON()&quot;);&#xD;
+				//alert(0);&#xD;
+				Elements.push(cur);&#xD;
+				Datapoints.push(attr);&#xD;
+				//alert(Elements);&#xD;
+				//alert(777);&#xD;
+				//alert(Datapoints);&#xD;
+				//删除dsParam中当前数据&#xD;
+				//alert(2);&#xD;
+				view.id(&quot;dsParam&quot;).flush();&#xD;
+				//alert(1);&#xD;
+				&#xD;
+				//view.id(&quot;Graph&quot;).show();	&#xD;
+				}&#xD;
+				&#xD;
+				&#xD;
+				&#xD;
+								else {&#xD;
+					alert(&quot;请选择一个参数！&quot;); &#xD;
+				}&#xD;
+						&#xD;
+				}&#xD;
+			);&#xD;
+			//alert(888);&#xD;
+			//alert(Elements); &#xD;
+			//alert(999);&#xD;
+			&#xD;
+			//var nba=Elements[0].toJSON();&#xD;
+			//alert(nba);&#xD;
+   //view.id(&quot;dsParam&quot;).flushAsync();&#xD;
+			var myChart = echarts.init(document.getElementById('main'));&#xD;
+			var bvc=Elements.length;&#xD;
+			&#xD;
+			&#xD;
+			option = {&#xD;
+    tooltip: {&#xD;
+        trigger: 'axis',&#xD;
+&#xD;
+    },&#xD;
+    title: {&#xD;
+        //left: 'center',&#xD;
+        text: '参数图',&#xD;
+    },&#xD;
+    legend: {&#xD;
+        data:[]&#xD;
+    },&#xD;
+    toolbox: {&#xD;
+        show: true,&#xD;
+        feature: {&#xD;
+            dataView: {show: true, readOnly: false},&#xD;
+            magicType: {show: true, type: ['line', 'bar']},&#xD;
+            restore: {show: true},&#xD;
+            saveAsImage: {show: true}&#xD;
+        }&#xD;
+    },&#xD;
+    xAxis: {&#xD;
+        type: 'category',&#xD;
+        boundaryGap: false,&#xD;
+        data: time[0],&#xD;
+		splitLine:{&#xD;
+			show:false&#xD;
+		} &#xD;
+    },&#xD;
+    yAxis: {&#xD;
+        type: 'value',&#xD;
+        boundaryGap: [0, '100%']&#xD;
+    },&#xD;
+    dataZoom: [{&#xD;
+        type: 'inside',&#xD;
+        start: 0,&#xD;
+        end: 10&#xD;
+    }, {&#xD;
+        start: 0,&#xD;
+        end: 10&#xD;
+    }],&#xD;
+    series: [&#xD;
+	]&#xD;
+}&#xD;
+			&#xD;
+			&#xD;
+			&#xD;
+			var js=[];&#xD;
+			//alert(bvc);&#xD;
+			var time=new Array(Elements.length);&#xD;
+			var param=new Array(Elements.length);&#xD;
+			for(var i=0; i&lt;Elements.length;i++){&#xD;
+				time[i]=new Array();&#xD;
+				param[i]=new Array();&#xD;
+				a=Elements[i].toJSON();&#xD;
+				//alert(Highs[i]);&#xD;
+			    //alert(a);&#xD;
+				for(var j = 0; j&lt; a.length; j++){&#xD;
+					time[i].push(a[j].alert);&#xD;
+				}&#xD;
+				for(var k = 0; k &lt; a.length; k++){&#xD;
+					//alert(a[k].param);&#xD;
+					param[i].push(a[k].param);&#xD;
+				}&#xD;
+				//var a=Math.max.apply(null, param[i]);&#xD;
+			   //alert(a);&#xD;
+			   //var b=Math.min.apply(null, param[i]);&#xD;
+			   &#xD;
+			    var markLineOpt = {&#xD;
+    animation: false,&#xD;
+    label: {&#xD;
+        normal: {&#xD;
+            formatter: 'y = 0.5 * x + 3',&#xD;
+            textStyle: {&#xD;
+                align: 'right'&#xD;
+            }&#xD;
+        }&#xD;
+    },&#xD;
+    lineStyle: {&#xD;
+        normal: {&#xD;
+            type: 'solid'&#xD;
+        }&#xD;
+    },&#xD;
+    tooltip: {&#xD;
+        formatter: 'y = 0.5 * x + 3'&#xD;
+    },&#xD;
+    data: [[{&#xD;
+        coord: ['0:10', '900'],&#xD;
+        symbol: 'none'&#xD;
+    }, {&#xD;
+        coord: ['24:30', '900'],&#xD;
+        symbol: 'none'&#xD;
+    }]]&#xD;
+};&#xD;
+				&#xD;
+				&#xD;
+				var se={&#xD;
+					name:Datapoints[i],&#xD;
+                    type:'line',&#xD;
+                    smooth:true,&#xD;
+                    symbol: 'none',&#xD;
+                    sampling: 'average',&#xD;
+                    /*itemStyle: {&#xD;
+                        normal: {&#xD;
+                           color: 'rgb(255, 70, 131)'&#xD;
+                        }&#xD;
+                    },&#xD;
+                    */&#xD;
+                    data: param[i],&#xD;
+					markPoint: {&#xD;
+                        data: [&#xD;
+                    {type: 'max', name: '测试最大值'},&#xD;
+                    {type: 'min', name: '测试最小值'}&#xD;
+                       ]&#xD;
+                    },&#xD;
+					//markLine&#xD;
+			        markLine: markLineOpt&#xD;
+                    };&#xD;
+			   	&#xD;
+				&#xD;
+				&#xD;
+			   option.series.push(se);&#xD;
+			   option.xAxis.data=time[0];&#xD;
+			   option.legend.data.push(Datapoints[i]);&#xD;
+			}&#xD;
+			&#xD;
+			//alert(11);&#xD;
+			&#xD;
+			myChart.setOption(option);&#xD;
+}&#xD;
+&#xD;
+   //else{alert(0);}&#xD;
+</ClientEvent>
+      <Property name="height">675</Property>
+      <Property name="width">945</Property>
+      <Buttons/>
+      <Children>
+        <HtmlContainer>
+          <Property name="content">&lt;body>&#xD;
+    &lt;!-- 为 ECharts 准备一个具备大小（宽高）的Dom -->&#xD;
+    &lt;div id=&quot;main&quot; style=&quot;width: 900px;height:570px;&quot;>&lt;/div>&#xD;
+&lt;/body></Property>
+        </HtmlContainer>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>
